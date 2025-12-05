@@ -1,0 +1,28 @@
+base_url = "https://brandoncharest.dev"
+theme = "apollo"
+taxonomies = [{ name = "tags" }]
+title = "Name Dev"
+description = "Senior Backend Engineer constantly learning and building new things."
+default_language = "en"
+
+[extra]
+theme = "auto"
+socials = [
+    { name = "GitHub", url = "https://github.com/brandon-charest", icon = "github" },
+    { name = "LinkedIn", url = "https://www.linkedin.com/in/brandon-charest/", icon = "linkedin" },
+]
+stylesheets = ["custom.css"]
+menu = [
+    { name = "Garden", url = "/garden", weight = 1 },
+    { name = "Blog", url = "/posts", weight = 2 },
+    { name = "About", url = "/about", weight = 3 },
+]
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = true
+compile_sass = true
+
+[markdown]
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = false
