@@ -3,7 +3,6 @@ theme = "apollo"
 taxonomies = [{ name = "tags" }]
 title = "Name Dev"
 description = "Senior Backend Engineer constantly learning and building new things."
-default_language = "en"
 
 [extra]
 theme = "auto"
