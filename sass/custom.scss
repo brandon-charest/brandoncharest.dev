@@ -4,7 +4,8 @@
 :root {
     --bg: #0b0c15;
     --text: #a9b7c6;
-    --accent: #ff007c;
+    --accent: #00f3ff;
+    /* Cyan */
     --secondary: #00f3ff;
     --code-bg: #151725;
 }
@@ -12,18 +13,16 @@
 /* Override the default text selection color */
 ::selection {
     background: rgba(0, 243, 255, 0.2);
-    /* Cyan with transparency */
     color: #fff;
     text-shadow: 0 0 8px var(--secondary);
-    /* Adds the glow to selected text */
 }
 
-/* 2. Global Overrides (The "Theme Skin") */
+/* 2. Global Overrides */
 body {
     background-color: var(--bg);
     color: var(--text);
-    /* ... background image logic ... */
 }
 
 /* 3. Import Feature Modules */
+/* Ensure the filename matches exactly: _dashboard.scss */
 @import "dashboard";
