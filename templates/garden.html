@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<div class="body">
+    
+    <h1 class="title">{{ section.title }}</h1>
+    
+    <ul class="card-grid">
+        {% for page in section.pages %}
+        <li>
+            <a href="{{ page.permalink }}" class="card-link">
+                <div class="card-header">
+                    <span class="status-dot {{ page.extra.status | default(value="active") }}"></span>
+                    <h3>{{ page.title }}</h3>
+                </div>
+                <div class="card-meta">
+                    {{ page.description | default(value="No description provided.") | truncate(length=140) }}
+                </div>
+                <div class="card-footer">
+                    <span class="mono">> READ_LOG</span>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock main_content %}

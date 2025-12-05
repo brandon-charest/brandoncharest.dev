@@ -1,0 +1,69 @@
+{# templates/partials/terminal_header.html #}
+
+{% set my_path = "" %}
+
+{% if page and page.path %}
+    {% set my_path = page.path %}
+{% elif section and section.path %}
+    {% set my_path = section.path %}
+{% elif current_path %}
+    {% set my_path = current_path %}
+{% else %}
+    {% set my_path = "404" %}
+{% endif %}
+
+{# --- COMMAND LOGIC --- #}
+{# Default (Homepage) #}
+{% set cmd = "./init_sequence.sh" %}
+{% set path_display = "~" %}
+
+{% if my_path != "404" %}
+    {% if my_path is starting_with("/garden") %}
+        {% set cmd = "cd ~/garden && ls -la" %}
+        {% set path_display = "~/garden" %}
+
+    {% elif my_path is starting_with("/posts") %}
+        {% set cmd = "tail -f /var/log/posts.log" %}
+        {% set path_display = "~/posts" %}
+        
+    {% elif my_path is starting_with("/projects") %}
+        {% set cmd = "cargo build --release" %}
+        {% set path_display = "~/src" %}
+
+    {% elif my_path is starting_with("/talks") %}
+        {% set cmd = "./slideshow_presenter.exe" %}
+        {% set path_display = "~/mnt/media" %}
+
+    {% elif my_path is starting_with("/about") %}
+        {% set cmd = "whoami" %}
+        {% set path_display = "~" %}
+
+    {% elif my_path is starting_with("/tags") %}
+        {% set cmd = "grep -r 'query' ." %}
+        {% set path_display = "~/tags" %}
+        
+    {% endif %}
+
+{% else %}
+    {# 404 State #}
+    {% set cmd = "ERROR: SIGNAL_LOST" %}
+    {% set path_display = "/void" %}
+{% endif %}
+
+<div class="terminal-hero">
+    <div class="terminal-line">
+        <span class="prompt-user">visitor@dev</span>
+        <span class="prompt-char">:</span>
+        <span class="prompt-path">{{ path_display }}</span>
+        <span class="prompt-sign">$</span>
+        <span class="command-text">{{ cmd }}</span>
+        <span class="cursor">_</span>
+    </div>
+
+    {% if my_path == "/" %}
+    <div class="terminal-output">
+        <span class="dim">> KERNEL_PANIC_AVOIDED...</span><br>
+        <span class="success">> SYSTEMS_ONLINE</span>
+    </div>
+    {% endif %}
+</div>

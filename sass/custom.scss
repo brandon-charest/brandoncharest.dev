@@ -1,28 +1,117 @@
 /* sass/custom.scss */
-
-/* 1. Configuration */
-:root {
-    --bg: #0b0c15;
-    --text: #a9b7c6;
-    --accent: #00f3ff;
-    /* Cyan */
-    --secondary: #00f3ff;
-    --code-bg: #151725;
+:root,
+html,
+html[data-theme="dark"],
+html[data-theme="light"] {
+    --bg: #0d1117;
+    --code-bg: #161b22;
+    --header-bg: rgba(13, 17, 23, 0.95);
+    --text: #8b949e;
+    --text-light: #484f58;
+    --title: #c9d1d9;
+    --accent: #58a6ff;
+    --secondary: #30363d;
+    --primary: #58a6ff;
+    --border: #30363d;
+    --shadow: none;
 }
 
-/* Override the default text selection color */
-::selection {
-    background: rgba(0, 243, 255, 0.2);
-    color: #fff;
-    text-shadow: 0 0 8px var(--secondary);
-}
-
-/* 2. Global Overrides */
 body {
-    background-color: var(--bg);
-    color: var(--text);
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
+    font-family: 'Inter', sans-serif !important;
+    background-image:
+        radial-gradient(circle at 50% 0%, #1c2128 0%, transparent 60%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
+    min-height: 100vh;
 }
 
-/* 3. Import Feature Modules */
-/* Ensure the filename matches exactly: _dashboard.scss */
+p,
+li {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif !important;
+    line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    color: var(--title) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-weight: 500;
+}
+
+/* --- TERMINAL HERO SECTION --- */
+.terminal-hero {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.terminal-line {
+    font-size: 1.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.prompt-user {
+    color: #79c0ff;
+}
+
+.prompt-char {
+    color: #8b949e;
+}
+
+.prompt-path {
+    color: #d2a8ff;
+}
+
+.prompt-sign {
+    color: #79c0ff;
+    margin-right: 0.5rem;
+}
+
+.command-text {
+    color: var(--title);
+    font-weight: 700;
+}
+
+/* Pulsing Cursor */
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.2em;
+    background-color: var(--accent);
+    animation: breathe 1.5s infinite ease-in-out;
+    box-shadow: 0 0 5px var(--accent);
+}
+
+.terminal-output {
+    margin-top: 1rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    opacity: 0.7;
+    line-height: 1.4;
+}
+
+@keyframes breathe {
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 8px var(--accent);
+    }
+
+    50% {
+        opacity: 0.3;
+        box-shadow: 0 0 2px var(--accent);
+    }
+}
+
+/* IMPORT MODULES */
 @import "_dashboard";

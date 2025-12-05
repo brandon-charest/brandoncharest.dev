@@ -1,5 +1,6 @@
 +++
 title = "The Garden"
 sort_by = "date"
-template = "section.html"
+template = "garden.html"
+transparent = true
 +++

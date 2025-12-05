@@ -1,25 +1,32 @@
 base_url = "https://brandoncharest.dev"
 theme = "apollo"
-taxonomies = [{ name = "tags" }]
 title = "Name Dev"
 description = "Senior Backend Engineer constantly learning and building new things."
+taxonomies = [{ name = "tags" }]
+compile_sass = true
+minify_html = true
+build_search_index = true
 
 [extra]
 theme = "auto"
-socials = [
-    { name = "GitHub", url = "https://github.com/brandon-charest", icon = "github" },
-    { name = "LinkedIn", url = "https://www.linkedin.com/in/brandon-charest/", icon = "linkedin" },
-]
-stylesheets = ["custom.css"]
+fancy_code = true
+
 menu = [
     { name = "Garden", url = "/garden", weight = 1 },
     { name = "Blog", url = "/posts", weight = 2 },
     { name = "About", url = "/about", weight = 3 },
 ]
 
-# Whether to build a search index to be used later on by a JavaScript library
-build_search_index = true
-compile_sass = true
+socials = [
+    { name = "GitHub", url = "https://github.com/brandon-charest", icon = "github" },
+    { name = "LinkedIn", url = "https://www.linkedin.com/in/brandon-charest/", icon = "linkedin" },
+]
+
+stylesheets = ["custom.css"]
+
+[extra.analytics]
+enabled = false
+
 
 [markdown]
 # Whether to do syntax highlighting

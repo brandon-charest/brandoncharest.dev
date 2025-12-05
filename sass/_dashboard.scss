@@ -1,6 +1,4 @@
 /* sass/_dashboard.scss */
-/* Dedicated styling for the Homepage Command Center Grid */
-
 .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -9,133 +7,91 @@
     list-style: none;
     margin-top: 1.5rem;
 
-    /* The individual Card Module */
     li {
-        background: rgba(20, 22, 35, 0.6);
-        /* Semi-transparent dark */
-        border: 1px solid #333;
+        background: #0d1117;
+        border: 1px solid #30363d;
         border-radius: 6px;
         position: relative;
         overflow: hidden;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.2s ease-in-out;
+        background-image: linear-gradient(to bottom, #161b22 48px, transparent 48px);
+    }
 
-        /* Remove default list styling */
-        &::before {
-            content: none;
-        }
-
-        /* Hover State: The "Active System" Look */
-        &:hover {
-            border-color: var(--secondary);
-            /* Cyan border */
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
-            transform: translateY(-2px);
-
-            /* Reveal the footer on hover */
-            .card-footer {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
+    li:hover {
+        transform: translateY(-4px);
+        border-color: #58a6ff;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
 }
 
-/* The clickable wrapper ensuring the whole card is a link */
+/* --- CARD STRUCTURE --- */
 .card-link {
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 1.5rem;
     text-decoration: none !important;
     color: var(--text) !important;
-
-    /* Ensure long words don't break the card layout */
-    word-wrap: break-word;
 }
 
-/* Title Area */
 .card-header {
+    height: 48px;
     display: flex;
     align-items: center;
-    margin-bottom: 0.75rem;
+    justify-content: space-between;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid #21262d;
 
     h3 {
         margin: 0;
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #fff !important;
-        text-shadow: none !important;
-        /* Keep small text crisp, no neon blur */
-        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.95rem;
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 600;
+        color: #e6edf3 !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
-/* The "Online" Status Indicator */
-.status-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background-color: #00ff41;
-    /* Retro Terminal Green */
-    border-radius: 50%;
-    margin-right: 10px;
-    box-shadow: 0 0 5px rgba(0, 255, 65, 0.6);
-    flex-shrink: 0;
-    /* Prevents dot from squishing on long titles */
-}
-
-/* Description Text */
-.card-meta {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #8892b0;
-    /* Muted text for hierarchy */
-    flex-grow: 1;
-    /* Pushes the footer to the bottom */
-}
-
-/* The hidden "Action" Footer */
-.card-footer {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-
-    /* Typography */
+.card-header-meta {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--secondary);
+    font-size: 0.7rem;
+    color: #484f58;
     letter-spacing: 0.05em;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
 
-    /* Animation Initial State */
-    opacity: 0;
-    transform: translateX(-10px);
+.card-meta {
+    padding: 1.25rem 1.25rem 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #8b949e;
+    flex-grow: 1;
+}
+
+.card-footer-tags {
+    padding: 0 1.25rem 1.25rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.tech-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: #58a6ff;
+    background: rgba(88, 166, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(88, 166, 255, 0.2);
+    text-transform: uppercase;
     transition: all 0.2s ease;
 }
 
-.status-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 10px;
-    flex-shrink: 0;
-
-    /* Default / Active (Green) */
-    &.active {
-        background-color: #00ff41;
-        box-shadow: 0 0 6px #00ff41;
-    }
-
-    /* Building / WIP (Yellow/Orange) */
-    &.building {
-        background-color: #ffb800;
-        box-shadow: 0 0 6px #ffb800;
-    }
-
-    /* Offline / Archived (Red) */
-    &.offline {
-        background-color: #ff003c;
-        box-shadow: 0 0 6px #ff003c;
-    }
+/* Hovering the card lights up the tags slightly */
+li:hover .tech-tag {
+    background: rgba(88, 166, 255, 0.15);
+    border-color: rgba(88, 166, 255, 0.4);
 }

@@ -1,29 +1,32 @@
-{% extends "base.html" %} {% block main_content %}
+{% extends "base.html" %}
+
+{% block main_content %}
 <div class="body">
-    {% if section and section.content %}
-    <div class="intro-console">
-        {{ section.content | safe }}
-    </div>
-    {% endif %}
 
-    <h2 style="margin-top: 3rem;"># Active Protocols</h2>
+    <h2 style="margin-top: 3rem;">Active Protocols</h2>
 
-    <ul class="card-grid">
+<ul class="card-grid">
         {% set garden = get_section(path="garden/_index.md") %}
 
         {% for page in garden.pages | slice(end=6) %}
         <li>
             <a href="{{ page.permalink }}" class="card-link">
                 <div class="card-header">
-                    <span class="status-dot {{ page.extra.status | default(value=" active") }}"></span>
                     <h3>{{ page.title }}</h3>
+                    <span class="card-header-meta">:: {{ page.reading_time }} MIN</span>
                 </div>
+                
                 <div class="card-meta">
-                    {{ page.description | default(value="No description provided.") | truncate(length=140) }}
+                    {{ page.description | default(value="No description provided.") | truncate(length=120) }}
                 </div>
-                <div class="card-footer">
-                    <span class="mono">> READ_LOG</span>
+
+                {% if page.taxonomies.tags %}
+                <div class="card-footer-tags">
+                    {% for tag in page.taxonomies.tags | slice(end=3) %}
+                        <span class="tech-tag">#{{ tag }}</span>
+                    {% endfor %}
                 </div>
+                {% endif %}
             </a>
         </li>
         {% endfor %}
