@@ -3,19 +3,39 @@
 html,
 html[data-theme="dark"],
 html[data-theme="light"] {
+    /* --- ATMOSPHERE --- */
     --bg: #0d1117;
     --code-bg: #161b22;
     --header-bg: rgba(13, 17, 23, 0.95);
+
+    /* --- TYPOGRAPHY --- */
     --text: #8b949e;
     --text-light: #484f58;
     --title: #c9d1d9;
+
+    /* --- ACCENTS (Corrected Variable Names) --- */
     --accent: #58a6ff;
     --secondary: #30363d;
-    --primary: #58a6ff;
+    --primary-color: #58a6ff;
+    /* CORRECTED: Double hyphen */
+
+    /* --- UI ELEMENTS --- */
     --border: #30363d;
     --shadow: none;
 }
 
+/* FIX: Direct Text Selection Override (Guarantees Blue Highlight) */
+::selection {
+    background: rgba(88, 166, 255, 0.4) !important;
+    color: #fff !important;
+}
+
+::-moz-selection {
+    background: rgba(88, 166, 255, 0.4) !important;
+    color: #fff !important;
+}
+
+/* --- GLOBAL BODY & TYPOGRAPHY --- */
 body {
     background-color: var(--bg) !important;
     color: var(--text) !important;
@@ -43,7 +63,7 @@ h4 {
     font-weight: 500;
 }
 
-/* --- TERMINAL HERO SECTION --- */
+/* --- TERMINAL HERO SECTION & ANIMATIONS (Kept as is) --- */
 .terminal-hero {
     margin-bottom: 2.5rem;
     padding-bottom: 1.5rem;
@@ -81,7 +101,6 @@ h4 {
     font-weight: 700;
 }
 
-/* Pulsing Cursor */
 .cursor {
     display: inline-block;
     width: 10px;

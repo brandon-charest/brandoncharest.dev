@@ -50,7 +50,15 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        &::before {
+            content: none !important;
+            display: none !important;
+        }
+
     }
+
+
 }
 
 .card-header-meta {

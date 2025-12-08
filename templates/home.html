@@ -13,7 +13,9 @@
             <a href="{{ page.permalink }}" class="card-link">
                 <div class="card-header">
                     <h3>{{ page.title }}</h3>
-                    <span class="card-header-meta">:: {{ page.reading_time }} MIN</span>
+                    <span class="card-header-meta">
+    ::REV {{ page.updated | default(value=page.date) | date(format="%Y-%m-%d") }}
+</span>
                 </div>
                 
                 <div class="card-meta">
