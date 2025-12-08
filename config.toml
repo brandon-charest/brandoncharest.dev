@@ -22,7 +22,6 @@ socials = [
     { name = "LinkedIn", url = "https://www.linkedin.com/in/brandon-charest/", icon = "linkedin" },
 ]
 
-stylesheets = ["custom.css"]
 
 [extra.analytics]
 enabled = false
