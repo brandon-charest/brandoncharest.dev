@@ -13,36 +13,137 @@
 @import "parts/_search.scss";
 @import "parts/_talks.scss";
 @import "parts/_components.scss";
+@import "parts/_terminal.scss";
+
+// Import Themes (Ensure these exist and are imported if you separate them)
+@import "theme/light.scss";
+@import "theme/dark.scss";
 
 :root {
-  /* Used for: block comment, hr, ... */
-  --border-color: var(--border-color);
+  /* -------------------------------------------------------------------------- */
+  /* 1. NEW THEME VARIABLES (Light Mode Default)                                */
+  /* -------------------------------------------------------------------------- */
 
-  /* Fonts */
-  --font-size-base: 13.5px;
-  --mono-text-font: "Jetbrains Mono";
-  --text-font: "ZedTextFtl";
-  --header-font: "ZedDisplayFtl" "Space Grotesk", "Helvetica", sans-serif;
-  --code-font: "Jetbrains Mono";
+  // Base Colors
+  --background: #f8f9fa;
+  --foreground: #0c0c1d;
 
-  --line-height: 1.5;
+  // Components
+  --card: #ffffff;
+  --card-foreground: #0c0c1d;
+  --popover: #ffffff;
+  --popover-foreground: #0c0c1d;
+
+  // Brand / State
+  --primary: #00ffcc;
+  --primary-foreground: #ffffff;
+  --highlight: #fbbf24;
+  --secondary: #f0f0ff;
+  --secondary-foreground: #0c0c1d;
+  --muted: #f0f0ff;
+  --muted-foreground: #0c0c1d;
+  --accent: #ff00c8;
+  --accent-foreground: #0c0c1d;
+  --destructive: #ff3d00;
+  --destructive-foreground: #ffffff;
+
+  // UI Elements
+  --border: #dfe6e9;
+  --input: #dfe6e9;
+  --ring: #ff00c8;
+
+  // Charts
+  --chart-1: #ff00c8;
+  --chart-2: #9000ff;
+  --chart-3: #00e5ff;
+  --chart-4: #00ffcc;
+  --chart-5: #ffe600;
+
+  // Sidebar
+  --sidebar: #f0f0ff;
+  --sidebar-foreground: #0c0c1d;
+  --sidebar-primary: #ff00c8;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #00ffcc;
+  --sidebar-accent-foreground: #0c0c1d;
+  --sidebar-border: #dfe6e9;
+  --sidebar-ring: #ff00c8;
+
+  // Typography
+  --font-sans: Outfit, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: Fira Code, monospace;
+
+  // Shape
+  --radius: 0.5rem;
+
+  // Shadows
+  --shadow-x: 0px;
+  --shadow-y: 4px;
+  --shadow-blur: 8px;
+  --shadow-spread: -2px;
+  --shadow-opacity: 0.1;
+  --shadow-color: 0 0% 0%;
+
+  --shadow-2xs: 0px 4px 8px -2px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0px 4px 8px -2px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 1px 2px -3px hsl(0 0% 0% / 0.10);
+  --shadow: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 1px 2px -3px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 2px 4px -3px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 4px 6px -3px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 8px 10px -3px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0px 4px 8px -2px hsl(0 0% 0% / 0.25);
+
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+
+  /* -------------------------------------------------------------------------- */
+  /* 2. LEGACY MAPPING (Bridge to existing components)                          */
+  /* -------------------------------------------------------------------------- */
+
+  --bg-0: var(--background);
+  --bg-1: var(--secondary);
+  /* Maps to lighter grey/white */
+  --bg-2: var(--muted);
+  /* Maps to muted element bg */
+
+  --text-0: var(--foreground);
+  --text-1: var(--muted-foreground);
+  --text-2: var(--sidebar-foreground);
+
+  --primary-color: var(--primary);
+  --hover-color: var(--primary-foreground);
+  --border-color: var(--border);
+
+  --icon-filter: none;
+
+  /* Font mapping */
+  --header-font: var(--font-mono);
+  --text-font: var(--font-sans);
+  --mono-text-font: var(--font-mono);
+  --code-font: var(--font-mono);
+
+  --line-height: 1.6;
   --page-width: 920px;
+  --font-size-base: 14px;
 }
 
 html {
-  background-color: var(--bg-0);
-  color: var(--text-0);
-  font-family: var(--text-font);
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
   line-height: var(--line-height);
 
   @media (max-width: 992px) {
     font-size: calc(var(--font-size-base) * 0.97);
   }
+
   @media (max-width: 768px) {
-      font-size: calc(var(--font-size-base) * 0.95);
+    font-size: calc(var(--font-size-base) * 0.95);
   }
+
   @media (max-width: 576px) {
-      font-size: calc(var(--font-size-base) * 0.92);
+    font-size: calc(var(--font-size-base) * 0.92);
   }
 }
 
@@ -50,8 +151,7 @@ body {
   display: flex;
   flex-grow: 1;
   padding: 0.9rem;
-  padding-bottom: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin: 0;
   min-height: calc(100vh - 150px);
 
   @media (min-width: 992px) {
@@ -84,17 +184,44 @@ body {
     @media (min-width: 992px) {
       flex: 1 1 0;
       min-width: 0;
-
-    // Don't move this to the TOC, it won't work
-    // FIXME: Find a workaround
-    position: sticky;
-    top: 60px;
-    padding: 1em;
-    overflow-y: auto;
-    max-height: calc(100vh - 100px);
-
+      position: sticky;
+      top: 60px;
+      padding: 1em;
+      overflow-y: auto;
+      max-height: calc(100vh - 100px);
     }
-
-
   }
+
+  /* Optional: Add a subtle texture overlay if desired, otherwise remove */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.01) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(0, 0, 0, 0.01) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-attachment: fixed;
 }
+
+/* SCSS Variables (Mapped to CSS Vars for usage in other files) */
+$background: var(--background);
+$foreground: var(--foreground);
+$card: var(--card);
+$card-foreground: var(--card-foreground);
+$popover: var(--popover);
+$popover-foreground: var(--popover-foreground);
+$primary: var(--primary);
+$primary-foreground: var(--primary-foreground);
+$highlight: var(--highlight);
+$secondary: var(--secondary);
+$secondary-foreground: var(--secondary-foreground);
+$muted: var(--muted);
+$muted-foreground: var(--muted-foreground);
+$accent: var(--accent);
+$accent-foreground: var(--accent-foreground);
+$destructive: var(--destructive);
+$destructive-foreground: var(--destructive-foreground);
+$border: var(--border);
+$input: var(--input);
+$ring: var(--ring);
+
+$radius: var(--radius);
+$font-sans: var(--font-sans);
+$font-mono: var(--font-mono);
+$font-serif: var(--font-serif);

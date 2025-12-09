@@ -17,69 +17,69 @@
 }
 
 nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0;
+
+  /* Mobile-specific adjustments */
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+
+  /* title and socials */
+  .left-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+
+    .socials {
+      /* flex-container */
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-end;
+      gap: 8px;
+
+      .social img {
+        width: 16px;
+        height: 16px;
+
+      }
+
+      /* Don't display background on hover */
+      a:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  /* navigation + theme toggle */
+  .right-nav {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 0;
+    align-items: center;
 
-    /* Mobile-specific adjustments */
-    @media (max-width: 600px) {
-        flex-direction: column;
-    }
+    #dark-mode-toggle {
+      margin-left: 0.5rem;
+      padding: 0.1rem;
 
-    /* title and socials */
-    .left-nav {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 12px;
-      font-size: 1.5rem;
+      >img {
+        width: 16px;
+        height: 16px;
+      }
 
-      .socials {
-        /* flex-container */
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        align-items: flex-end;
-        gap: 8px;
-
-        .social img {
-          width: 16px;
-          height: 16px;
-
-        }
-
-        /* Don't display background on hover */
-        a:hover {
-            background-color: transparent;
-        }
+      /* Don't display background on hover */
+      &:hover {
+        background-color: transparent;
       }
     }
-
-    /* navigation + theme toggle */
-    .right-nav {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-
-        #dark-mode-toggle {
-            margin-left: 0.5rem;
-            padding: 0.1rem;
-
-            > img {
-                width: 16px;
-                height: 16px;
-            }
-
-            /* Don't display background on hover */
-            &:hover {
-                background-color: transparent;
-            }
-        }
-    }
+  }
 }
 
 /* TODO: Is this still used? */
@@ -87,7 +87,7 @@ nav {
   border-bottom: unset;
   background-image: unset;
 
-  > img {
+  >img {
     border: unset;
     width: auto;
     height: 24px;
@@ -121,32 +121,32 @@ h6 {
   margin-top: 2em;
 }
 
-h1::before {
-  color: var(--primary-color);
-  content: "# ";
-}
+// h1::before {
+//   color: var(--primary-color);
+//   content: "# ";
+// }
 
-h2::before {
-  color: var(--primary-color);
-  content: "## ";
-}
+// h2::before {
+//   color: var(--primary-color);
+//   content: "## ";
+// }
 
-h3::before {
-  color: var(--primary-color);
-  content: "### ";
-}
+// h3::before {
+//   color: var(--primary-color);
+//   content: "### ";
+// }
 
-h4::before {
-  color: var(--primary-color);
-  content: "#### ";
-}
+// h4::before {
+//   color: var(--primary-color);
+//   content: "#### ";
+// }
 
-h5::before {
-  color: var(--primary-color);
-  content: "##### ";
-}
+// h5::before {
+//   color: var(--primary-color);
+//   content: "##### ";
+// }
 
-h6::before {
-  color: var(--primary-color);
-  content: "###### ";
-}
+// h6::before {
+//   color: var(--primary-color);
+//   content: "###### ";
+// }

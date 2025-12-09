@@ -1,0 +1,125 @@
+/* sass/parts/_terminal.scss */
+
+/* --- 1. The Terminal Header (Command Prompt) --- */
+.terminal-container {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    padding-left: 0.5rem;
+}
+
+.terminal-hero {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-family: var(--mono-text-font);
+    font-size: 1.1rem;
+}
+
+.terminal-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.prompt-user {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+
+.prompt-char {
+    color: #8b949e;
+}
+
+.prompt-path,
+.prompt-machine {
+    color: var(--highlight);
+    font-weight: bold;
+}
+
+
+.prompt-sign {
+    color: #c9d1d9;
+}
+
+.command-text {
+    color: var(--text-0);
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.2em;
+    background-color: #8b949e;
+    vertical-align: sub;
+}
+
+.terminal-output {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    margin-top: 0.2rem;
+    font-size: 0.95rem;
+    color: #8b949e;
+    padding-left: 1rem;
+    line-height: 1.2;
+
+    strong,
+    b,
+    .highlight {
+        /* This makes "Senior Backend Engineer" pop out */
+        color: var(--highlight);
+        font-weight: 700;
+    }
+
+    /* Keep links inside the intro Blue to show they are clickable */
+    a {
+        color: var(--primary);
+        border-bottom: 1px dashed var(--primary);
+    }
+}
+
+.terminal-output .success {
+    color: #3fb950;
+    /* Green */
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(63, 185, 80, 0.4);
+    /* Subtle glow */
+}
+
+
+.terminal-intro {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    max-width: 800px;
+    font-family: var(--text-font);
+
+    .tech {
+        color: var(--accent);
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        font-family: var(--mono-text-font);
+    }
+
+    strong {
+        color: var(--primary);
+    }
+}
+
+
+.terminal-separator {
+    border: 0;
+    border-bottom: 1px dashed var(--border-color);
+    background: none;
+    margin: 2.5rem 0;
+    opacity: 0.6;
+}

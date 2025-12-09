@@ -2,10 +2,13 @@
 
 {% block main_content %}
 <div class="body">
+    <div class="terminal-intro">
+        {{ section.content | safe }}
+    </div>
 
-    <h2 style="margin-top: 3rem;">Active Protocols</h2>
+    <hr class="terminal-separator" />
 
-<ul class="card-grid">
+    <ul class="card-grid">
         {% set garden = get_section(path="garden/_index.md") %}
 
         {% for page in garden.pages | slice(end=6) %}
@@ -14,8 +17,8 @@
                 <div class="card-header">
                     <h3>{{ page.title }}</h3>
                     <span class="card-header-meta">
-    ::REV {{ page.updated | default(value=page.date) | date(format="%Y-%m-%d") }}
-</span>
+                        ::REV {{ page.updated | default(value=page.date) | date(format="%Y-%m-%d") }}
+                    </span>
                 </div>
                 
                 <div class="card-meta">

@@ -40,36 +40,36 @@ a {
   text-decoration: none;
 
   /* use colored hovering */
-  &:hover {
-      background-color: var(--primary-color);
-      color: var(--hover-color);
-  }
+  // &:hover {
+  //   background-color: var(--primary-color);
+  //   color: var(--hover-color);
+  // }
 
   /* hover link with child elements (e.g. code)  */
-  &:hover > code {
-      background-color: var(--primary-color);
-      color: var(--hover-color);
+  &:hover>code {
+    background-color: var(--primary-color);
+    color: var(--hover-color);
 
-      /* disable the border + vertical padding  */
-      border: none;
-      padding: 0 .2em;
+    /* disable the border + vertical padding  */
+    border: none;
+    padding: 0 .2em;
   }
 
-    /* disable colored hovering for video in /talks */
-    &.talk-video:hover {
-        background-color: transparent;
-        color: inherit;
-    }
+  /* disable colored hovering for video in /talks */
+  &.talk-video:hover {
+    background-color: transparent;
+    color: inherit;
+  }
 }
 
 /* Only have colored links inside the text */
 main {
   a {
-      border-bottom: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
 
-      // Make sure the underline is at the top
-      position: relative; // needed for z-index
-      z-index: 1;
+    // Make sure the underline is at the top
+    position: relative; // needed for z-index
+    z-index: 1;
   }
 
   // Disable colored links in:
@@ -77,7 +77,9 @@ main {
   // - header (socials, theme toggle)
   // - /talks
   // - /projects
-  .meta a, .talks-grid a, .cards a {
+  .meta a,
+  .talks-grid a,
+  .cards a {
     border-bottom: none;
   }
 
@@ -91,50 +93,52 @@ time {
   color: var(--text-1);
 }
 
-.post-list,.tag-list {
-    > ul {
-        margin: 0;
-        padding: 1rem 0 0 0;
+.post-list,
+.tag-list {
+  >ul {
+    margin: 0;
+    padding: 1rem 0 0 0;
+  }
+
+  .list-item {
+    margin-bottom: 0.5rem;
+    list-style-type: none;
+  }
+
+  .post-header {
+    display: grid;
+    align-items: center;
+
+    @media all and (max-width: 640px) {
+      grid-template-rows: auto 1fr;
     }
 
-    .list-item {
-        margin-bottom: 0.5rem;
-        list-style-type: none;
+    @media all and (min-width: 640px) {
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
     }
 
-    .post-header {
-      display: grid;
-      align-items: center;
+    @media only screen and (max-width: 640px) {
+      margin: 1.6rem 0px;
+    }
 
-      @media all and (max-width: 640px) {
-          grid-template-rows: auto 1fr;
-      }
-      @media all and (min-width: 640px) {
-          grid-template-columns: auto 1fr;
-          gap: 1rem;
-      }
+    h1 {
+      margin: 0;
+      font-weight: normal;
+      font-family: var(--header-font);
 
-      @media only screen and (max-width: 640px) {
-        margin: 1.6rem 0px;
-      }
-
-      h1 {
-        margin: 0;
-        font-weight: normal;
-        font-family: var(--header-font);
-
-        a {
-          border-bottom: none;
-        }
-      }
-
-      time {
-          font-family: var(--mono-text-font);
-          text-align: left;
-
-          margin: 0;
+      a {
+        border-bottom: none;
       }
     }
+
+    time {
+      font-family: var(--mono-text-font);
+      text-align: left;
+
+      margin: 0;
+    }
+  }
 
 }
 

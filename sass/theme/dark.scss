@@ -1,30 +1,78 @@
-$bg-0: #121212;
-
-// Dark theme needs a bigger contrast compared to the white theme.
-$bg-1: lighten($bg-0, 5%);
-$bg-2: lighten($bg-1, 10%);
-
-$text-0: lighten($bg-0, 87%);
-$text-1: lighten($bg-0, 60%);
-$text-2: lighten($bg-0, 40%);
-
+/* sass/theme/dark.scss */
 :root.dark {
-  --text-0: #{$text-0};
-  --text-1: #{$text-1};
-  --text-2: #{$text-2};
+  /* -------------------------------------------------------------------------- */
+  /* 1. NEW THEME VARIABLES (Dark Mode)                                         */
+  /* -------------------------------------------------------------------------- */
+  --background: #0c0c1d;
+  --foreground: #eceff4;
+  --card: #1e1e3f;
+  --card-foreground: #eceff4;
+  --popover: #1e1e3f;
+  --popover-foreground: #eceff4;
+  --primary: #3b82f6;
+  --primary-foreground: #eceff4;
+  --highlight: #22d3ee;
+  --secondary: #1e1e3f;
+  --secondary-foreground: #eceff4;
+  --muted: #151530;
+  --muted-foreground: #8085a6;
+  --accent: #ff00c8;
+  --accent-foreground: #0c0c1d;
+  --destructive: #ff3d00;
+  --destructive-foreground: #ffffff;
+  --border: #2e2e5e;
+  --input: #2e2e5e;
+  --ring: #3b82f6;
 
-  --bg-0: #{$bg-0};
-  --bg-1: #{$bg-1};
-  --bg-2: #{$bg-2};
+  --chart-1: #3b82f6;
+  --chart-2: #9000ff;
+  --chart-3: #00e5ff;
+  --chart-4: #00ffcc;
+  --chart-5: #ffe600;
 
-  --border-color: var(--bg-2);
+  --sidebar: #0c0c1d;
+  --sidebar-foreground: #eceff4;
+  --sidebar-primary: #ff00c8;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #00ffcc;
+  --sidebar-accent-foreground: #0c0c1d;
+  --sidebar-border: #2e2e5e;
+  --sidebar-ring: #ff00c8;
 
-  --primary-color: #ef5350;
-  --hover-color: white;
+  --shadow-x: 0px;
+  --shadow-y: 4px;
+  --shadow-blur: 8px;
+  --shadow-spread: -2px;
+  --shadow-opacity: 0.1;
+  --shadow-color: 0 0% 0%;
 
+  /* -------------------------------------------------------------------------- */
+  /* 2. TRANSLATION LAYER (Legacy Mapping)                                      */
+  /* -------------------------------------------------------------------------- */
+
+  /* Backgrounds */
+  --bg-0: var(--background);
+  --bg-1: var(--card);
+  /* Maps to card background in dark mode */
+  --bg-2: var(--muted);
+  /* Maps to slightly lighter/different shade */
+
+  /* Text */
+  --text-0: var(--foreground);
+  --text-1: var(--muted-foreground);
+  --text-2: var(--sidebar-foreground);
+  /* Usually slightly dimmed */
+
+  /* Accents */
+  --primary-color: var(--primary);
+  --hover-color: var(--primary-foreground);
+  --border-color: var(--border);
+
+  /* Special Terminal Colors & Effects */
   --icon-filter: invert(1);
 
-  .social > img, .search-button > img {
+  .social>img,
+  .search-button>img {
     filter: invert(1);
   }
 }
