@@ -1,78 +1,91 @@
 /* sass/theme/dark.scss */
 :root.dark {
   /* -------------------------------------------------------------------------- */
-  /* 1. NEW THEME VARIABLES (Dark Mode)                                         */
+  /* MATERIAL DESIGN DARK THEME (Refined)                                       */
+  /* https://m2.material.io/design/color/dark-theme.html                        */
   /* -------------------------------------------------------------------------- */
-  --background: #0c0c1d;
-  --foreground: #eceff4;
-  --card: #1e1e3f;
-  --card-foreground: #eceff4;
-  --popover: #1e1e3f;
-  --popover-foreground: #eceff4;
-  --primary: #3b82f6;
-  --primary-foreground: #eceff4;
-  --highlight: #22d3ee;
-  --secondary: #1e1e3f;
-  --secondary-foreground: #eceff4;
-  --muted: #151530;
-  --muted-foreground: #8085a6;
-  --accent: #ff00c8;
-  --accent-foreground: #0c0c1d;
-  --destructive: #ff3d00;
-  --destructive-foreground: #ffffff;
-  --border: #2e2e5e;
-  --input: #2e2e5e;
-  --ring: #3b82f6;
+  --grid-color: rgba(255, 255, 255, 0.07);
+  /* Subtle white dots */
+  /* 1. SURFACES */
+  /* Material recommends #121212 as the baseline background */
+  --background: #121212;
 
-  --chart-1: #3b82f6;
-  --chart-2: #9000ff;
-  --chart-3: #00e5ff;
-  --chart-4: #00ffcc;
-  --chart-5: #ffe600;
+  /* Cards/Surfaces are lighter shades of grey, not blue. */
+  /* Elevation 1dp: #1d1d1d | Elevation 2dp: #222222 */
+  --card: #1e1e1e;
+  --card-foreground: rgba(255, 255, 255, 0.87);
+  /* High Emphasis Text */
 
-  --sidebar: #0c0c1d;
-  --sidebar-foreground: #eceff4;
-  --sidebar-primary: #ff00c8;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #00ffcc;
-  --sidebar-accent-foreground: #0c0c1d;
-  --sidebar-border: #2e2e5e;
-  --sidebar-ring: #ff00c8;
+  /* 2. ACCENTS (Desaturated for Dark Mode) */
+  /* Primary: Blue 200 (was #3b82f6) */
+  --primary: #03dac6;
+  --primary-variant: #90caf9;
+  --primary-foreground: #000000;
+  /* Dark text on light primary is required */
 
-  --shadow-x: 0px;
-  --shadow-y: 4px;
-  --shadow-blur: 8px;
-  --shadow-spread: -2px;
-  --shadow-opacity: 0.1;
-  --shadow-color: 0 0% 0%;
+  /* Highlight/Secondary: Cyan 200 (was #22d3ee) */
+  --highlight: #80deea;
 
-  /* -------------------------------------------------------------------------- */
-  /* 2. TRANSLATION LAYER (Legacy Mapping)                                      */
-  /* -------------------------------------------------------------------------- */
+  /* Error: Material Dark Error (was #ff3d00) */
+  --destructive: #cf6679;
+  --destructive-foreground: #000000;
 
-  /* Backgrounds */
+  /* 3. UI ELEMENTS */
+  /* Borders should be subtle: 12% White */
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.12);
+
+  /* Text Levels */
+  --foreground: rgba(255, 255, 255, 0.87);
+  /* High Emphasis */
+  --muted-foreground: rgba(255, 255, 255, 0.60);
+  /* Medium Emphasis */
+  --sidebar-foreground: rgba(255, 255, 255, 0.60);
+
+  /* 4. COMPONENT MAPPINGS */
+  --secondary: #2d2d2d;
+  /* Slightly raised surface */
+  --secondary-foreground: rgba(255, 255, 255, 0.87);
+
+  --muted: #2d2d2d;
+  --popover: #1e1e1e;
+  --popover-foreground: rgba(255, 255, 255, 0.87);
+
+  --ring: #90caf9;
+  /* Focus ring matches primary */
+
+  /* 5. CHARTS (Pastel variants) */
+  --chart-1: #90caf9;
+  /* Blue */
+  --chart-2: #52dcee;
+  /* Green */
+  --chart-3: #ef9a9a;
+  /* Red */
+  --chart-4: #80deea;
+  /* Cyan */
+  --chart-5: #fff59d;
+  /* Yellow */
+
+  /* Sidebar */
+  --sidebar: #121212;
+  --sidebar-primary: #90caf9;
+  --sidebar-accent: #80deea;
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+
+  /* Shadows */
+  --shadow-color: 0deg 0% 0%;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+
+  /* Legacy Maps */
   --bg-0: var(--background);
   --bg-1: var(--card);
-  /* Maps to card background in dark mode */
-  --bg-2: var(--muted);
-  /* Maps to slightly lighter/different shade */
-
-  /* Text */
+  --bg-2: var(--secondary);
   --text-0: var(--foreground);
   --text-1: var(--muted-foreground);
-  --text-2: var(--sidebar-foreground);
-  /* Usually slightly dimmed */
-
-  /* Accents */
+  --text-2: rgba(255, 255, 255, 0.38);
+  /* Disabled/Hint text */
   --primary-color: var(--primary);
   --hover-color: var(--primary-foreground);
   --border-color: var(--border);
-
-  /* Special Terminal Colors & Effects */
   --icon-filter: invert(1);
-
-  .social>img,
-  .search-button>img {
-    filter: invert(1);
-  }
 }

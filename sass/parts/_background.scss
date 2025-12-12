@@ -1,0 +1,100 @@
+/* sass/parts/_background.scss */
+
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    /* Place behind everything */
+    overflow: hidden;
+    pointer-events: none;
+    /* Let clicks pass through */
+    background: var(--background);
+    /* Base color */
+}
+
+/* --- Layer 1: The Neon Orbs --- */
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    /* The "Distance" effect */
+    opacity: 0.15;
+    /* Subtle - increase to 0.3 for more intensity */
+    animation: float 20s ease-in-out infinite;
+    mix-blend-mode: screen;
+    /* Makes colors glow when they overlap */
+}
+
+.orb-1 {
+    /* Primary Blue Orb (Top Left) */
+    width: 50vw;
+    height: 50vw;
+    background: var(--primary);
+    top: -20%;
+    left: -10%;
+}
+
+.orb-2 {
+    /* Accent Pink/Purple Orb (Bottom Right) */
+    width: 40vw;
+    height: 40vw;
+    background: var(--accent);
+    bottom: -10%;
+    right: -5%;
+    animation-delay: -5s;
+    /* Offset animation */
+}
+
+.orb-3 {
+    /* Highlight Cyan Orb (Center-ish) */
+    width: 30vw;
+    height: 30vw;
+    background: var(--highlight);
+    top: 40%;
+    left: 30%;
+    opacity: 0.1;
+    /* Fainter */
+    animation-duration: 35s;
+    /* Slower */
+}
+
+/* --- Layer 2: The Tech Grid --- */
+.grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* Create a 40px x 40px grid pattern */
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+
+    /* Fade the grid out towards the bottom so it doesn't look like a jail cell */
+    mask-image: linear-gradient(to bottom, black 40%, transparent 90%);
+    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 90%);
+}
+
+/* Animation: Slow Floating */
+@keyframes float {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}

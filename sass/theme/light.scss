@@ -1,5 +1,7 @@
 /* sass/theme/light.scss */
 :root.light {
+  --grid-color: rgba(0, 0, 0, 0.07);
+  /* Subtle black dots */
   /* Ensure variables match the default :root in main.scss */
   --background: #f8f9fa;
   --foreground: #0c0c1d;

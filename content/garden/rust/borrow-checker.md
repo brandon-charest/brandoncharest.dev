@@ -11,7 +11,7 @@ tags = ["rust", "memory-safety"]
 status = "building"
 +++
 
-# > rustc --explain E0382
+# -> rustc --explain E0382
 
 The Borrow Checker is the hardest part of the Rust learning curve. It forces you to think about **Ownership** and **Lifetimes** at compile time.
 
@@ -27,16 +27,13 @@ This was my first major hurdle when building the CPU struct.
 I tried to pass `cpu` to a function, then use it again.
 
 ```rust
+use highlighter::highlight;
+let code = "...";
+highlight(code);
+```
+
+```rust
 fn main() {
-    let cpu = CPU::new();
-    
-    // This MOVES ownership of 'cpu' to run_cycle
-    run_cycle(cpu); 
-
-    // Error: Borrow of moved value: `cpu`
-    println!("Register A: {}", cpu.register_a); 
+    println!("Hello, World!");
 }
-
-fn run_cycle(cpu: CPU) {
-    // cpu dies here when function ends
-}
+```

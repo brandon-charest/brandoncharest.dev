@@ -9,14 +9,14 @@ $icon-size: 1.3rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: 0.25em; // Match your other nav items' margin
+  margin-left: 0.25em;
 
   img {
     border: none;
   }
 
   .search-icon {
-    width: 16px; // Match your theme button size
+    width: 16px; 
     height: 16px;
   }
 
@@ -107,7 +107,7 @@ $icon-size: 1.3rem;
       max-height: 50vh;
       overflow-y: auto;
 
-      > div {
+      >div {
         padding: 0.75rem 1rem;
         cursor: pointer;
 

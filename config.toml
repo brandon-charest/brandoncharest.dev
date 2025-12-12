@@ -1,6 +1,6 @@
 base_url = "https://brandoncharest.dev"
 theme = "apollo"
-title = "Name Dev"
+title = "brandoncharest.dev"
 description = "Senior Backend Engineer constantly learning and building new things."
 taxonomies = [{ name = "tags" }]
 compile_sass = true
@@ -9,11 +9,11 @@ build_search_index = true
 
 [extra]
 theme = "auto"
-fancy_code = true
+fancy_code = false
 
 menu = [
     { name = "Garden", url = "/garden", weight = 1 },
-    { name = "Blog", url = "/posts", weight = 2 },
+    #   { name = "Blog", url = "/posts", weight = 2 },
     { name = "About", url = "/about", weight = 3 },
 ]
 
@@ -28,4 +28,6 @@ enabled = false
 
 
 [markdown]
+
 highlight_code = true
+highlight_theme = "material-dark"

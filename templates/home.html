@@ -2,39 +2,76 @@
 
 {% block main_content %}
 <div class="body">
-    <div class="terminal-intro">
-        {{ section.content | safe }}
-    </div>
 
-    <hr class="terminal-separator" />
+    <div class="terminal-window">
+        
+        <div class="window-bar">
+            <div class="window-controls">
+                <span class="control close"></span>
+                <span class="control minimize"></span>
+                <span class="control maximize"></span>
+            </div>
+            <span class="window-title">TERMINAL - Welcome</span>
+        </div>
 
-    <ul class="card-grid">
-        {% set garden = get_section(path="garden/_index.md") %}
+        <div class="window-content">
+            
+            <div class="cmd-line">
+                <span class="cmd-prompt">&gt;</span>
+                <span class="cmd">cat</span>
+                <span class="args">welcome.txt</span>
+            </div>
 
-        {% for page in garden.pages | slice(end=6) %}
-        <li>
-            <a href="{{ page.permalink }}" class="card-link">
-                <div class="card-header">
-                    <h3>{{ page.title }}</h3>
-                    <span class="card-header-meta">
-                        ::REV {{ page.updated | default(value=page.date) | date(format="%Y-%m-%d") }}
-                    </span>
-                </div>
-                
-                <div class="card-meta">
-                    {{ page.description | default(value="No description provided.") | truncate(length=120) }}
-                </div>
+            <div class="terminal-intro">
+                {{ section.content | safe }}
+            </div>
 
-                {% if page.taxonomies.tags %}
-                <div class="card-footer-tags">
-                    {% for tag in page.taxonomies.tags | slice(end=3) %}
-                        <span class="tech-tag">#{{ tag }}</span>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
+            <div class="cmd-line" style="margin-top: 2rem;">
+                <span class="cmd-prompt">&gt;</span>
+                <span class="cmd">ls</span>
+                <span class="args">-la ./buffers</span>
+            </div>
+
+            <div class="terminal-comment">
+                # Current research notes and active build logs:
+            </div>
+
+<ul class="card-grid">
+                {% set garden = get_section(path="garden/_index.md") %}
+                {% for page in garden.pages | slice(end=6) %}
+                <li>
+                    <div class="card-link file-card">
+                        
+                        <a href="{{ page.permalink }}" class="card-overlay" aria-label="Read {{ page.title }}"></a>
+
+                        <div class="card-header">
+                            <h3>{{ page.title }}</h3>
+                        </div>
+                        
+                        <div class="card-meta">
+                            {{ page.description | default(value="No description provided.") | truncate(length=120) }}
+                        </div>
+
+                        {% if page.taxonomies.tags %}
+                        <div class="card-tags">
+                            {% for tag in page.taxonomies.tags | slice(end=3) %}
+                                <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="mini-tag">#{{ tag }}</a>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="card-footer action-footer">
+                            <span class="action-btn">[ ACCESS_BUFFER ]</span>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            
+            <div class="cmd-line" style="margin-top: 2rem;">
+                 <span class="cmd-prompt">&gt;</span>
+                 <span class="cursor">_</span>
+            </div>
+
+        </div> </div> </div>
 {% endblock main_content %}

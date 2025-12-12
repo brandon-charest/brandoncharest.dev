@@ -1,26 +1,24 @@
 /* sass/parts/_terminal.scss */
 
-/* --- 1. The Terminal Header (Command Prompt) --- */
 .terminal-container {
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-    padding-left: 0.5rem;
+    margin: 1rem 0 0 0;
+    padding: 0 1rem;
+    background: transparent;
+    border: none;
 }
 
 .terminal-hero {
-    background: transparent;
-    border: none;
-    padding: 0;
     font-family: var(--mono-text-font);
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+    opacity: 0.8;
 }
 
 .terminal-line {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem;
+    gap: 0.5rem;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
 }
 
 .prompt-user {
@@ -28,98 +26,169 @@
     font-weight: bold;
 }
 
-
 .prompt-char {
-    color: #8b949e;
+    color: var(--text-2);
 }
 
-.prompt-path,
-.prompt-machine {
+.prompt-path {
     color: var(--highlight);
     font-weight: bold;
 }
 
-
 .prompt-sign {
-    color: #c9d1d9;
+    color: var(--text-2);
 }
 
 .command-text {
     color: var(--text-0);
     font-weight: bold;
-    letter-spacing: 0.5px;
+}
+
+.info-tag {
+    color: var(--primary);
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+    margin-right: 0.5rem;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
 }
 
 .cursor {
     display: inline-block;
     width: 0.6em;
     height: 1.2em;
-    background-color: #8b949e;
+    background-color: var(--text-2);
     vertical-align: sub;
+    animation: blink 1s step-end infinite;
 }
 
 .terminal-output {
     display: flex;
     flex-direction: column;
-    gap: 0px;
     margin-top: 0.2rem;
-    font-size: 0.95rem;
-    color: #8b949e;
     padding-left: 1rem;
-    line-height: 1.2;
+    font-size: 0.85rem;
+    font-family: var(--mono-text-font);
 
-    strong,
-    b,
-    .highlight {
-        /* This makes "Senior Backend Engineer" pop out */
-        color: var(--highlight);
-        font-weight: 700;
+    .dim {
+        color: var(--text-2);
+    }
+}
+
+.terminal-window {
+    margin-top: 2rem;
+    background-color: #2d2d2d;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.5),
+        0 0 120px -20px rgba(144, 202, 249, 0.15);
+}
+
+.window-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0.6rem 1rem;
+    background-color: var(--card);
+    border-bottom: 1px solid var(--border);
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    left: 1rem;
+}
+
+.control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    &.close {
+        background-color: #ff5f56;
     }
 
-    /* Keep links inside the intro Blue to show they are clickable */
-    a {
+    &.minimize {
+        background-color: #ffbd2e;
+    }
+
+    &.maximize {
+        background-color: #27c93f;
+    }
+}
+
+.window-title {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--text-2);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+.window-content {
+    padding: 2rem;
+
+    @media (max-width: 600px) {
+        padding: 1rem;
+    }
+}
+
+.cmd-line {
+    font-family: var(--mono-text-font);
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    line-height: 1.5;
+
+    .cmd-prompt {
+        color: var(--text-2);
+    }
+
+    .cmd {
         color: var(--primary);
-        border-bottom: 1px dashed var(--primary);
+        font-weight: bold;
+    }
+
+    .args {
+        color: var(--foreground);
     }
 }
-
-.terminal-output .success {
-    color: #3fb950;
-    /* Green */
-    font-weight: bold;
-    text-shadow: 0 0 5px rgba(63, 185, 80, 0.4);
-    /* Subtle glow */
-}
-
 
 .terminal-intro {
-    font-size: 1.1rem;
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
     line-height: 1.7;
-    margin-bottom: 1rem;
-    max-width: 800px;
-    font-family: var(--text-font);
+    color: var(--foreground);
+    margin: 1rem 0 2rem 0;
+    max-width: 100%;
 
-    .tech {
-        color: var(--accent);
-    }
-
-    h1 {
-        font-size: 1.5rem;
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-        font-family: var(--mono-text-font);
-    }
+    padding-right: 10%;
 
     strong {
-        color: var(--primary);
+        color: var(--highlight);
+        font-weight: 600;
     }
 }
 
-
-.terminal-separator {
-    border: 0;
-    border-bottom: 1px dashed var(--border-color);
-    background: none;
-    margin: 2.5rem 0;
-    opacity: 0.6;
+.terminal-comment {
+    font-family: var(--mono-text-font);
+    color: var(--text-2);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    padding-left: 0.2rem;
+    opacity: 0.8;
 }

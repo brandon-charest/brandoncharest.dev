@@ -1,0 +1,86 @@
+/* sass/parts/_filelist.scss */
+
+.file-list-container {
+    overflow-x: auto;
+    margin-top: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.file-list {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+    white-space: nowrap;
+
+    th {
+        text-align: left;
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-2);
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+
+    td {
+        padding: 0.6rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: var(--text-1);
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    .file-row:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        .name a {
+            color: var(--highlight);
+            text-decoration: underline;
+        }
+    }
+
+    /* Column Specifics */
+    .perms {
+        color: var(--primary);
+        opacity: 0.8;
+    }
+
+    .size {
+        color: var(--text-2);
+        text-align: right;
+        width: 80px;
+    }
+
+    .date {
+        color: var(--text-2);
+        width: 140px;
+    }
+
+    .name {
+        width: 100%;
+        font-weight: bold;
+
+        a {
+            color: var(--foreground);
+            text-decoration: none;
+            transition: color 0.1s;
+        }
+    }
+
+    /* ".." Parent Directory styling */
+    .parent-dir .name a {
+        color: var(--primary);
+        font-style: italic;
+    }
+
+    /* Badges inside list */
+    .badge-seedling {
+        font-size: 0.7em;
+        color: var(--destructive);
+        margin-left: 8px;
+        vertical-align: middle;
+    }
+}

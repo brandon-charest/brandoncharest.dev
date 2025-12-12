@@ -6,6 +6,8 @@
 {% include "partials/header.html" %}
 
 <body>
+<div class="ambient-shape shape-1"></div>
+    <div class="ambient-shape shape-2"></div>
     <div class="left-content">
         {% block left_content %}
         {% endblock left_content %}
@@ -64,20 +66,19 @@
         position: fixed;
         bottom: 0; left: 0; right: 0;
         height: 28px;
-        background: #0d1117;
+        background: var(--background);
         border-top: 1px solid #30363d;
         display: flex;
         align-items: center;
         padding: 0 1rem;
         font-family: 'JetBrains Mono', monospace;
         font-size: 0.75rem;
-        color: #8b949e;
         z-index: 100;
     }
     .status-item { margin-right: 1.5rem; display: flex; gap: 0.5rem; }
     .status-item.right { margin-left: auto; margin-right: 0; }
-    .status-label { font-weight: bold; color: #484f58; }
-    .status-value { color: #58a6ff; }
+    .status-label { font-weight: bold; color: var(--muted-foreground); }
+    .status-value { color: var(--chart-2); }
 </style>
 
 <script>
