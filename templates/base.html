@@ -1,0 +1,93 @@
+{% import "macros/macros.html" as post_macros %}
+
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+{% include "partials/header.html" %}
+
+<body>
+<div class="ambient-shape shape-1"></div>
+    <div class="ambient-shape shape-2"></div>
+    <div class="left-content">
+        {% block left_content %}
+        {% endblock left_content %}
+    </div>
+
+    <div class="content">
+        {% include "partials/nav.html" %}
+
+        <div class="terminal-container">
+            {% include "partials/terminal_header.html" %}
+        </div>
+        {# Post page is the default #}
+        {% block main_content %}
+        Nothing here?!
+        {% endblock main_content %}
+
+        {% if page.extra.comment is defined %}
+        {% set show_comment = page.extra.comment %}
+        {% else %}
+        {% set show_comment = false %}
+        {% endif %}
+
+        {% if show_comment %}
+        <div class="giscus">
+        </div>
+        {% include "_giscus_script.html" %}
+        {% endif %}
+    </div>
+
+    <div class="right-content">
+        {% block right_content %}
+        {% endblock right_content %}
+    </div>
+</body>
+<footer class="system-status">
+    <div class="status-item">
+        <span class="status-label">MODE:</span>
+        <span class="status-value">READ_ONLY</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">LOC:</span>
+        <span class="status-value">Boston, MA</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">UPTIME:</span>
+        <span class="status-value" id="uptime">00:00:00</span>
+    </div>
+    <div class="status-item right">
+        <span class="status-label">GIT::</span>
+        <span class="status-value">MAIN</span>
+    </div>
+</footer>
+
+<style>
+    .system-status {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        height: 28px;
+        background: var(--background);
+        border-top: 1px solid #30363d;
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        z-index: 100;
+    }
+    .status-item { margin-right: 1.5rem; display: flex; gap: 0.5rem; }
+    .status-item.right { margin-left: auto; margin-right: 0; }
+    .status-label { font-weight: bold; color: var(--muted-foreground); }
+    .status-value { color: var(--chart-2); }
+</style>
+
+<script>
+    // Simple Uptime Counter
+    let seconds = 0;
+    setInterval(() => {
+        seconds++;
+        const date = new Date(seconds * 1000);
+        document.getElementById('uptime').innerText = date.toISOString().substr(11, 8);
+    }, 1000);
+</script>
+</html>

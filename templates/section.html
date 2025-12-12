@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<div class="body">
+    <div class="terminal-window">
+        <div class="window-bar">
+            <div class="window-controls">
+                <span class="control close"></span>
+                <span class="control minimize"></span>
+                <span class="control maximize"></span>
+            </div>
+            <span class="window-title">{{ section.path | trim_start_matches(pat="/") }}</span>
+        </div>
+
+        <div class="window-content">
+            
+            <div class="cmd-line">
+                <span class="cmd-prompt">&gt;</span>
+                <span class="cmd">cat</span>
+                <span class="args">README.md</span>
+            </div>
+            
+            <div class="terminal-intro">
+                {{ section.content | safe }}
+            </div>
+
+            <div class="cmd-line" style="margin-top: 2rem; margin-bottom: 1rem;">
+                <span class="cmd-prompt">&gt;</span>
+                <span class="cmd">ls</span>
+                <span class="args">-lh --sort=date</span>
+            </div>
+
+            <div class="file-list-container">
+                <table class="file-list">
+                    <thead>
+                        <tr>
+                            <th>PERMISSIONS</th>
+                            <th>SIZE</th>
+                            <th>DATE</th>
+                            <th>NAME</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="parent-dir">
+                            <td class="perms">drwxr-xr-x</td>
+                            <td class="size">-</td>
+                            <td class="date">-</td>
+                            <td class="name"><a href="../">.. (Parent Directory)</a></td>
+                        </tr>
+
+                        {% for page in section.pages %}
+                        <tr class="file-row">
+                            <td class="perms">-rw-r--r--</td>
+                            <td class="size">{{ page.content | length }}b</td>
+                            <td class="date">{{ page.date | date(format="%b %d %H:%M") }}</td>
+                            <td class="name">
+                                <a href="{{ page.permalink }}">{{ page.title }}</a>
+                                {% if page.extra.status == "seedling" %}
+                                    <span class="badge-seedling">[WIP]</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cmd-line" style="margin-top: 2rem; opacity: 0.5;">
+                 <span class="cmd-prompt">&gt;</span>
+                 <span class="cursor">_</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock main_content %}

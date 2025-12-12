@@ -1,0 +1,33 @@
+base_url = "https://brandoncharest.dev"
+theme = "apollo"
+title = "brandoncharest.dev"
+description = "Senior Backend Engineer constantly learning and building new things."
+taxonomies = [{ name = "tags" }]
+compile_sass = true
+minify_html = true
+build_search_index = true
+
+[extra]
+theme = "auto"
+fancy_code = false
+
+menu = [
+    { name = "Garden", url = "/garden", weight = 1 },
+    #   { name = "Blog", url = "/posts", weight = 2 },
+    { name = "About", url = "/about", weight = 3 },
+]
+
+socials = [
+    { name = "GitHub", url = "https://github.com/brandon-charest", icon = "github" },
+    { name = "LinkedIn", url = "https://www.linkedin.com/in/brandon-charest/", icon = "linkedin" },
+]
+
+
+[extra.analytics]
+enabled = false
+
+
+[markdown]
+
+highlight_code = true
+highlight_theme = "material-dark"
