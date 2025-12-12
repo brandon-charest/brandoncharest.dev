@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<div class="body">
+    <div class="terminal-window">
+        <div class="window-bar">
+            <div class="window-controls">
+                <span class="control close"></span>
+                <span class="control minimize"></span>
+                <span class="control maximize"></span>
+            </div>
+            <span class="window-title">FILE SYSTEM - /garden</span>
+        </div>
+
+        <div class="window-content">
+            
+            <div class="cmd-line" style="margin-bottom: 2rem;">
+                <span class="cmd-prompt">&gt;</span>
+                <span class="cmd">tree</span>
+                <span class="args">-L 1 ./garden</span>
+            </div>
+
+<ul class="card-grid">
+                
+                {# --- FOLDERS --- #}
+                {% for path in section.subsections %}
+                    {% set subsection = get_section(path=path) %}
+                    <li>
+                        <div class="card-link folder-card">
+                            <a href="{{ subsection.permalink }}" class="card-overlay" aria-label="Open {{ subsection.title }}"></a>
+                            
+                            <div class="card-header">
+                                <h3>📂 {{ subsection.title }}</h3>
+                                <span class="card-type">DIR</span>
+                            </div>
+                            <div class="card-meta">
+                                {{ subsection.description | default(value="Directory container.") }}
+                            </div>
+                            <div class="card-footer">
+                                <span class="status-label">CONTENTS:</span>
+                                <span class="status-value">{{ subsection.pages | length }} {% if subsection.pages | length == 1 %}NODE{% else %}NODES{% endif %}</span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+
+                {# --- FILES --- #}
+                {% for page in section.pages %}
+                <li>
+                    <div class="card-link file-card">
+                        <a href="{{ page.permalink }}" class="card-overlay" aria-label="Read {{ page.title }}"></a>
+
+                        <div class="card-header">
+                            <h3>📄 {{ page.title }}</h3>
+                        </div>
+                        <div class="card-meta">
+                            {{ page.description | default(value="No description.") | truncate(length=100) }}
+                        </div>
+
+                        {% if page.taxonomies.tags %}
+                        <div class="card-tags">
+                            {% for tag in page.taxonomies.tags | slice(end=3) %}
+                                <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="mini-tag">#{{ tag }}</a>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="card-footer action-footer">
+                            <span class="action-btn">[ ACCESS_BUFFER ]</span>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div class="cmd-line" style="margin-top: 3rem; opacity: 0.5;">
+                 <span class="cmd-prompt">&gt;</span>
+                 <span class="cursor">_</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock main_content %}

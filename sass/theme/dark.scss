@@ -1,0 +1,91 @@
+/* sass/theme/dark.scss */
+:root.dark {
+  /* -------------------------------------------------------------------------- */
+  /* MATERIAL DESIGN DARK THEME (Refined)                                       */
+  /* https://m2.material.io/design/color/dark-theme.html                        */
+  /* -------------------------------------------------------------------------- */
+  --grid-color: rgba(255, 255, 255, 0.07);
+  /* Subtle white dots */
+  /* 1. SURFACES */
+  /* Material recommends #121212 as the baseline background */
+  --background: #121212;
+
+  /* Cards/Surfaces are lighter shades of grey, not blue. */
+  /* Elevation 1dp: #1d1d1d | Elevation 2dp: #222222 */
+  --card: #1e1e1e;
+  --card-foreground: rgba(255, 255, 255, 0.87);
+  /* High Emphasis Text */
+
+  /* 2. ACCENTS (Desaturated for Dark Mode) */
+  /* Primary: Blue 200 (was #3b82f6) */
+  --primary: #03dac6;
+  --primary-variant: #90caf9;
+  --primary-foreground: #000000;
+  /* Dark text on light primary is required */
+
+  /* Highlight/Secondary: Cyan 200 (was #22d3ee) */
+  --highlight: #80deea;
+
+  /* Error: Material Dark Error (was #ff3d00) */
+  --destructive: #cf6679;
+  --destructive-foreground: #000000;
+
+  /* 3. UI ELEMENTS */
+  /* Borders should be subtle: 12% White */
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.12);
+
+  /* Text Levels */
+  --foreground: rgba(255, 255, 255, 0.87);
+  /* High Emphasis */
+  --muted-foreground: rgba(255, 255, 255, 0.60);
+  /* Medium Emphasis */
+  --sidebar-foreground: rgba(255, 255, 255, 0.60);
+
+  /* 4. COMPONENT MAPPINGS */
+  --secondary: #2d2d2d;
+  /* Slightly raised surface */
+  --secondary-foreground: rgba(255, 255, 255, 0.87);
+
+  --muted: #2d2d2d;
+  --popover: #1e1e1e;
+  --popover-foreground: rgba(255, 255, 255, 0.87);
+
+  --ring: #90caf9;
+  /* Focus ring matches primary */
+
+  /* 5. CHARTS (Pastel variants) */
+  --chart-1: #90caf9;
+  /* Blue */
+  --chart-2: #52dcee;
+  /* Green */
+  --chart-3: #ef9a9a;
+  /* Red */
+  --chart-4: #80deea;
+  /* Cyan */
+  --chart-5: #fff59d;
+  /* Yellow */
+
+  /* Sidebar */
+  --sidebar: #121212;
+  --sidebar-primary: #90caf9;
+  --sidebar-accent: #80deea;
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+
+  /* Shadows */
+  --shadow-color: 0deg 0% 0%;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+
+  /* Legacy Maps */
+  --bg-0: var(--background);
+  --bg-1: var(--card);
+  --bg-2: var(--secondary);
+  --text-0: var(--foreground);
+  --text-1: var(--muted-foreground);
+  --text-2: rgba(255, 255, 255, 0.38);
+  /* Disabled/Hint text */
+  --primary-color: var(--primary);
+  --hover-color: var(--primary-foreground);
+  --border-color: var(--border);
+  --icon-filter: invert(1);
+}

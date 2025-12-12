@@ -1,0 +1,33 @@
+/* sass/theme/light.scss */
+:root.light {
+  --grid-color: rgba(0, 0, 0, 0.07);
+  /* Subtle black dots */
+  /* Ensure variables match the default :root in main.scss */
+  --background: #f8f9fa;
+  --foreground: #0c0c1d;
+  --card: #ffffff;
+  --card-foreground: #0c0c1d;
+  --primary: #ff00c8;
+  --primary-foreground: #ffffff;
+  --secondary: #f0f0ff;
+  --secondary-foreground: #0c0c1d;
+  --muted: #f0f0ff;
+  --muted-foreground: #0c0c1d;
+  --border: #dfe6e9;
+
+  /* Legacy Mapping */
+  --bg-0: var(--background);
+  --bg-1: var(--secondary);
+  --bg-2: var(--muted);
+
+  --text-0: var(--foreground);
+  --text-1: var(--muted-foreground);
+  --text-2: #4a4a4a;
+  /* Manually set a mid-grey if sidebar-foreground is too dark */
+
+  --primary-color: var(--primary);
+  --hover-color: var(--primary-foreground);
+  --border-color: var(--border);
+
+  --icon-filter: none;
+}

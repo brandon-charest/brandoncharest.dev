@@ -1,0 +1,200 @@
+.primary-color {
+  color: var(--primary);
+}
+
+.highlight-color {
+  color: var(--highlight);
+}
+
+::-moz-selection {
+  background: var(--highlight);
+  color: var(--background);
+}
+
+::selection {
+  background: var(--highlight);
+  color: var(--background);
+}
+
+
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--border);
+  margin: 2rem auto;
+  opacity: 0.5;
+}
+
+blockquote {
+  border-left: 3px solid var(--primary);
+  background: var(--bg-1);
+  color: var(--text-1);
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  font-style: italic;
+  border-radius: 0 6px 6px 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover>code {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+main {
+  a {
+    border-bottom: 1px solid var(--primary);
+
+    &:hover {
+      background-color: rgba(59, 130, 246, 0.1);
+      color: var(--primary);
+    }
+  }
+
+  .meta a,
+  .talks-grid a,
+  .cards a,
+  .card-link,
+  h1 a,
+  h2 a,
+  h3 a,
+  h4 a,
+  h5 a,
+  h6 a {
+    border-bottom: none;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .zola-anchor {
+    border-bottom: none;
+    color: var(--text-2);
+    margin-left: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  h1:hover .zola-anchor,
+  h2:hover .zola-anchor,
+  h3:hover .zola-anchor {
+    opacity: 1;
+  }
+}
+
+time {
+  color: var(--text-2);
+  font-family: var(--mono-text-font);
+  font-size: 0.85rem;
+}
+
+.post-list,
+.tag-list {
+  >ul {
+    margin: 0;
+    padding: 1rem 0 0 0;
+  }
+
+  .list-item {
+    margin-bottom: 0.5rem;
+    list-style-type: none;
+  }
+
+  .post-header {
+    display: grid;
+    align-items: center;
+
+    @media all and (max-width: 640px) {
+      grid-template-rows: auto 1fr;
+    }
+
+    @media all and (min-width: 640px) {
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+    }
+
+    @media only screen and (max-width: 640px) {
+      margin: 1.6rem 0px;
+    }
+
+    h1 {
+      margin: 0;
+      font-weight: normal;
+      font-family: var(--header-font);
+
+      a {
+        border-bottom: none;
+      }
+    }
+
+    time {
+      font-family: var(--mono-text-font);
+      text-align: left;
+
+      margin: 0;
+    }
+  }
+
+}
+
+del {
+  text-decoration-color: var(--primary-color);
+  text-decoration-thickness: 3px;
+}
+
+.MathJax_Display,
+.MJXc-display,
+.MathJax_SVG_Display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem 0;
+}
+
+.ambient-shape {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+/* Top Right */
+.shape-1 {
+  top: -150px;
+  right: -100px;
+  background: var(--primary);
+  animation: float 20s ease-in-out infinite;
+}
+
+/* Bottom Left */
+.shape-2 {
+  bottom: -150px;
+  left: -100px;
+  background: var(--highlight);
+  opacity: 0.1;
+  animation: float 25s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(20px, 30px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}

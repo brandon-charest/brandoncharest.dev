@@ -1,0 +1,107 @@
+{# templates/partials/terminal_header.html #}
+
+{% set my_path = "" %}
+
+{% if page and page.path %}
+    {% set my_path = page.path %}
+{% elif section and section.path %}
+    {% set my_path = section.path %}
+{% elif current_path %}
+    {% set my_path = current_path %}
+{% else %}
+    {% set my_path = "404" %}
+{% endif %}
+
+{# --- COMMAND LOGIC --- #}
+{# Default (Homepage) #}
+{% set cmd = "./init_sequence.sh" %}
+{% set path_display = "~" %}
+
+{% if my_path != "404" %}
+
+    {# Garden Root (/garden) #}
+{% if my_path is starting_with("/garden") %}
+        
+        {# A. Garden Root (/garden/) #}
+        {# Matches the 'tree' command shown in garden.html #}
+        {% if my_path == "/garden/" %}
+            {% set cmd = "tree -L 1 ~/garden" %}
+            {% set path_display = "~" %}
+        
+        {# B. Garden Sub-folder (/garden/rust/) #}
+        {# Matches the 'ls' command shown in section.html #}
+        {% elif section %}
+            {% set cmd = "ls -lh " ~ my_path | trim_end_matches(pat="/") %}
+            {% set path_display = "~" ~ my_path | trim_end_matches(pat="/") | split(pat="/") | slice(start=0, end=-1) | join(sep="/") %}
+
+        {# C. Garden File (/garden/rust/borrow-checker/) #}
+        {# Matches the 'open' or 'vim' command shown in page.html #}
+        {% elif page %}
+            {% set cmd = "vim ." ~ my_path %}
+            {# Path display shows the folder we are currently in #}
+            {% set path_display = "~" ~ my_path | split(pat="/") | slice(start=0, end=-2) | join(sep="/") %}
+        {% endif %}
+{# 3. BLOG POSTS #}
+    {% elif my_path is starting_with("/posts") %}
+        {% if page %}
+            {% set cmd = "cat ." ~ my_path %}
+            {% set path_display = "~/posts" %}
+        {% else %}
+            {% set cmd = "tail -f /var/log/posts.log" %}
+            {% set path_display = "~/var/log" %}
+        {% endif %}
+        
+    {# 4. PROJECTS #}
+    {% elif my_path is starting_with("/projects") %}
+        {% set cmd = "cargo build --release" %}
+        {% set path_display = "~/src/projects" %}
+
+    {# 5. TALKS #}
+    {% elif my_path is starting_with("/talks") %}
+        {% set cmd = "./slideshow_presenter.exe" %}
+        {% set path_display = "~/mnt/media" %}
+
+    {# 6. ABOUT #}
+    {% elif my_path is starting_with("/about") %}
+        {% set cmd = "whoami" %}
+        {% set path_display = "~" %}
+
+    {# 7. TAGS #}
+    {% elif my_path is starting_with("/tags") %}
+        {% set cmd = "grep -r 'tag_query' ." %}
+        {% set path_display = "~/tags" %}
+        
+    {% endif %}
+
+{% else %}
+    {# 404 State #}
+    {% set cmd = "ERROR: SIGNAL_LOST" %}
+    {% set path_display = "/void" %}
+{% endif %}
+
+<div class="terminal-hero" >
+    <div class="terminal-line">
+        <span class="prompt-user">visitor@dev</span>
+        <span class="prompt-char">:</span>
+        <span class="prompt-path">{{ path_display }}</span>
+        <span class="prompt-sign">$</span>
+        <span class="command-text">{{ cmd }}</span>
+        
+
+    </div>
+    
+    {% if my_path == "/" %}
+<div class="terminal-output">
+        <div>
+            <span class="dim">&gt; </span> 
+            <span class="info-tag">[INFO]</span>
+            <span class="dim">KERNEL_PANIC_AVOIDED...</span>
+        </div>
+        <div>
+            <span class="dim">&gt; </span>
+            <span class="info-tag">[INFO]</span>
+            <span class="dim" style="color: var(--highlight);">SYSTEMS_ONLINE</span>
+        </div>
+    </div>
+    {% endif %}
+</div>

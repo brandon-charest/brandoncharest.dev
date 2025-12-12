@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<div class="body">
+
+    <div class="terminal-window">
+        
+        <div class="window-bar">
+            <div class="window-controls">
+                <span class="control close"></span>
+                <span class="control minimize"></span>
+                <span class="control maximize"></span>
+            </div>
+            <span class="window-title">{{ page.path | trim_start_matches(pat="/") }}</span>
+        </div>
+
+        <div class="window-content">
+            
+            <div class="cmd-line" style="margin-bottom: 3rem; opacity: 0.3;">
+                <span class="cmd-prompt">&gt;</span>
+                <span class="cmd">cat</span>
+                <span class="args">./{{ page.slug }}.md</span>
+            </div>
+
+            <article class="terminal-article">
+                
+                <header class="article-header">
+                    <h1 class="article-title">{{ page.title }}</h1>
+                    
+                    <div class="article-meta">
+                        {% if page.date %}
+                        <span class="meta-item">
+                            <span class="label">DATE:</span> {{ page.date | date(format="%Y-%m-%d") }}
+                        </span>
+                        {% endif %}
+                        
+                        <span class="meta-item">
+                            <span class="label">STATUS:</span> 
+                            <span class="{{ page.extra.status | default(value='seedling') }}">
+                                {{ page.extra.status | default(value="SEEDLING") | upper }}
+                            </span>
+                        </span>
+
+                        <span class="meta-item">
+                            <span class="label">SIZE:</span> {{ page.content | length }}b
+                        </span>
+                    </div>
+                </header>
+                
+
+
+                <div class="article-body">
+                    {{ page.content | safe }}
+                </div>
+            </article>
+
+            {% if page.taxonomies.tags %}
+            <div class="file-footer">
+                <span class="label">TAGS::</span>
+                <div class="tags-container">
+                {% for tag in page.taxonomies.tags %}
+                    <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="tech-tag">#{{ tag }}</a>
+                {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="cmd-line" style="margin-top: 4rem; opacity: 0.5;">
+                 <span class="cmd-prompt">&gt;</span>
+                 <span class="cursor">_</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock main_content %}
