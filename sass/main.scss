@@ -17,7 +17,7 @@
 @import "parts/_footer.scss";
 @import "parts/_page.scss";
 @import "parts/_filelist.scss";
-// Import Themes (Ensure these exist and are imported if you separate them)
+
 @import "theme/light.scss";
 @import "theme/dark.scss";
 
@@ -105,10 +105,7 @@
 
   --bg-0: var(--background);
   --bg-1: var(--secondary);
-  /* Maps to lighter grey/white */
   --bg-2: var(--muted);
-  /* Maps to muted element bg */
-
   --text-0: var(--foreground);
   --text-1: var(--muted-foreground);
   --text-2: var(--sidebar-foreground);
@@ -119,7 +116,6 @@
 
   --icon-filter: none;
 
-  /* Font mapping */
   --header-font: var(--font-mono);
   --text-font: var(--font-sans);
   --mono-text-font: var(--font-mono);
@@ -164,41 +160,28 @@ html {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    /* CRITICAL: Allows you to click links underneath */
-
-    /* Move to top so it dithers the Ambient Shapes too */
     z-index: 9999;
-
     background:
-      /* Layer 1: The Vignette (Darker edges) */
       radial-gradient(circle at 50% 30%,
         transparent 0%,
         transparent 20%,
         rgba(0, 0, 0, 0.2) 50%,
         var(--background) 100%),
-      /* Layer 2: The Noise */
       url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
 
     background-size: 100% 100%, 200px 200px;
-
-    /* Optional: Mix-blend-mode can help the noise blend better with dark colors */
     mix-blend-mode: overlay;
     opacity: 0.8;
-    /* Adjust if the vignette is too dark */
   }
 }
 
 body {
   display: flex;
-
-  /* FIX 1: Default to Column (Vertical Stack) for Mobile/Tablet */
   flex-direction: column;
   align-items: center;
-  /* Center content horizontally on small screens */
 
   flex-grow: 1;
   padding: 1rem;
-  /* Slightly more padding for the "Frame" */
   margin: 0;
   background-image: none;
 
@@ -211,13 +194,8 @@ body {
     width: 100%;
     height: 100%;
     z-index: 9999;
-    /* Top level */
     pointer-events: none;
-    /* Click-through */
     opacity: 0.05;
-    /* Subtle texture */
-
-    /* The Noise Pattern */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: 200px 200px;
   }
@@ -227,7 +205,6 @@ body {
     justify-content: center;
     align-items: flex-start;
     padding: 0.9rem;
-    /* Reset padding for desktop grid */
   }
 
   .content {
@@ -267,6 +244,37 @@ body {
   }
 
 
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.5rem 1rem;
+  z-index: 9999;
+  font-weight: bold;
+  border-radius: 0 0 4px 4px;
+  transition: top 0.2s ease-in-out;
+  text-decoration: none;
+
+  &:focus {
+    top: 0;
+    outline: 2px solid var(--highlight);
+  }
+}
+
+
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 40px;
+
+  @media (min-width: 992px) {
+    flex-direction: row;
+  }
 }
 
 /* SCSS Variables (Mapped to CSS Vars for usage in other files) */
