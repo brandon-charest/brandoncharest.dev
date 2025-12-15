@@ -1,7 +1,7 @@
 +++
 title = "Day 1: Secret Entrance"
 date = 2025-12-05
-description = "2025_Day_01"
+description = "Deciphering the Elfs Safe Combination"
 [taxonomies]
 tags = ["aoc", "rust"]
 [extra]
