@@ -16,15 +16,17 @@
 
         <div class="window-content">
             
-            <div class="cmd-line">
+            <div class="cmd-line" style="opacity: 0.3;">
                 <span class="cmd-prompt">&gt;</span>
                 <span class="cmd">cat</span>
                 <span class="args">welcome.txt</span>
             </div>
-
-            <div class="terminal-intro">
-                {{ section.content | safe }}
+            <div class="terminal-comment" >
+                <div class="terminal-intro">
+                    {{ section.content | safe }}
+                </div>
             </div>
+
 
             <div class="cmd-line" style="margin-top: 2rem;">
                 <span class="cmd-prompt">&gt;</span>
@@ -34,9 +36,9 @@
 
             <div class="terminal-comment">
                 # Current research notes and active build logs:
-            </div>
+            
 
-<ul class="card-grid">
+            <ul class="card-grid">
                 {% set garden = get_section(path="garden/_index.md") %}
                 {% for page in garden.pages | slice(end=6) %}
                 <li>
@@ -67,11 +69,14 @@
                 </li>
                 {% endfor %}
             </ul>
+            </div>
             
             <div class="cmd-line" style="margin-top: 2rem;">
                  <span class="cmd-prompt">&gt;</span>
                  <span class="cursor">_</span>
             </div>
 
-        </div> </div> </div>
+        </div> 
+    </div> 
+</div>
 {% endblock main_content %}

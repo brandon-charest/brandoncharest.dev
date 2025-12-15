@@ -52,11 +52,13 @@
                         <tr class="file-row">
                             <td class="perms">-rw-r--r--</td>
                             <td class="size">{{ page.content | length }}b</td>
-                            <td class="date">{{ page.date | date(format="%b %d %H:%M") }}</td>
+                            <td class="date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
                             <td class="name">
                                 <a href="{{ page.permalink }}">{{ page.title }}</a>
-                                {% if page.extra.status == "seedling" %}
-                                    <span class="badge-seedling">[WIP]</span>
+                                {% if page.extra %}
+                                    {% if page.extra.status == "seedling" %}
+                                        <span class="badge-seedling">[WIP]</span>
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         </tr>

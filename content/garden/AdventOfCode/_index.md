@@ -8,6 +8,8 @@ transparent = true
 
 # > ./run_christmas_protocol.sh --language=random
 
+Its one of my favorite times of the year, time for a new AoC.
+
 Every December, I participate in **Advent of Code**—a series of Christmas-themed logic puzzles that get progressively harder to solve.
 
 ## The Objective

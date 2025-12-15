@@ -53,14 +53,39 @@
                     {{ page.content | safe }}
                 </div>
             </article>
+            <div class="backlinks-container">
+                <div class="terminal-comment">
+                    <span class="log-entry">> EXEC: SCANNING_LOCAL_NETWORK...</span>
+                    
+                    {% if page.backlinks | length > 0 %}
+                        <span class="log-entry log-success">> [SUCCESS]: {{ page.backlinks | length }} REFERENCE(S) FOUND. ESTABLISHING LINK...</span>
+                    {% else %}
+                        <span class="log-entry">> [INFO]: NO_INCOMING_SIGNALS_DETECTED.</span>
+                    {% endif %}
+                </div>
+
+                {% if page.backlinks %}
+                <ul class="backlinks-grid">
+                    {% for link in page.backlinks %}
+                    <li>
+                        <a href="{{ link.permalink }}" class="signal-card">
+                            <span class="signal-path">./{{ link.permalink | trim_end_matches(pat="/") | split(pat="/") | last }}.md</span>
+                            <span class="signal-title">{{ link.title }}</span>
+                            <span class="signal-arrow">&lt;- CONNECTED</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
 
             {% if page.taxonomies.tags %}
             <div class="file-footer">
-                <span class="label">TAGS::</span>
                 <div class="tags-container">
-                {% for tag in page.taxonomies.tags %}
-                    <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="tech-tag">#{{ tag }}</a>
-                {% endfor %}
+                    <span class="label">INDEX_KEYS::</span>
+                    {% for tag in page.taxonomies.tags %}
+                        <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="tech-tag">#{{ tag }}</a>
+                    {% endfor %}
                 </div>
             </div>
             {% endif %}
