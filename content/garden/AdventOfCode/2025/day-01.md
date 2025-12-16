@@ -1,12 +1,13 @@
 +++
 title = "Day 1: Secret Entrance"
-date = 2025-12-05
+date = "2025-12-16T18:59:36.008Z"
 description = "Deciphering the Elfs Safe Combination"
 [taxonomies]
-tags = ["aoc", "rust"]
+    tags = [ "aoc", "rust" ]
 [extra]
-status = "seedling"
+    status = "seedling"
 +++
+
 
 # Lets save Christmas! (again!)
 
@@ -90,7 +91,7 @@ impl Dial {
     }
 }
 ```
-By returning 1 or 0 directly from the rotate function, we can simplify our main loop to just sum the results:
+By returning 1 or 0 directly from the rotate function, we can  simplify our main loop to just sum the results:
 ```rust
 // The main loop becomes very clean
 for line in input.lines() {
@@ -100,3 +101,31 @@ for line in input.lines() {
 ```
 
 ## Part 02
+
+Part 2 gives us a new challenge now instead of counting each time we land on 0, we also need to include every time the dial passes over 0. There is probably a more elegant way to handle this, but my logic was to just simply walk through all the instructions provided and keep count of each time we land on 0.
+
+```rust
+fn simulate_rotation(&mut self, instr: &Instruction) -> i32 {
+    let mut hits = 0;
+    for _ in 0..instr.amount {
+        match instr.direction {
+            Direction::Left => self.position -= 1,
+            Direction::Right => self.position += 1,
+        };
+        // we normalize after each move
+        // 99 -> 100 = 0
+        // 0 -> -1 = 99
+        self.position = self.position.rem_euclid(100);
+
+        if self.position == 0 {
+            hits += 1;
+        }
+    }
+    hits
+}
+```
+| Iteration | Start Pos | Action | Raw Value | Wrap (0-99) | Hit 0?  |
+| :-------- | :-------- | :----- | :-------- | :---------- | :------ |
+| 1         | 98        | + 1    | 99        | 99          | No      |
+| 2         | 99        | + 1    | 100       | **0**       | **YES** |
+| 3         | 0         | + 1    | 1         | 1           | No      |
