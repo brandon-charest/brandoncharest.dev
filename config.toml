@@ -11,9 +11,16 @@ generate_robots_txt = true
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 
+
+[markdown]
+highlight_code = true
+highlight_theme = "material-dark"
+
 [extra]
 theme = "auto"
 fancy_code = false
+mathjax = true
+mathjax_dollar_inline_enable = true
 
 menu = [
     { name = "Garden", url = "/garden", weight = 1 },
@@ -29,9 +36,3 @@ socials = [
 
 [extra.analytics]
 enabled = false
-
-
-[markdown]
-
-highlight_code = true
-highlight_theme = "material-dark"
