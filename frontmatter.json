@@ -4,62 +4,49 @@
     {
       "name": "default",
       "pageBundle": false,
+      "previewPath": null,
       "fields": [
         {
-          "title": "title",
+          "title": "Title",
           "name": "title",
           "type": "string"
         },
         {
-          "title": "description",
+          "title": "Description",
           "name": "description",
           "type": "string"
         },
         {
-          "title": "sort_by",
-          "name": "sort_by",
-          "type": "string"
-        },
-        {
-          "title": "template",
-          "name": "template",
-          "type": "string"
-        },
-        {
-          "title": "transparent",
-          "name": "transparent",
-          "type": "boolean"
-        },
-        {
-          "title": "date",
+          "title": "Publishing date",
           "name": "date",
-          "type": "datetime"
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true
         },
         {
-          "title": "taxonomies",
-          "name": "taxonomies",
-          "type": "fields",
-          "fields": [
-            {
-              "title": "tags",
-              "name": "tags",
-              "type": "tags"
-            }
-          ]
+          "title": "Content preview",
+          "name": "preview",
+          "type": "image"
         },
         {
-          "title": "extra",
-          "name": "extra",
-          "type": "fields",
-          "fields": [
-            {
-              "title": "status",
-              "name": "status",
-              "type": "string"
-            }
-          ]
+          "title": "Is in draft",
+          "name": "draft",
+          "type": "draft"
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Categories",
+          "name": "categories",
+          "type": "categories"
         }
       ]
     }
-  ]
+  ],
+  "frontMatter.framework.id": "hugo",
+  "frontMatter.content.publicFolder": "static",
+  "frontMatter.preview.host": "http://localhost:1313"
 }
