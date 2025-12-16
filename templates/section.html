@@ -56,8 +56,11 @@
                             <td class="name">
                                 <a href="{{ page.permalink }}">{{ page.title }}</a>
                                 {% if page.extra %}
-                                    {% if page.extra.status == "seedling" %}
-                                        <span class="badge-seedling">[WIP]</span>
+                                    {% if page.extra.status %}
+
+                                        {% if page.extra.status == "seedling" %}
+                                            <span class="badge-seedling">[WIP]</span>
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                             </td>
