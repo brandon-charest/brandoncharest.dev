@@ -39,4 +39,4 @@ enabled = true
 
 [extra.analytics.umami]
 website_id = "cd20f040-8743-4a28-b120-2ed87e006b56"
-host_url = "https://brandoncharest.dev"
+
