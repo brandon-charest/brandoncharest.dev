@@ -122,13 +122,12 @@ code {
 }
 
 pre {
-  background-color: var(--bg-primary) !important;
-  border-radius: 5px;
-  border: 1px solid var(--border-color);
-  line-height: 1.4;
+  background: #1e1e1e !important; 
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.5rem;
   overflow-x: auto;
-  padding: 1em;
-  position: relative;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5); 
 
   mark {
     background-color: var(--highlight-color) !important;
@@ -136,12 +135,11 @@ pre {
   }
 
   code {
-    background-color: transparent !important;
-    color: var(--text-color);
-    font-size: 100%;
+    background: transparent !important;
+    border: none !important;
     padding: 0;
-    border: none;
-    font-family: var(--code-font);
+    color: inherit;
+    font-size: 0.9em;
 
     table {
       margin: 0;

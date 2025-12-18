@@ -1,7 +1,7 @@
 /* sass/parts/_page.scss */
 
 .terminal-article {
-    max-width: 70ch;
+    max-width: 1000px;
     margin: 0 auto;
     width: 100%;
 }
@@ -9,6 +9,8 @@
 .article-header {
     border-bottom: 1px dashed var(--border);
     padding-bottom: 1.5rem;
+    text-align: center;
+    margin: 0 auto 1.5rem auto;
 
     h1 {
         font-family: var(--font-sans);
@@ -26,6 +28,7 @@
         display: flex;
         gap: 1rem;
         align-items: center;
+        justify-content: center;
 
         .meta-separator {
             opacity: 0.3;
@@ -47,11 +50,11 @@
 
 .article-body {
     font-family: var(--font-serif);
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     line-height: 1.8;
     color: #e6edf3;
-    max-width: 70ch;
-    margin: 0 auto;
+    max-width: none;
+    margin: 0;
 
     strong {
         color: var(--highlight);
@@ -68,34 +71,33 @@
     }
 
     h1 {
-        font-family: var(--mono-text-font);
-        color: var(--highlight);
-        font-size: 1.3rem;
-        background: rgba(0, 0, 0, 0.2);
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        border-left: 3px solid var(--primary);
+        font-family: var(--font-sans);
+        color: var(--primary);
+        font-size: 2.2rem;
+        text-align: center;
         margin-top: 3rem;
         margin-bottom: 1.5rem;
-        display: inline-block;
+        font-weight: 800; 
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        scroll-margin-top: 4rem; 
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 0.5rem;
+        display: block;
         width: 100%;
-        box-sizing: border-box;
-
-        scroll-margin-top: 4rem;
     }
 
     h2 {
         font-family: var(--font-sans);
         color: var(--foreground);
-        font-size: 1.6rem;
-        margin-top: 3rem;
-        margin-bottom: 1.2rem;
+        font-size: 1.8rem;
+        margin-top: 3.5rem;
+        margin-bottom: 1.5rem;
         font-weight: 700;
         position: relative;
         padding-left: 1rem;
         border-bottom: 1px solid var(--border);
         padding-bottom: 0.5rem;
-
         scroll-margin-top: 4rem;
 
         &::before {
@@ -104,7 +106,7 @@
             left: 0;
             top: 10%;
             bottom: 10%;
-            width: 3px;
+            width: 4px;
             background: var(--primary);
             border-radius: 2px;
         }
@@ -112,10 +114,9 @@
 
     h3 {
         color: var(--primary);
-        font-size: 1.3rem;
-        margin-top: 2rem;
+        font-size: 1.4rem;
+        margin-top: 2.5rem;
         font-weight: 600;
-
         scroll-margin-top: 4rem;
     }
 
@@ -152,7 +153,7 @@
         background: rgba(255, 255, 255, 0.03);
         color: var(--text-1);
         padding: 1rem 1.5rem;
-        margin: 2rem 0;
+        margin: 2rem auto;
         border-radius: 0 6px 6px 0;
     }
 
@@ -166,7 +167,7 @@
     :not(pre)>code {
         font-family: var(--mono-text-font);
         color: var(--highlight);
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 0.1em 0.4em;
         border-radius: 4px;
@@ -174,9 +175,13 @@
     }
 }
 
+.content-footer {
+    max-width: 1000px;
+    margin: 0 auto;
+}
 
 .backlinks-container {
-    margin-top: 4rem;
+    margin-top: 5rem;
     padding-top: 2rem;
     border-top: 1px dashed var(--border);
 }
@@ -250,10 +255,10 @@
     display: block;
     margin-bottom: 0.3rem;
     font-size: 0.85rem;
-    color: var(--text-2); /* Default dim log color */
+    color: var(--text-2);
 }
 
 .log-success {
-    color: var(--primary); /* Green/Cyan for success messages */
+    color: var(--primary);
     text-shadow: 0 0 5px rgba(0, 255, 204, 0.2);
 }

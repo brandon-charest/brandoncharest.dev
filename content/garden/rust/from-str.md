@@ -9,8 +9,6 @@ type = "reference"
 status = "stable"
 +++
 
-# The FromStr Trait
-
 Link to: https://doc.rust-lang.org/std/str/trait.FromStr.html
 
 Context: "...implement the FromStr trait..."

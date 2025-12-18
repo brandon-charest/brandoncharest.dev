@@ -4,31 +4,12 @@
 <div class="body">
 
     <div class="terminal-window">
-        
-        <div class="window-bar">
-            <div class="window-controls">
-                <span class="control close"></span>
-                <span class="control minimize"></span>
-                <span class="control maximize"></span>
-            </div>
-            <span class="window-title">root@dev: ~</span>
-        </div>
-
+         {{ ui::window_bar(title="root@dev: ~") }}
         <div class="window-content">
-            {{ ui::cmd(cmd="neofetch", margin_top="0", margin_bottom="1.5rem", opacity=1) }}
-            
-            {# 2. Display the component #}
             {% include "partials/neofetch.html" %}
-
-
-
             <!-- RECENT ACTIVITY -->
             <div class="buffer-list-container">
-                <div class="cmd-line" style="margin-bottom: 1rem;">
-                    <span class="cmd-prompt">&gt;</span>
-                    <span class="cmd">ls</span>
-                    <span class="args">-la ./active_buffers</span>
-                </div>
+                 {{ ui::cmd(cmd="ls", args="-la ./active_buffers", margin_top="0", margin_bottom="1.5rem", opacity=1) }}
 
                 <div class="terminal-comment">
                     # Latest notes:

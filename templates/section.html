@@ -18,33 +18,13 @@
     {% endif %}
 
     <div class="terminal-window">
-        <div class="window-bar">
-            <div class="window-controls">
-                <span class="control close"></span>
-                <span class="control minimize"></span>
-                <span class="control maximize"></span>
-            </div>
-            <span class="window-title">{{ section.path | trim_start_matches(pat="/") }}</span>
-        </div>
+        {{ ui::window_bar(resource=section) }}
 
         <div class="window-content">
-            
-            <div class="cmd-line">
-                <span class="cmd-prompt">&gt;</span>
-                <span class="cmd">cat</span>
-                <span class="args">README.md</span>
-            </div>
             
             <div class="terminal-intro">
                 {{ section.content | safe }}
             </div>
-
-            <div class="cmd-line" style="margin-top: 2rem; margin-bottom: 1rem;">
-                <span class="cmd-prompt">&gt;</span>
-                <span class="cmd">ls</span>
-                <span class="args">-lh --sort=date</span>
-            </div>
-
             <div class="file-list-container">
                 <table class="file-list">
                     <thead>

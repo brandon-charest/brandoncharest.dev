@@ -26,8 +26,6 @@
         {{ ui::window_bar(path=page.components) }}
 
         <div class="window-content">
-            {{ ui::cmd(args="./" ~ page.slug ~ ".md", margin_top="0", opacity=0.3) }}
-
             {# RESTORED: Simple centered article layout #}
             <article class="terminal-article">
                 {{ meta::header(page=page) }}

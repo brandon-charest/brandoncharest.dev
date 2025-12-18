@@ -1,15 +1,86 @@
-table {
-  border-spacing: 0;
-  border-collapse: collapse;
+/* sass/parts/_table.scss */
+
+/* Target tables specifically within article content */
+.article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-family: var(--mono-text-font);
+    font-size: 0.85rem;
+    border: 1px solid var(--border);
+    background-color: rgba(0, 0, 0, 0.1); /* Slight dim background */
+    
+    /* Rounded corners for the table wrapper effect */
+    border-radius: 4px;
+    overflow: hidden; 
+    display: table; /* Fixes radius on table */
 }
 
-table th {
-  padding: 6px 13px;
-  border: 1px solid #dfe2e5;
-  font-size: large;
+.article-body thead {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border);
 }
 
-table td {
-  padding: 6px 13px;
-  border: 1px solid #dfe2e5;
+.article-body th {
+    text-align: left;
+    padding: 1rem;
+    color: var(--primary); /* Header text color */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-right: 1px dashed var(--border);
+    
+    &:last-child {
+        border-right: none;
+    }
+}
+
+.article-body tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background-color 0.1s ease;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.03);
+    }
+}
+
+.article-body td {
+    padding: 0.8rem 1rem;
+    color: var(--text-1);
+    vertical-align: top;
+    line-height: 1.5;
+    border-right: 1px dashed rgba(255, 255, 255, 0.1);
+
+    &:last-child {
+        border-right: none;
+    }
+
+    /* Make strong text inside tables pop */
+    strong {
+        color: var(--highlight);
+    }
+
+    /* Style code blocks inside tables */
+    code {
+        background: rgba(0, 0, 0, 0.2) !important;
+        color: var(--text-2) !important;
+        border: 1px solid var(--border);
+    }
+}
+
+/* Mobile Scroll Wrapper - auto-applied by Zola if configured, 
+   but we can also force horizontal scroll on the table itself if needed */
+.article-body table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    
+    @media (min-width: 768px) {
+        display: table;
+        white-space: normal;
+    }
 }

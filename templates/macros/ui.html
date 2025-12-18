@@ -1,6 +1,11 @@
 {# 1. THE MAIN WINDOW BAR COMPONENT #}
-{# Usage: {{ ui::window_bar(title="My Title") }} OR {{ ui::window_bar(path=page.components) }} #}
-{% macro window_bar(title="", path=false) %}
+{# Usage: 
+   For Pages:    {{ ui::window_bar(resource=page) }} 
+   For Sections: {{ ui::window_bar(resource=section) }}
+   Custom Path:  {{ ui::window_bar(path=some_list) }}
+   Static Title: {{ ui::window_bar(title="My Title") }} 
+#}
+{% macro window_bar(resource=false, path=false, title="") %}
 <div class="window-bar">
     <div class="window-controls">
         <span class="control close"></span>
@@ -9,8 +14,17 @@
     </div>
     
     <div class="window-title-container">
-        {% if path %}
-            {# RENDER INTERACTIVE BREADCRUMBS #}
+        {% if resource %}
+            {# RENDER FROM RESOURCE (Page or Section) #}
+            <span class="terminal-path">
+                <a href="/" class="path-segment root">~</a>
+                {% for part in resource.components %}
+                    <span class="path-sep">/</span>
+                    <a href="/{{ resource.components | slice(end=loop.index) | join(sep="/") }}" class="path-segment">{{ part }}</a>
+                {% endfor %}
+            </span>
+        {% elif path %}
+            {# RENDER FROM PATH LIST #}
             <span class="terminal-path">
                 <a href="/" class="path-segment root">~</a>
                 {% for part in path %}

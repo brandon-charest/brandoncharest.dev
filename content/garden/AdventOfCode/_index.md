@@ -6,7 +6,7 @@ template = "section.html"
 transparent = true
 +++
 
-# > ./run_christmas_protocol.sh --language=random
+# Advent of Code
 
 Its one of my favorite times of the year, time for a new AoC.
 

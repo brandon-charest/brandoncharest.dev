@@ -31,7 +31,7 @@
         {# B. Garden Sub-folder (/garden/rust/) #}
         {# Matches the 'ls' command shown in section.html #}
         {% elif section %}
-            {% set cmd = "ls -lh " ~ my_path | trim_end_matches(pat="/") %}
+            {% set cmd = "ls -lh --sort=date " ~ my_path | trim_end_matches(pat="/")  %}
             {% set path_display = "~" ~ my_path | trim_end_matches(pat="/") | split(pat="/") | slice(start=0, end=-1) | join(sep="/") %}
 
         {# C. Garden File (/garden/rust/borrow-checker/) #}

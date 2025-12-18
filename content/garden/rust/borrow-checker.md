@@ -1,7 +1,7 @@
 +++
 title = "Fighting the Borrow Checker"
-date = 2025-12-06
-description = "Common patterns where the borrow checker yells at me, and how to satisfy it."
+date = "2025-12-06"
+descripion = "Common patterns where the borrow checker yells at me, and how to satisfy it."
 
 [taxonomies]
 tags = ["rust", "memory-safety"]
@@ -10,8 +10,6 @@ tags = ["rust", "memory-safety"]
 # Status: 'building' makes the dot yellow (WIP)
 status = "building"
 +++
-
-# -> rustc --explain E0382
 
 The Borrow Checker is the hardest part of the Rust learning curve. It forces you to think about **Ownership** and **Lifetimes** at compile time.
 
