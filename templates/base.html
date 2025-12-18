@@ -1,4 +1,7 @@
 {% import "macros/macros.html" as post_macros %}
+{% import "macros/ui.html" as ui %}
+{% import "macros/meta.html" as meta %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,8 +60,7 @@
         {% block right_content %}
         {% endblock right_content %}
     </div>
-</body>
-<footer class="system-status">
+    <footer class="system-status">
     <div class="status-item">
         <span class="status-label">MODE:</span>
         <span class="status-value">READ_ONLY</span>
@@ -76,6 +78,8 @@
         <span class="status-value">MAIN</span>
     </div>
 </footer>
+</body>
+
 
 <script>
     // Simple Uptime Counter

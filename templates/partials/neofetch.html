@@ -1,0 +1,70 @@
+<div class="neofetch-container">
+
+    {# COLUMN 1: ART #}
+    <div class="neofetch-art">
+<pre class="ascii-art">
+      <span class="dim">)  (</span>
+     <span class="dim">(   ) )</span>
+      <span class="dim">) ( (</span>
+    <span class="primary">_______</span><span class="dim">)</span><span class="primary">_</span>
+ <span class="primary">.-'---------|</span>  
+<span class="primary">( C|</span><span class="highlight">/\/\/\/\/</span><span class="primary">|</span>
+ <span class="primary">'-.</span><span class="highlight">/\/\/\/\/</span><span class="primary">|</span>
+   <span class="primary">'_________'</span>
+    <span class="primary">'-------'</span>
+</pre>
+    </div>
+
+   {# COLUMN 2: SYSTEM STATS #}
+    <div class="neo-stats">
+        <div class="neo-header">
+            <span class="neo-user">brandon</span><span class="neo-at">@</span><span class="neo-host">dev</span>
+        </div>
+        <div class="neo-separator">----------------</div>
+
+        <div class="neo-row"><span class="neo-key">OS</span>: <span class="neo-val">Coffee v2.0</span></div>
+        <div class="neo-row"><span class="neo-key">Coffee Lvl</span>:  <span class="neo-val">████████░░ 80%</span></div>
+        <div class="neo-row"><span class="neo-key">Brain</span>: <span class="neo-val">SEG FAULT</span></div>
+        <div class="neo-row"><span class="neo-key">Uptime</span>:  <span class="neo-val">Too long</span></div>
+        <div class="neo-row"><span class="neo-key">Pkgs</span>: <span class="neo-val">{{ section.pages | length }} (posts)</span></div>
+        <div class="neo-row"><span class="neo-key">Shell</span>: <span class="neo-val">zsh 5.9</span></div>
+        
+        <div class="neo-palette">
+<span class="color-block c1"></span>
+            <span class="color-block c2"></span>
+            <span class="color-block c3"></span>
+            <span class="color-block c4"></span>
+            <span class="color-block c5"></span>
+            <span class="color-block c6"></span>
+        </div>
+    </div>
+
+    {# COLUMN 3: THE WELCOME INTRO #}
+    <div class="neo-intro">
+        <div class="intro-header">
+            README.md
+        </div>
+        <div class="intro-body">
+            Welcome! My name is <strong class="highlight">Brandon</strong>. I'm a <strong class="highlight">Senior Backend Engineer</strong> who got tired of Googling the same things over and over and forgetting where I originally found the answers.
+            <br><br>
+            This is where I try and document some of my learnings and potential solutions to the thing I break.
+        </div>
+        
+        <div class="intro-meta">
+            <span class="meta-tag">[ Current Interests: Low Level Systems ]</span>
+            <span class="meta-tag">[ Learning: RUST, GO ]</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const start = new Date();
+    setInterval(() => {
+        const now = new Date();
+        const diff = Math.floor((now - start) / 1000);
+        const mins = Math.floor(diff / 60);
+        const secs = diff % 60;
+        document.getElementById('neo-uptime').innerText = `${mins}m ${secs}s`;
+    }, 1000);
+</script>

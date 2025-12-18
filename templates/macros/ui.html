@@ -1,0 +1,41 @@
+{# 1. THE MAIN WINDOW BAR COMPONENT #}
+{# Usage: {{ ui::window_bar(title="My Title") }} OR {{ ui::window_bar(path=page.components) }} #}
+{% macro window_bar(title="", path=false) %}
+<div class="window-bar">
+    <div class="window-controls">
+        <span class="control close"></span>
+        <span class="control minimize"></span>
+        <span class="control maximize"></span>
+    </div>
+    
+    <div class="window-title-container">
+        {% if path %}
+            {# RENDER INTERACTIVE BREADCRUMBS #}
+            <span class="terminal-path">
+                <a href="/" class="path-segment root">~</a>
+                {% for part in path %}
+                    <span class="path-sep">/</span>
+                    <a href="/{{ path | slice(end=loop.index) | join(sep="/") }}" class="path-segment">{{ part }}</a>
+                {% endfor %}
+            </span>
+        {% else %}
+            {# RENDER STATIC TITLE #}
+            <span class="terminal-path">
+                <span class="path-segment root">{{ title }}</span>
+            </span>
+        {% endif %}
+    </div>
+</div>
+{% endmacro window_bar %}
+
+
+{# 2. COMMAND LINE (Helper) #}
+{# Added margin_bottom for layout flexibility #}
+{% macro cmd(cmd="cat", args="", prompt="&gt;", cursor=false, opacity=0.3, margin_top="0", margin_bottom="0") %}
+<div class="cmd-line" style="margin-top: {{margin_top}}; margin-bottom: {{margin_bottom}}; opacity: {{opacity}};">
+    <span class="cmd-prompt">{{ prompt | safe }}</span>
+    {% if cmd %}<span class="cmd">{{ cmd }}</span>{% endif %}
+    {% if args %}<span class="args">{{ args }}</span>{% endif %}
+    {% if cursor %}<span class="cursor">_</span>{% endif %}
+</div>
+{% endmacro cmd %}

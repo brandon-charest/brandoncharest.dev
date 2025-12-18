@@ -1,16 +1,50 @@
-/* Taxonomies for a post */
-.tags {
-  a::before {
-    content: "#";
-    display: inline;
-    white-space: nowrap !important;
-  }
+/* sass/parts/_tags.scss */
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: center;
+    width: 100%;
 }
 
-.authors {
-  a::before {
-    content: "@";
-    display: inline;
-    white-space: nowrap !important;
-  }
+/* The "INDEX_KEYS::" label */
+.label {
+    font-family: var(--mono-text-font);
+    font-size: 0.75rem;
+    color: var(--text-2);
+    margin-right: 0.5rem;
+    letter-spacing: 1px;
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+/* The actual tags (#rust, #k8s, etc.) */
+.tech-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-family: var(--mono-text-font);
+    font-size: 0.75rem;
+    text-decoration: none;
+    padding: 3px 10px;
+    
+    /* Default: Subtle Border & Text */
+    color: var(--primary); 
+    border: 1px solid var(--border); 
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+        /* Hover: Glow & Fill */
+        background-color: var(--primary);
+        color: var(--background); /* Contrast text against bright bg */
+        border-color: var(--primary);
+        box-shadow: 0 0 12px var(--primary); /* Neon Glow */
+        transform: translateY(-2px);
+        cursor: pointer;
+    }
 }

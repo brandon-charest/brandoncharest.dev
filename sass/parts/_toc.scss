@@ -1,41 +1,103 @@
-.toc {
-    @media only screen and (max-width: 1365px) {
-        display: none;
+/* sass/parts/_toc.scss */
+
+.toc-floating-widget {
+    display: none;
+
+    @media (min-width: 1450px) {
+        display: block;
+        position: fixed;
+        top: 150px;
+        right: 2rem;
+        width: 260px;
+        max-height: 70vh;
+        z-index: 50;
+        background: rgba(10, 10, 15, 0.4);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-left: 2px solid var(--primary);
+        border-radius: 0 8px 8px 0;
+        padding: 1rem;
+        transition: all 0.3s ease;
+        opacity: 0.4;
+        transform: translateX(10px);
+    }
+}
+
+.toc-floating-widget:hover {
+    opacity: 1;
+    transform: translateX(0);
+    background: rgba(10, 10, 15, 0.9);
+    border-color: var(--border);
+    box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.toc-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 0.5rem;
+
+    .toc-icon {
+        color: var(--primary);
+        font-weight: bold;
     }
 
-    li,
-    a {
-        font-family: sans-serif;
+    .toc-title {
+        font-family: var(--mono-text-font);
+        font-size: 0.75rem;
+        letter-spacing: 1px;
         color: var(--text-2);
-        transition: none;
-        border-bottom: none;
+        font-weight: bold;
+    }
+}
+
+.toc-tree {
+    font-family: var(--mono-text-font);
+    font-size: 0.8rem;
+    overflow-y: auto;
+    max-height: 60vh;
+    padding-right: 0.5rem;
+
+    &::-webkit-scrollbar {
+        width: 3px;
     }
 
-    a:hover {
-        color: var(--hover-color) !important;
-        transition: none;
+    &::-webkit-scrollbar-track {
+        background: transparent;
     }
 
-    .heading {
-        font-weight: 700;
+    &::-webkit-scrollbar-thumb {
+        background: var(--primary);
     }
 
     ul {
-        list-style-type: none;
-        padding-left: 1em;
-        margin-top: 0;
-        margin-bottom: 0;
+        list-style: none;
+        padding-left: 0.8rem;
+        margin: 0;
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
     }
-    & > ul {
+
+    &>ul {
+        border-left: none;
         padding-left: 0;
     }
 
-    li.selected,
-    li.selected > a {
-        color: var(--text-0);
+    li {
+        margin-bottom: 0.5rem;
     }
 
-    .parent > a {
-        color: var(--text-0);
+    a.toc-link {
+        display: block;
+        text-decoration: none;
+        color: var(--text-2);
+        transition: color 0.2s;
+        line-height: 1.4;
+
+        &:hover {
+            color: var(--highlight);
+            text-shadow: 0 0 8px var(--highlight);
+        }
     }
 }

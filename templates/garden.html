@@ -1,26 +1,18 @@
 {% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
 
 {% block main_content %}
 <div class="body">
     <div class="terminal-window">
-        <div class="window-bar">
-            <div class="window-controls">
-                <span class="control close"></span>
-                <span class="control minimize"></span>
-                <span class="control maximize"></span>
-            </div>
-            <span class="window-title">FILE SYSTEM - /garden</span>
-        </div>
+        {# 1. UNIFIED WINDOW BAR (Clickable Breadcrumbs) #}
+        {{ ui::window_bar(path=section.components) }}
 
         <div class="window-content">
             
-            <div class="cmd-line" style="margin-bottom: 2rem;">
-                <span class="cmd-prompt">&gt;</span>
-                <span class="cmd">tree</span>
-                <span class="args">-L 1 ./garden</span>
-            </div>
+            {# 2. UNIFIED COMMAND PROMPT (With spacing) #}
+            {{ ui::cmd(cmd="tree", args="-L 1 ./garden", margin_top="0", margin_bottom="2rem") }}
 
-<ul class="card-grid">
+            <ul class="card-grid">
                 
                 {# --- FOLDERS --- #}
                 {% for path in section.subsections %}
@@ -73,10 +65,7 @@
                 {% endfor %}
             </ul>
 
-            <div class="cmd-line" style="margin-top: 3rem; opacity: 0.5;">
-                 <span class="cmd-prompt">&gt;</span>
-                 <span class="cursor">_</span>
-            </div>
+            {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="3rem", opacity=0.5) }}
 
         </div>
     </div>

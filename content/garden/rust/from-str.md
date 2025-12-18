@@ -5,6 +5,7 @@ description = "How to parse strings into custom Structs idiomatically using the 
 [taxonomies]
 tags = ["rust", "traits", "parsing"]
 [extra]
+type = "reference"
 status = "stable"
 +++
 

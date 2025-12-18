@@ -1,7 +1,22 @@
 {% extends "base.html" %}
+{% import "macros/toc.html" as toc_macros %}
 
 {% block main_content %}
 <div class="body">
+
+    {# --- FLOATING TOC WIDGET --- #}
+    {% if section.toc %}
+    <aside class="toc-floating-widget">
+        <div class="toc-header">
+            <span class="toc-icon">Ξ</span>
+            <span class="toc-title">SECTOR_MAP</span>
+        </div>
+        <nav class="toc-tree">
+            {{ toc_macros::tree(toc=section.toc) }}
+        </nav>
+    </aside>
+    {% endif %}
+
     <div class="terminal-window">
         <div class="window-bar">
             <div class="window-controls">
@@ -57,7 +72,6 @@
                                 <a href="{{ page.permalink }}">{{ page.title }}</a>
                                 {% if page.extra %}
                                     {% if page.extra.status %}
-
                                         {% if page.extra.status == "seedling" %}
                                             <span class="badge-seedling">[WIP]</span>
                                         {% endif %}

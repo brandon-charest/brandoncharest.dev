@@ -1,0 +1,16 @@
+{# RECURSIVE TOC MACRO #}
+{# Usage: {{ toc_macros::tree(toc=page.toc) }} #}
+
+{% macro tree(toc) %}
+<ul>
+    {% for h in toc %}
+    <li>
+        <a href="{{ h.permalink | safe }}" class="toc-link">{{ h.title }}</a>
+        {% if h.children %}
+            {# Recursive call to self #}
+            {{ self::tree(toc=h.children) }}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro tree %}

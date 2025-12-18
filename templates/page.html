@@ -1,100 +1,48 @@
 {% extends "base.html" %}
+{% import "macros/toc.html" as toc_macros %}
+{% import "macros/ui.html" as ui %}
+{% import "macros/meta.html" as meta %}
+
 
 {% block main_content %}
 <div class="body">
+    
+    {# --- FLOATING TOC WIDGET (Only visible on wide screens) --- #}
+    {% if page.toc %}
+    <aside class="toc-floating-widget">
+        <div class="toc-header">
+            <span class="toc-icon">Ξ</span>
+            <span class="toc-title">DOCUMENT_MAP</span>
+        </div>
+        <nav class="toc-tree">
+            {{ toc_macros::tree(toc=page.toc) }}
+        </nav>
+        <div class="toc-progress-bar"></div>
+    </aside>
+    {% endif %}
 
     <div class="terminal-window">
         
-        <div class="window-bar">
-            <div class="window-controls">
-                <span class="control close"></span>
-                <span class="control minimize"></span>
-                <span class="control maximize"></span>
-            </div>
-            <span class="window-title">{{ page.path | trim_start_matches(pat="/") }}</span>
-        </div>
+        {{ ui::window_bar(path=page.components) }}
 
         <div class="window-content">
-            
-            <div class="cmd-line" style="margin-bottom: 3rem; opacity: 0.3;">
-                <span class="cmd-prompt">&gt;</span>
-                <span class="cmd">cat</span>
-                <span class="args">./{{ page.slug }}.md</span>
-            </div>
+            {{ ui::cmd(args="./" ~ page.slug ~ ".md", margin_top="0", opacity=0.3) }}
 
+            {# RESTORED: Simple centered article layout #}
             <article class="terminal-article">
+                {{ meta::header(page=page) }}
                 
-                <header class="article-header">
-                    <h1 class="article-title">{{ page.title }}</h1>
-                    
-                    <div class="article-meta">
-                        {% if page.date %}
-                        <span class="meta-item">
-                            <span class="label">DATE:</span> {{ page.date | date(format="%Y-%m-%d") }}
-                        </span>
-                        {% endif %}
-                        
-                        <span class="meta-item">
-                            <span class="label">STATUS:</span> 
-                            <span class="{{ page.extra.status | default(value='seedling') }}">
-                                {{ page.extra.status | default(value="SEEDLING") | upper }}
-                            </span>
-                        </span>
-
-                        <span class="meta-item">
-                            <span class="label">SIZE:</span> {{ page.content | length }}b
-                        </span>
-                    </div>
-                </header>
-                
-
-
                 <div class="article-body">
                     {{ page.content | safe }}
                 </div>
             </article>
-            <div class="backlinks-container">
-                <div class="terminal-comment">
-                    <span class="log-entry">> EXEC: SCANNING_LOCAL_NETWORK...</span>
-                    
-                    {% if page.backlinks | length > 0 %}
-                        <span class="log-entry log-success">> [SUCCESS]: {{ page.backlinks | length }} REFERENCE(S) FOUND. ESTABLISHING LINK...</span>
-                    {% else %}
-                        <span class="log-entry">> [INFO]: NO_INCOMING_SIGNALS_DETECTED.</span>
-                    {% endif %}
-                </div>
 
-                {% if page.backlinks %}
-                <ul class="backlinks-grid">
-                    {% for link in page.backlinks %}
-                    <li>
-                        <a href="{{ link.permalink }}" class="signal-card">
-                            <span class="signal-path">./{{ link.permalink | trim_end_matches(pat="/") | split(pat="/") | last }}.md</span>
-                            <span class="signal-title">{{ link.title }}</span>
-                            <span class="signal-arrow">&lt;- CONNECTED</span>
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
+            <div class="content-footer">
+                {% include "partials/backlinks.html" %}
+                {{ meta::tags(taxonomies=page.taxonomies) }}
             </div>
-
-            {% if page.taxonomies.tags %}
-            <div class="file-footer">
-                <div class="tags-container">
-                    <span class="label">INDEX_KEYS::</span>
-                    {% for tag in page.taxonomies.tags %}
-                        <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="tech-tag">#{{ tag }}</a>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
-            <div class="cmd-line" style="margin-top: 4rem; opacity: 0.5;">
-                 <span class="cmd-prompt">&gt;</span>
-                 <span class="cursor">_</span>
-            </div>
-
+            
+            {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="4rem", opacity=0.5) }}
         </div>
     </div>
 </div>

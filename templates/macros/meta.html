@@ -1,0 +1,56 @@
+{# INTELLIGENT PAGE HEADER #}
+{% macro header(page) %}
+    {% if page.extra.type is defined and page.extra.type == "reference" %}
+        
+        {# CLEAN MAN PAGE HEADER #}
+        <header class="article-header man-page-header">
+            <div class="man-top-row">
+                <span class="man-ref">{{ page.title | upper }}(1)</span>
+                <span class="man-date">{{ page.date | default(value="2025-01-01") | date(format="%Y-%m-%d") }}</span>
+            </div>
+            
+            <h1 class="man-title">{{ page.title }}</h1>
+            
+            <div class="man-subtitle">
+                <span class="label">PURPOSE:</span> 
+                {{ page.description | default(value="System reference documentation.") }}
+            </div>
+        </header>
+
+    {% else %}
+        
+        {# STANDARD BLOG HEADER #}
+        <header class="article-header">
+            <h1 class="article-title">{{ page.title }}</h1>
+            <div class="article-meta">
+                {% if page.date %}
+                <span class="meta-item">
+                    <span class="label">DATE:</span> {{ page.date | date(format="%Y-%m-%d") }}
+                </span>
+                {% endif %}
+                
+                <span class="meta-item">
+                    <span class="label">STATUS:</span> 
+                    <span class="{{ page.extra.status | default(value='seedling') }}">
+                        {{ page.extra.status | default(value="SEEDLING") | upper }}
+                    </span>
+                </span>
+            </div>
+        </header>
+
+    {% endif %}
+{% endmacro header %}
+
+{# FOOTER TAGS #}
+{% macro tags(taxonomies) %}
+    {% if taxonomies.tags %}
+    <div class="file-footer">
+        <div class="tags-container">
+            <span class="label">INDEX_KEYS::</span>
+            {% for tag in taxonomies.tags %}
+                <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="tech-tag">#{{ tag }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+{% endmacro tags %}
