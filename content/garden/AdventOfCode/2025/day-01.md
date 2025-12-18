@@ -1,11 +1,11 @@
 +++
 title = "Day 1: Secret Entrance"
-date = "2025-12-16T18:59:36.008Z"
+date = "2025-12-01"
 description = "Deciphering the Elfs Safe Combination"
 [taxonomies]
     tags = [ "aoc", "rust" ]
 [extra]
-    status = "seedling"
+    status = "stable"
 +++
 
 
