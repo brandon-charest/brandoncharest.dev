@@ -6,5 +6,5 @@ template = "section.html"
 transparent = true
 +++
 
-# > cargo check
+
 My collection of syntax patterns, struggle logs, and idiomatic solutions.
