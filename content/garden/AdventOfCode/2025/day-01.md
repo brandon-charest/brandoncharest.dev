@@ -40,7 +40,7 @@ For each line in our input I am expecting something like **L68**. Ideally I want
 ```rust
 let instr: Instruction = line.parse()?;
 ```
-But in order for **line.parse()** to work for the custom struct I had to impliment the [FromStr](@/garden/rust/from-str.md) trait. Essentially we need to tell Rust what the logic is for converting a string to an **Instruction**.
+But in order for **line.parse()** to work for the custom struct I had to implement the [FromStr](@/garden/rust/from-str.md) trait. Essentially we need to tell Rust what the logic is for converting a string to an **Instruction**.
 
 ```rust
 impl FromStr for Instruction {
