@@ -7,7 +7,7 @@ description = "Notes of interest i need to further explore"
 A running list of topics of interest I want to explore further when I get the time...
 
 ## 📥 Incoming Research
-
+- [WebAssembly (Wasm)](https://webassembly.org/): This looks pretty awesome, I need to know more about this.
 - [eBPF](https://ebpf.io/): Want to understand how to attach probes to the kernel.
 - [Zig](https://ziglang.org/): Seems like an interesting take on C. Find use cases, and maybe a small side project. Maybe I can re-implement my virtual memory manager from C.
 - [Firecracker microVMs](https://firecracker-microvm.github.io/): Used under the hood for AWS Lambda and Fargate, should learn more about exactly how it works.
