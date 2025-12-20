@@ -21,7 +21,7 @@ theme = "auto"
 fancy_code = false
 mathjax = true
 mathjax_dollar_inline_enable = true
-
+favicon = "images/favicon.ico"
 menu = [
     { name = "Garden", url = "/garden", weight = 1 },
     #   { name = "Blog", url = "/posts", weight = 2 },
