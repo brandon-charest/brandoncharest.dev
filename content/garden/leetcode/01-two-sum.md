@@ -1,5 +1,5 @@
 +++
-title = "LC: Two Sum"
+title = "LC 001: Two Sum"
 date = "2025-12-16T20:49:19.749Z"
 description = "Solved using HashMap and Two Pointers."
 transparent = false
@@ -8,7 +8,7 @@ tags = [ "leetcode", "easy", "hashmap"]
 
 [extra]
 problem_link = "[https://leetcode.com/problems/](https://leetcode.com/problems/two-sum/description/)"
-problem_number = "0001"
+problem_number = "001"
 +++
 
 Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`. You may assume that each input would have **exactly one solution**, and you may not use the same element twice.
