@@ -6,5 +6,6 @@ template = "section.html"
 transparent = true
 +++
 
-
-# Another Year
+# Year 2025
+**Language:** The year of Rust 🦀  
+**Goal:** Learn some Rust and solve Advent of Code puzzles.

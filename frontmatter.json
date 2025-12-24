@@ -48,5 +48,20 @@
   ],
   "frontMatter.framework.id": "hugo",
   "frontMatter.content.publicFolder": "static",
-  "frontMatter.preview.host": "http://localhost:1313"
+  "frontMatter.preview.host": "http://localhost:1313",
+  "frontMatter.framework.startCommand": "zola serve",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "content",
+      "path": "[[workspace]]/content"
+    },
+    {
+      "title": "garden",
+      "path": "[[workspace]]/content/garden"
+    },
+    {
+      "title": "rust",
+      "path": "[[workspace]]/content/garden/rust"
+    }
+  ]
 }

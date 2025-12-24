@@ -1,5 +1,20 @@
 {% extends "base.html" %}
-{% import "macros/toc.html" as toc_macros %}
+{% import "macros/ui.html" as ui %}
+
+{# FIX: Define the recursive TOC macro locally to prevent scope errors #}
+{% macro tree(toc) %}
+<ul class="toc-list">
+    {% for node in toc %}
+    <li>
+        <a href="{{ node.permalink | safe }}">{{ node.title }}</a>
+        {% if node.children %}
+        {# Recursive call works perfectly when defined in the same file #}
+        {{ self::tree(toc=node.children) }}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro tree %}
 
 {% block main_content %}
 <div class="body">
@@ -12,19 +27,35 @@
             <span class="toc-title">SECTOR_MAP</span>
         </div>
         <nav class="toc-tree">
-            {{ toc_macros::tree(toc=section.toc) }}
+            {# Call the local macro using 'self' #}
+            {{ self::tree(toc=section.toc) }}
         </nav>
     </aside>
     {% endif %}
 
     <div class="terminal-window">
-        {{ ui::window_bar(resource=section) }}
+
+        {# 1. UNIFIED WINDOW BAR #}
+        {{ ui::window_bar(path=section.components) }}
 
         <div class="window-content">
-            
-            <div class="terminal-intro">
-                {{ section.content | safe }}
+
+            {# 2. COMMAND PROMPT #}
+            {{ ui::cmd(cmd="ls", args="-la", margin_top="0", margin_bottom="2rem", opacity=0.3) }}
+
+            {# 3. HUB CONTENT (README.md logic) #}
+            {% if section.content %}
+            <div class="hub-readme">
+                <div class="readme-header">
+                    <span class="icon">📖</span> README.md
+                </div>
+                <div class="readme-body">
+                    {{ section.content | safe }}
+                </div>
             </div>
+            {% endif %}
+
+            {# 4. FILE LIST CONTAINER #}
             <div class="file-list-container">
                 <table class="file-list">
                     <thead>
@@ -36,6 +67,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {# PARENT DIRECTORY LINK #}
                         <tr class="parent-dir">
                             <td class="perms">drwxr-xr-x</td>
                             <td class="size">-</td>
@@ -43,6 +75,20 @@
                             <td class="name"><a href="../">.. (Parent Directory)</a></td>
                         </tr>
 
+                        {# LOOP THROUGH SUBSECTIONS (FOLDERS) #}
+                        {% for sub_path in section.subsections %}
+                        {% set subsection = get_section(path=sub_path) %}
+                        <tr class="file-row dir-row">
+                            <td class="perms">drwxr-xr-x</td>
+                            <td class="size">-</td>
+                            <td class="date">-</td>
+                            <td class="name">
+                                <a href="{{ subsection.permalink }}" class="dir-link">{{ subsection.title }}/</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        {# LOOP THROUGH PAGES (FILES) #}
                         {% for page in section.pages %}
                         <tr class="file-row">
                             <td class="perms">-rw-r--r--</td>
@@ -50,12 +96,11 @@
                             <td class="date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
                             <td class="name">
                                 <a href="{{ page.permalink }}">{{ page.title }}</a>
-                                {% if page.extra %}
-                                    {% if page.extra.status %}
-                                        {% if page.extra.status == "seedling" %}
-                                            <span class="badge-seedling">[WIP]</span>
-                                        {% endif %}
-                                    {% endif %}
+
+                                {% if page.extra and page.extra.status %}
+                                <span class="status-badge {{ page.extra.status }}">
+                                    [{{ page.extra.status | upper }}]
+                                </span>
                                 {% endif %}
                             </td>
                         </tr>
@@ -64,10 +109,8 @@
                 </table>
             </div>
 
-            <div class="cmd-line" style="margin-top: 2rem; opacity: 0.5;">
-                 <span class="cmd-prompt">&gt;</span>
-                 <span class="cursor">_</span>
-            </div>
+            {# 5. CLOSING PROMPT #}
+            {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="2rem", opacity=0.5) }}
 
         </div>
     </div>

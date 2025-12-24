@@ -17,7 +17,7 @@ An elf has added a bunch of invalid product IDs to their database, and we are gi
 ```
 An invalid product ID is made only of some sequence of digits repeated twice. So, 55 (5 twice), 6464 (64 twice), and 123123 (123 twice).
 
-First step is to parse the input into a more manageable state. Rust allows us to write a small compact "one-liner", which is in a functional style. [chaining-methods](@/garden/rust/chaining-methods.md)
+First step is to parse the input into a more manageable state. Rust allows us to write a small compact "one-liner", which is in a functional style. [chaining-methods](@/garden/languages/rust/chaining-methods.md)
 ```rust
 // create a struct to hold our range
 struct Range {
@@ -32,7 +32,7 @@ let ranges: Vec<Range> = input
     .collect::<Result<Vec<_>>>()?;
 ```
 
-Since we are parsing a string to our `Range` struct we need to [FromStr](@/garden/rust/from-str.md).
+Since we are parsing a string to our `Range` struct we need to [FromStr](@/garden/languages/rust/from-str.md).
 
 ```rust
 impl FromStr for Range {
@@ -51,7 +51,7 @@ impl FromStr for Range {
 }
 ```
 
-With that out of the way we now need to loop through all our nicely parsed data.
+    With that out of the way we now need to loop through all our nicely parsed data.
 ```rust
 impl Range {
     fn iter(&self) -> std::ops::RangeInclusive<i64> {
@@ -71,7 +71,7 @@ for range in ranges {
 }
 ```
 
-We didn't need to implement a custom [iter](@/garden/rust/iter.md) on our object we could have...
+We didn't need to implement a custom [iter](@/garden/languages/rust/iter.md) on our object we could have...
 ```rust
 for num in range.start..=range.end {
     // awesome logic here..

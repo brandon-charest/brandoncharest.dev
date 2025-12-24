@@ -36,6 +36,7 @@
 
     .file-row:hover {
         background-color: rgba(255, 255, 255, 0.05);
+
         .name a {
             color: var(--highlight);
             text-decoration: underline;
@@ -82,5 +83,53 @@
         color: var(--destructive);
         margin-left: 8px;
         vertical-align: middle;
+    }
+}
+
+.hub-readme {
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.readme-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.readme-body {
+    padding: 1.5rem;
+
+    /* Ensure markdown inside the readme looks good */
+    h1,
+    h2,
+    h3 {
+        margin-top: 1.5rem;
+
+        first-child {
+            margin-top: 0;
+        }
+    }
+
+    p {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+    /* Make the H1 inside the readme look distinct */
+    h1 {
+        font-size: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
     }
 }

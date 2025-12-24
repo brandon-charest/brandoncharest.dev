@@ -1,7 +1,7 @@
 +++
 title = "Fighting the Borrow Checker"
 date = "2025-12-06"
-descripion = "Common patterns where the borrow checker yells at me, and how to satisfy it."
+description = "Common patterns where the borrow checker yells at me, and how to satisfy it."
 
 [taxonomies]
 tags = ["rust", "memory-safety"]
