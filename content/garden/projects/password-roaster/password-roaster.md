@@ -3,7 +3,7 @@ title = "Escaping tutorial hell"
 date = "2025-12-27T19:21:19.940Z"
 description = "How I stop over-thnking and started shipping"
 [taxonomies]
-    tags = [ "rust", "aws", "lambda", "amplify" ]
+    tags = [ "rust", "aws", "lambda" ]
 +++
 
 
@@ -40,7 +40,7 @@ In the past, this is where I would have spent the next few hours of days, trying
 
 Instead, I deployed it.
 
-The frontend is just a `index.html` file hosting on AWS Amplify. The backend is a Rust binary running on Lambda. It costs me __$0.00/month__ to run.
+The frontend is just a `index.html` file hosting on Cloudflare Pages. The backend is a Rust binary running on Lambda. It costs me __$0.00/month__ to run.
 
 Is it perfect? No, in fact I am almost positive I have some spelling mistakes and bugs. Does it scale to millions of users? Probably not, (but I'm sure Rust helps with that). Does it make me laugh? Yes.
 
