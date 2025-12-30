@@ -4,19 +4,23 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ config.description | default(value="Senior Backend Engineer Digital Garden") }}">
-    
+    <meta name="description" content="{{ config.description | default(value=" Senior Backend Engineer Digital Garden")
+        }}">
+
     <title>{% block title %}{{ config.title }}{% endblock title %}</title>
 
-    <link rel="preload" href="/fonts/JetbrainsMono/JetBrainsMono-Regular.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="preload" href="/fonts/JetbrainsMono/JetBrainsMono-Bold.ttf" as="font" type="font/ttf" crossorigin>
 
-    <link rel="stylesheet" href="{{ get_url(path="main.css") | safe }}">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ get_url(path=" main.css") | safe }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
 
     {% block extra_head %}{% endblock extra_head %}
 </head>
@@ -26,6 +30,7 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="ambient-shape shape-1"></div>
     <div class="ambient-shape shape-2"></div>
+    <div class="ambient-shape shape-3"></div>
 
     <div class="left-content">
         {% block left_content %}
@@ -61,33 +66,51 @@
         {% endblock right_content %}
     </div>
     <footer class="system-status">
-    <div class="status-item">
-        <span class="status-label">MODE:</span>
-        <span class="status-value">READ_ONLY</span>
-    </div>
-    <div class="status-item">
-        <span class="status-label">LOC:</span>
-        <span class="status-value">Boston, MA</span>
-    </div>
-    <div class="status-item">
-        <span class="status-label">UPTIME:</span>
-        <span class="status-value" id="uptime">00:00:00</span>
-    </div>
-    <div class="status-item right">
-        <span class="status-label">GIT::</span>
-        <span class="status-value">MAIN</span>
-    </div>
-</footer>
+        <div class="status-item">
+            <span class="status-label">MODE:</span>
+            <span class="status-value">READ_ONLY</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">LOC:</span>
+            <span class="status-value">Boston, MA</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">UPTIME:</span>
+            <span class="status-value" id="uptime">00:00:00</span>
+        </div>
+        <div class="status-item right">
+            <span class="status-label">GIT::</span>
+            <span class="status-value">MAIN</span>
+        </div>
+    </footer>
 </body>
 
 
 <script>
-    // Simple Uptime Counter
-    let seconds = 0;
-    setInterval(() => {
-        seconds++;
-        const date = new Date(seconds * 1000);
-        document.getElementById('uptime').innerText = date.toISOString().substr(11, 8);
-    }, 1000);
+    // Persistent Uptime Counter
+    // Get or set the initial start time in localStorage
+    if (!localStorage.getItem('siteStartTime')) {
+        localStorage.setItem('siteStartTime', Date.now());
+    }
+
+    const startTime = parseInt(localStorage.getItem('siteStartTime'));
+
+    function updateUptime() {
+        const now = Date.now();
+        const uptimeMs = now - startTime;
+        const uptimeSeconds = Math.floor(uptimeMs / 1000);
+
+        const hours = Math.floor(uptimeSeconds / 3600);
+        const minutes = Math.floor((uptimeSeconds % 3600) / 60);
+        const seconds = uptimeSeconds % 60;
+
+        const formatted = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        document.getElementById('uptime').innerText = formatted;
+    }
+
+    // Update immediately and then every second
+    updateUptime();
+    setInterval(updateUptime, 1000);
 </script>
+
 </html>

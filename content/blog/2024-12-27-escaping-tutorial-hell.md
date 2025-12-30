@@ -4,6 +4,9 @@ date = "2025-12-27T19:21:19.940Z"
 description = "How I stop over-thnking and started shipping"
 [taxonomies]
     tags = [ "rust", "aws", "lambda" ]
+[extra]
+    pinned = true
+    type = "blog"
 +++
 
 

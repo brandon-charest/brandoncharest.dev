@@ -24,27 +24,29 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    
+
     font-family: var(--mono-text-font);
     font-size: 0.75rem;
     text-decoration: none;
-    padding: 3px 10px;
-    
+    padding: 4px 12px;
+
     /* Default: Subtle Border & Text */
-    color: var(--primary); 
-    border: 1px solid var(--border); 
-    background-color: rgba(255, 255, 255, 0.02);
+    color: var(--primary);
+    border: 1px solid rgba(3, 218, 198, 0.3);
+    background-color: rgba(3, 218, 198, 0.08);
     border-radius: 4px;
-    
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
         /* Hover: Glow & Fill */
         background-color: var(--primary);
-        color: var(--background); /* Contrast text against bright bg */
+        color: var(--background);
+        /* Contrast text against bright bg */
         border-color: var(--primary);
-        box-shadow: 0 0 12px var(--primary); /* Neon Glow */
-        transform: translateY(-2px);
+        box-shadow: 0 0 15px rgba(3, 218, 198, 0.4);
+        /* Neon Glow */
+        transform: translateY(-1px);
         cursor: pointer;
     }
 }

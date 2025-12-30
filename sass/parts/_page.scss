@@ -49,38 +49,41 @@
 }
 
 .article-body {
-    font-family: var(--font-serif);
-    font-size: 1.25rem;
-    line-height: 1.8;
-    color: #e6edf3;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+    color: #e8eef5;
     max-width: none;
     margin: 0;
 
     strong {
-        color: var(--highlight);
+        color: #fff;
         font-weight: 700;
     }
 
     p {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.75rem;
+        max-width: 75ch;
     }
 
     em {
         color: var(--text-1);
-        font-family: var(--font-sans);
+        font-family: 'Inter', system-ui, sans-serif;
+        font-style: italic;
     }
 
     h1 {
-        font-family: var(--font-sans);
+        font-family: 'Inter', system-ui, sans-serif;
         color: var(--primary);
         font-size: 2.2rem;
         text-align: center;
-        margin-top: 3rem;
-        margin-bottom: 1.5rem;
-        font-weight: 800; 
+        margin-top: 4rem;
+        margin-bottom: 1.75rem;
+        font-weight: 800;
         line-height: 1.2;
         letter-spacing: -0.02em;
-        scroll-margin-top: 4rem; 
+        scroll-margin-top: 4rem;
         border-bottom: 2px solid var(--border);
         padding-bottom: 0.5rem;
         display: block;
@@ -88,11 +91,11 @@
     }
 
     h2 {
-        font-family: var(--font-sans);
+        font-family: 'Inter', system-ui, sans-serif;
         color: var(--foreground);
         font-size: 1.8rem;
-        margin-top: 3.5rem;
-        margin-bottom: 1.5rem;
+        margin-top: 4rem;
+        margin-bottom: 1.75rem;
         font-weight: 700;
         position: relative;
         padding-left: 1rem;
@@ -110,12 +113,24 @@
             background: var(--primary);
             border-radius: 2px;
         }
+
+        &::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            margin-top: 0.75rem;
+            border-radius: 2px;
+        }
     }
 
     h3 {
+        font-family: 'Inter', system-ui, sans-serif;
         color: var(--primary);
         font-size: 1.4rem;
-        margin-top: 2.5rem;
+        margin-top: 3rem;
+        margin-bottom: 1.25rem;
         font-weight: 600;
         scroll-margin-top: 4rem;
     }
@@ -134,20 +149,19 @@
 
     a {
         color: var(--primary);
-        text-decoration: underline;
-        text-underline-offset: 4px;
-        text-decoration-color: rgba(59, 130, 246, 0.3);
-        transition: all 0.2s;
+        text-decoration: none;
+        border-bottom: 2px solid rgba(3, 218, 198, 0.3);
+        transition: all 0.2s ease;
 
         &:hover {
-            text-decoration-color: var(--primary);
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: rgba(3, 218, 198, 0.08);
+            box-shadow: 0 0 12px rgba(3, 218, 198, 0.15);
         }
     }
 
     blockquote {
-        font-family: var(--font-serif);
+        font-family: 'Inter', system-ui, sans-serif;
         font-style: italic;
         border-left: 3px solid var(--highlight);
         background: rgba(255, 255, 255, 0.03);
@@ -165,13 +179,14 @@
     }
 
     :not(pre)>code {
-        font-family: var(--mono-text-font);
-        color: var(--highlight);
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 0.1em 0.4em;
+        font-family: 'JetBrains Mono', 'Consolas', monospace;
+        color: var(--primary);
+        background: rgba(3, 218, 198, 0.15);
+        border: 1px solid rgba(3, 218, 198, 0.3);
+        padding: 0.15em 0.45em;
         border-radius: 4px;
-        font-size: 0.85em;
+        font-size: 0.9em;
+        font-weight: 500;
     }
 }
 

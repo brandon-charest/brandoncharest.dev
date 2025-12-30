@@ -29,6 +29,7 @@ The [6502](https://en.wikipedia.org/wiki/MOS_Technology_6502) is a 8-bit micropr
 ```
 
 # Resources
+
 [nes-dev-wiki](https://www.nesdev.org/wiki/Nesdev_Wiki)
 [6502-emulators](http://www.6502.org/tools/emu/)
 [NES Emulator: Javidx9](https://www.youtube.com/watch?v=8XmxKPJDGU0)

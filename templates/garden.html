@@ -9,53 +9,54 @@
 
         <div class="window-content">
             <ul class="card-grid">
-                
+
                 {# --- FOLDERS --- #}
                 {% for path in section.subsections %}
-                    {% set subsection = get_section(path=path) %}
-                    <li>
-                        <div class="card-link folder-card">
-                            <a href="{{ subsection.permalink }}" class="card-overlay" aria-label="Open {{ subsection.title }}"></a>
-                            
-                            <div class="card-header">
-                                <h3>📂 {{ subsection.title }}</h3>
-                                <span class="card-type">DIR</span>
-                            </div>
-                            <div class="card-meta">
-                                {{ subsection.description | default(value="Directory container.") }}
-                            </div>
-                            <div class="card-footer">
-                                <span class="status-label">CONTENTS:</span>
-                                <span class="status-value">{{ subsection.pages | length }} {% if subsection.pages | length == 1 %}NODE{% else %}NODES{% endif %}</span>
-                            </div>
+                {% set subsection = get_section(path=path) %}
+                <li>
+                    <div class="card-link folder-card">
+                        <a href="{{ subsection.permalink }}" class="card-overlay"
+                            aria-label="Open {{ subsection.title }}"></a>
+
+                        <div class="card-header">
+                            <h3>📂 {{ subsection.title }}</h3>
+                            <span class="card-type">DIR</span>
                         </div>
-                    </li>
+                        <div class="card-meta">
+                            {{ subsection.description | default(value="Directory container.") }}
+                        </div>
+                        <div class="card-footer">
+                            <span class="status-label">CONTENTS:</span>
+                            <span class="status-value">{{ subsection.pages | length }} {% if subsection.pages | length
+                                == 1 %}NODE{% else %}NODES{% endif %}</span>
+                        </div>
+                    </div>
+                </li>
                 {% endfor %}
 
                 {# --- FILES --- #}
                 {% for page in section.pages %}
+                {% set growth_stage = page.extra.growth | default(value="seedling") %}
+                {% set content_type = page.extra.type | default(value="note") %}
                 <li>
-                    <div class="card-link file-card">
+                    <div class="card-link file-card" data-growth="{{ growth_stage }}">
                         <a href="{{ page.permalink }}" class="card-overlay" aria-label="Read {{ page.title }}"></a>
 
-                        <div class="card-header">
-                            <h3>📄 {{ page.title }}</h3>
-                        </div>
+                        {{ ui::card_header(
+                        title=page.title,
+                        growth_stage=growth_stage,
+                        content_type=content_type
+                        ) }}
+
                         <div class="card-meta">
                             {{ page.description | default(value="No description.") | truncate(length=100) }}
                         </div>
 
-                        {% if page.taxonomies.tags %}
-                        <div class="card-tags">
-                            {% for tag in page.taxonomies.tags | slice(end=3) %}
-                                <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="mini-tag">#{{ tag }}</a>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
+                        {# Use modular macro for tags #}
+                        {{ ui::card_tags(tags=page.taxonomies.tags, max_tags=3) }}
 
-                        <div class="card-footer action-footer">
-                            <span class="action-btn">[ ACCESS_BUFFER ]</span>
-                        </div>
+                        {# Use modular macro for footer #}
+                        {{ ui::card_footer(action_text="→ READ") }}
                     </div>
                 </li>
                 {% endfor %}

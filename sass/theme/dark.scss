@@ -1,12 +1,14 @@
 /* sass/theme/dark.scss */
 :root.dark {
   /* -------------------------------------------------------------------------- */
-  /* MATERIAL DESIGN DARK THEME (Refined)                                       */
+  /* MATERIAL DESIGN DARK THEME (Refined with Better Hierarchy)                */
   /* https://m2.material.io/design/color/dark-theme.html                        */
   /* -------------------------------------------------------------------------- */
   --grid-color: rgba(255, 255, 255, 0.07);
-  --background: #0d1117;
-  --card: #161b22;
+  --background: #0f141b;
+  /* Slightly lighter for better contrast */
+  --card: #1a1f28;
+  /* More distinct from background */
   --card-foreground: #ededed;
 
   --primary: #03dac6;
@@ -15,18 +17,21 @@
   --highlight: #80deea;
   --destructive: #cf6679;
   --destructive-foreground: #000000;
-  --border: #30363d;
-  --input: #0d1117;
+  --border: #2d3642;
+  /* Slightly lighter for better visibility */
+  --input: #0f141b;
 
   --foreground: #e6edf3;
   --muted-foreground: #8b949e;
   --card-foreground: #e6edf3;
   --sidebar-foreground: #8b949e;
 
-  --secondary: #2d2d2d;
+  --secondary: #1e242e;
+  /* Lighter for better layering */
   --secondary-foreground: #ffffff;
-  --muted: #2d2d2d;
-  --popover: #1e1e1e;
+  --muted: #1e242e;
+  --popover: #252b36;
+  /* More distinct */
   --popover-foreground: #ffffff;
 
   --ring: #2f81f7;
@@ -54,8 +59,8 @@
   --text-0: var(--foreground);
   --text-1: var(--muted-foreground);
   --text-2: #7d8590
-  /* Disabled/Hint text */
-  --primary-color: var(--primary);
+    /* Disabled/Hint text */
+    --primary-color: var(--primary);
   --hover-color: var(--primary-foreground);
   --border-color: var(--border);
   --icon-filter: invert(1) brightness(2);

@@ -1,9 +1,9 @@
 {# 1. THE MAIN WINDOW BAR COMPONENT #}
-{# Usage: 
-   For Pages:    {{ ui::window_bar(resource=page) }} 
-   For Sections: {{ ui::window_bar(resource=section) }}
-   Custom Path:  {{ ui::window_bar(path=some_list) }}
-   Static Title: {{ ui::window_bar(title="My Title") }} 
+{# Usage:
+For Pages: {{ ui::window_bar(resource=page) }}
+For Sections: {{ ui::window_bar(resource=section) }}
+Custom Path: {{ ui::window_bar(path=some_list) }}
+Static Title: {{ ui::window_bar(title="My Title") }}
 #}
 {% macro window_bar(resource=false, path=false, title="") %}
 <div class="window-bar">
@@ -12,31 +12,32 @@
         <span class="control minimize"></span>
         <span class="control maximize"></span>
     </div>
-    
+
     <div class="window-title-container">
         {% if resource %}
-            {# RENDER FROM RESOURCE (Page or Section) #}
-            <span class="terminal-path">
-                <a href="/" class="path-segment root">~</a>
-                {% for part in resource.components %}
-                    <span class="path-sep">/</span>
-                    <a href="/{{ resource.components | slice(end=loop.index) | join(sep="/") }}" class="path-segment">{{ part }}</a>
-                {% endfor %}
-            </span>
+        {# RENDER FROM RESOURCE (Page or Section) #}
+        <span class="terminal-path">
+            <a href="/" class="path-segment root">~</a>
+            {% for part in resource.components %}
+            <span class="path-sep">/</span>
+            <a href="/{{ resource.components | slice(end=loop.index) | join(sep=" /") }}" class="path-segment">{{ part
+                }}</a>
+            {% endfor %}
+        </span>
         {% elif path %}
-            {# RENDER FROM PATH LIST #}
-            <span class="terminal-path">
-                <a href="/" class="path-segment root">~</a>
-                {% for part in path %}
-                    <span class="path-sep">/</span>
-                    <a href="/{{ path | slice(end=loop.index) | join(sep="/") }}" class="path-segment">{{ part }}</a>
-                {% endfor %}
-            </span>
+        {# RENDER FROM PATH LIST #}
+        <span class="terminal-path">
+            <a href="/" class="path-segment root">~</a>
+            {% for part in path %}
+            <span class="path-sep">/</span>
+            <a href="/{{ path | slice(end=loop.index) | join(sep=" /") }}" class="path-segment">{{ part }}</a>
+            {% endfor %}
+        </span>
         {% else %}
-            {# RENDER STATIC TITLE #}
-            <span class="terminal-path">
-                <span class="path-segment root">{{ title }}</span>
-            </span>
+        {# RENDER STATIC TITLE #}
+        <span class="terminal-path">
+            <span class="path-segment root">{{ title }}</span>
+        </span>
         {% endif %}
     </div>
 </div>
@@ -53,3 +54,66 @@
     {% if cursor %}<span class="cursor">_</span>{% endif %}
 </div>
 {% endmacro cmd %}
+
+
+{# 3. CARD INDICATORS (Growth & Type Badges) #}
+{# Returns the emoji indicators for growth stage and content type #}
+{% macro card_indicators(growth_stage="seedling", content_type="note", show_growth=true, show_type=true) %}
+{% if show_growth %}
+<span class="growth-indicator" title="{{ growth_stage | capitalize }}">
+    {% if growth_stage == "seedling" %}🌱
+    {% elif growth_stage == "growing" %}🌿
+    {% elif growth_stage == "evergreen" %}🌲
+    {% else %}🌱
+    {% endif %}
+</span>
+{% endif %}
+{% if show_type %}
+<span class="type-indicator" title="{{ content_type | capitalize }}">
+    {% if content_type == "blog" %}📝
+    {% elif content_type == "project" %}🚀
+    {% elif content_type == "reference" %}📚
+    {% elif content_type == "tutorial" %}🎓
+    {% elif content_type == "snippet" %}💾
+    {% else %}📄
+    {% endif %}
+</span>
+{% endif %}
+{% endmacro card_indicators %}
+
+
+{# 4. CARD HEADER #}
+{# Renders a consistent card header with title and optional indicators #}
+{% macro card_header(title, growth_stage="seedling", content_type="note", show_growth=false, show_type=true) %}
+<div class="card-header">
+    <h3>
+        {{ self::card_indicators(growth_stage=growth_stage, content_type=content_type, show_growth=show_growth,
+        show_type=show_type) }}
+        {{ title }}
+    </h3>
+</div>
+{% endmacro card_header %}
+
+
+{# 5. CARD TAGS #}
+{# Renders tag badges #}
+{% macro card_tags(tags, max_tags=3) %}
+{% if tags %}
+<div class="card-tags">
+    {% for tag in tags | slice(end=max_tags) %}
+    <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="mini-tag">#{{ tag }}</a>
+    {% endfor %}
+</div>
+{% endif %}
+{% endmacro card_tags %}
+
+
+{# 6. CARD FOOTER #}
+{# Renders action button footer #}
+{% macro card_footer(action_text="→ READ", show_footer=true) %}
+{% if show_footer %}
+<div class="card-footer action-footer">
+    <span class="action-btn">{{ action_text }}</span>
+</div>
+{% endif %}
+{% endmacro card_footer %}

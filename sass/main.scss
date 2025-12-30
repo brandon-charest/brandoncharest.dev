@@ -18,6 +18,10 @@
 @import "parts/_page.scss";
 @import "parts/_filelist.scss";
 @import "parts/_neofetch.scss";
+@import "parts/_highlights.scss";
+@import "parts/_growth-indicators.scss";
+@import "parts/_garden-meta.scss";
+@import "parts/_blog.scss";
 
 
 @import "theme/light.scss";
@@ -124,7 +128,7 @@
   --code-font: var(--font-mono);
 
   --line-height: 1.6;
-  --page-width: 1200px;
+  --page-width: 1400px;
   --font-size-base: 14px;
 }
 
@@ -134,9 +138,9 @@ html {
   font-family: var(--font-sans);
   line-height: var(--line-height);
 
-  /* The Matrix Dot Pattern */
-  background-image: radial-gradient(var(--border) 1px, transparent 1px);
-  background-size: 30px 30px;
+  /* Refined Dot Grid Pattern */
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0.5px, transparent 0.5px);
+  background-size: 40px 40px;
   background-attachment: fixed;
 
   min-height: 100%;

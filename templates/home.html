@@ -1,60 +1,111 @@
 {% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
 
 {% block main_content %}
 <div class="body">
 
     <div class="terminal-window">
-         {{ ui::window_bar(title="root@dev: ~") }}
+        {{ ui::window_bar(title="root@dev: ~") }}
         <div class="window-content">
             {% include "partials/neofetch.html" %}
-            <!-- RECENT ACTIVITY -->
+            <!-- HIGHLIGHTS SECTION -->
             <div class="buffer-list-container">
-                 {{ ui::cmd(cmd="ls", args="-la ./active_buffers", margin_top="0", margin_bottom="1.5rem", opacity=1) }}
+                {{ ui::cmd(cmd="cat", args="./featured.txt", margin_top="0", margin_bottom="1.5rem", opacity=1) }}
 
-                <div class="terminal-comment">
-                    # Latest notes:
-                </div>
-
-                <ul class="card-grid">
+                <div class="highlights-grid">
                     {% set garden = get_section(path="garden/_index.md") %}
-                    {% for page in garden.pages | slice(end=6) %}
-                    <li>
-                        <div class="card-link file-card">
-                            
+                    {% set blog = get_section(path="blog/_index.md") %}
+
+                    <!-- PINNED SECTION -->
+                    {% set blog_pinned = blog.pages | filter(attribute="extra.pinned", value=true) %}
+                    {% set garden_pinned = garden.pages | filter(attribute="extra.pinned", value=true) %}
+                    {% set pinned_pages = blog_pinned | concat(with=garden_pinned) %}
+                    {% if pinned_pages %}
+                    <div class="highlight-section pinned-section">
+                        <h3 class="section-label">
+                            <span class="label-icon">📌</span>
+                            <span class="label-text">Pinned</span>
+                        </h3>
+                        {% set pinned = pinned_pages | first %}
+                        {% set growth_stage = pinned.extra.growth | default(value="seedling") %}
+                        {% set content_type = pinned.extra.type | default(value="note") %}
+                        <div class="card-link file-card featured-card" data-growth="{{ growth_stage }}">
+                            <a href="{{ pinned.permalink }}" class="card-overlay"
+                                aria-label="Read {{ pinned.title }}"></a>
+
+                            {{ ui::card_header(title=pinned.title, growth_stage=growth_stage, content_type=content_type)
+                            }}
+
+                            <div class="card-meta">
+                                {{ pinned.description | default(value="No description provided.") | truncate(length=150)
+                                }}
+                            </div>
+
+                            {{ ui::card_tags(tags=pinned.taxonomies.tags, max_tags=3) }}
+                            {{ ui::card_footer(action_text="→ READ") }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- RECENT SECTION -->
+                    <div class="highlight-section recent-section">
+                        <h3 class="section-label">
+                            <span class="label-icon">🔥</span>
+                            <span class="label-text">Recent</span>
+                        </h3>
+                        {% for page in garden.pages | slice(end=2) %}
+                        {% set growth_stage = page.extra.growth | default(value="seedling") %}
+                        {% set content_type = page.extra.type | default(value="note") %}
+                        <div class="card-link file-card" data-growth="{{ growth_stage }}">
                             <a href="{{ page.permalink }}" class="card-overlay" aria-label="Read {{ page.title }}"></a>
 
-                            <div class="card-header">
-                                <h3>{{ page.title }}</h3>
-                            </div>
-                            
+                            {{ ui::card_header(title=page.title, growth_stage=growth_stage, content_type=content_type)
+                            }}
+
                             <div class="card-meta">
-                                {{ page.description | default(value="No description provided.") | truncate(length=120) }}
+                                {{ page.description | default(value="No description provided.") | truncate(length=120)
+                                }}
                             </div>
 
-                            {% if page.taxonomies.tags %}
-                            <div class="card-tags">
-                                {% for tag in page.taxonomies.tags | slice(end=3) %}
-                                    <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="mini-tag">#{{ tag }}</a>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-
-                            <div class="card-footer action-footer">
-                                <span class="action-btn">[ ACCESS_BUFFER ]</span>
-                            </div>
+                            {{ ui::card_tags(tags=page.taxonomies.tags, max_tags=3) }}
+                            {{ ui::card_footer(action_text="→ READ") }}
                         </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            
-            
-            <div class="cmd-line" style="margin-top: 2rem;">
-                 <span class="cmd-prompt">&gt;</span>
-                 <span class="cursor">_</span>
+                        {% endfor %}
+                    </div>
+
+                    <!-- GROWING SECTION (Seedlings) -->
+                    <div class="highlight-section growing-section">
+                        <h3 class="section-label">
+                            <span class="label-icon">🌱</span>
+                            <span class="label-text">Growing</span>
+                        </h3>
+                        {% set seedlings = garden.pages | filter(attribute="extra.growth", value="seedling") |
+                        slice(end=3) %}
+                        {% for page in seedlings %}
+                        {% set content_type = page.extra.type | default(value="note") %}
+                        <div class="card-link file-card compact-card" data-growth="seedling">
+                            <a href="{{ page.permalink }}" class="card-overlay" aria-label="Read {{ page.title }}"></a>
+
+                            {{ ui::card_header(title=page.title, content_type=content_type, show_type=true) }}
+
+                            <div class="card-meta">
+                                {{ page.description | default(value="No description provided.") | truncate(length=80) }}
+                            </div>
+
+                            {{ ui::card_footer(action_text="→") }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
 
-        </div> 
-    </div> 
+
+            <div class="cmd-line" style="margin-top: 2rem;">
+                <span class="cmd-prompt">&gt;</span>
+                <span class="cursor">_</span>
+            </div>
+
+        </div>
+    </div>
 </div>
 {% endblock main_content %}

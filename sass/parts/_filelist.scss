@@ -2,10 +2,11 @@
 
 .file-list-container {
     overflow-x: auto;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     border: 1px solid var(--border);
-    border-radius: 6px;
-    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background: var(--secondary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .file-list {
@@ -13,51 +14,80 @@
     border-collapse: collapse;
     font-family: 'Consolas', 'Monaco', monospace;
     font-size: 0.9rem;
-    white-space: nowrap;
 
     th {
         text-align: left;
-        padding: 0.8rem 1rem;
-        border-bottom: 1px solid var(--border);
-        color: var(--text-2);
-        font-size: 0.75rem;
-        letter-spacing: 1px;
+        padding: 1rem 1.5rem;
+        border-bottom: 2px solid var(--border);
+        color: var(--primary);
+        font-size: 0.7rem;
+        letter-spacing: 1.5px;
+        font-weight: bold;
+        text-transform: uppercase;
+        background: rgba(0, 0, 0, 0.2);
     }
 
     td {
-        padding: 0.6rem 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 0.9rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         color: var(--text-1);
+    }
+
+    tbody tr {
+        transition: all 0.2s ease;
+
+        &:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
     }
 
     tr:last-child td {
         border-bottom: none;
     }
 
-    .file-row:hover {
-        background-color: rgba(255, 255, 255, 0.05);
+    .file-row {
+        cursor: pointer;
 
-        .name a {
-            color: var(--highlight);
-            text-decoration: underline;
+        &:hover {
+            background-color: rgba(3, 218, 198, 0.08) !important;
+
+            .name a {
+                color: var(--highlight);
+                text-shadow: 0 0 8px rgba(128, 222, 234, 0.3);
+            }
+
+            .perms {
+                color: var(--highlight);
+            }
+        }
+    }
+
+    .dir-row {
+        .name::before {
+            content: "📁 ";
+            margin-right: 0.5rem;
         }
     }
 
     /* Column Specifics */
     .perms {
         color: var(--primary);
-        opacity: 0.8;
+        opacity: 0.7;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
     }
 
     .size {
         color: var(--text-2);
         text-align: right;
-        width: 80px;
+        width: 100px;
+        font-variant-numeric: tabular-nums;
     }
 
     .date {
         color: var(--text-2);
         width: 140px;
+        font-variant-numeric: tabular-nums;
     }
 
     .name {
@@ -84,52 +114,140 @@
         margin-left: 8px;
         vertical-align: middle;
     }
+
+    /* Growth stage and content type indicators */
+    .growth-indicator,
+    .type-indicator {
+        display: inline-block;
+        font-size: 1.1em;
+        margin-right: 0.4rem;
+        transition: transform 0.2s ease;
+        filter: grayscale(0.2);
+    }
+
+    .file-row:hover {
+
+        .growth-indicator,
+        .type-indicator {
+            transform: scale(1.15);
+            filter: grayscale(0);
+        }
+    }
+
+    /* Color coding for different growth stages */
+    .file-row[data-growth="seedling"] {
+        .name a {
+            opacity: 0.85;
+        }
+    }
+
+    .file-row[data-growth="growing"] {
+        .name a {
+            opacity: 0.95;
+        }
+    }
+
+    .file-row[data-growth="evergreen"] {
+        .name a {
+            font-weight: 600;
+        }
+    }
+
+    /* Content type specific styling */
+    .file-row[data-type="blog"] {
+        border-left: 2px solid rgba(128, 222, 234, 0.3);
+    }
+
+    .file-row[data-type="project"] {
+        border-left: 2px solid rgba(3, 218, 198, 0.3);
+    }
 }
 
 .hub-readme {
     border: 1px solid var(--border);
     margin-bottom: 2rem;
-    margin-top: 1rem;
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
+    margin-top: 1.5rem;
+    background: var(--secondary);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
 }
 
 .readme-header {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 0.5rem 1rem;
+    background: linear-gradient(180deg, rgba(3, 218, 198, 0.1) 0%, rgba(0, 0, 0, 0.15) 100%);
+    padding: 0.8rem 1.5rem;
     font-family: var(--font-mono);
     font-size: 0.8rem;
     border-bottom: 1px solid var(--border);
-    color: var(--text-2);
+    color: var(--primary);
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
 }
 
 .readme-body {
-    padding: 1.5rem;
+    padding: 2rem 2.5rem;
+    line-height: 1.8;
 
     /* Ensure markdown inside the readme looks good */
     h1,
     h2,
     h3 {
-        margin-top: 1.5rem;
+        margin-top: 2rem;
+        color: var(--foreground);
 
-        first-child {
+        &:first-child {
             margin-top: 0;
         }
     }
 
     p {
-        margin-bottom: 1rem;
-        line-height: 1.6;
+        margin-bottom: 1.2rem;
+        line-height: 1.8;
+        color: var(--muted-foreground);
     }
 
     /* Make the H1 inside the readme look distinct */
     h1 {
-        font-size: 1.5rem;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 0.5rem;
+        font-size: 1.8rem;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 0.75rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary);
+    }
+
+    h2 {
+        font-size: 1.4rem;
         margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+        color: var(--highlight);
+    }
+
+    ul,
+    ol {
+        margin: 1rem 0;
+        padding-left: 2rem;
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--muted-foreground);
+        }
+    }
+
+    code {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.2rem 0.5rem;
+        border-radius: 3px;
+        font-size: 0.9em;
+        color: var(--highlight);
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
 }

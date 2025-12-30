@@ -2,11 +2,12 @@
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 1.5rem;
   list-style-type: none;
   padding: 0;
   margin: 0;
+  justify-content: center;
 }
 
 .card-link {
@@ -14,13 +15,14 @@
   flex-direction: column;
   height: 100%;
   text-decoration: none !important;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  border-radius: 6px;
-  background-color: rgba(30, 30, 30, 0.4);
+  border-radius: 8px;
+  background-color: var(--popover);
+  /* Use CSS variable for proper theming */
   font-family: var(--font-sans);
-
+  backdrop-filter: blur(10px);
   cursor: pointer;
 }
 
@@ -34,11 +36,12 @@
 }
 
 .folder-card {
-  border: 1px dashed var(--border);
+  border: 1px solid rgba(3, 218, 198, 0.2);
+  background: rgba(3, 218, 198, 0.02);
 
   .card-header {
-    background-color: rgba(59, 130, 246, 0.05);
-    border-bottom: 1px dashed var(--border);
+    background-color: rgba(3, 218, 198, 0.05);
+    border-bottom: 1px solid rgba(3, 218, 198, 0.15);
   }
 
   .card-type {
@@ -49,61 +52,83 @@
   }
 
   &:hover {
-    border-color: var(--primary);
-    background-color: rgba(59, 130, 246, 0.08);
+    border-color: rgba(3, 218, 198, 0.5);
+    background-color: rgba(3, 218, 198, 0.08);
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(3, 218, 198, 0.3) inset,
+      0 0 30px rgba(3, 218, 198, 0.15);
     transform: translateY(-2px);
   }
 }
 
 .file-card {
-  border: 1px solid var(--border);
+  border: 1px solid rgba(3, 218, 198, 0.15);
+  background: rgba(0, 0, 0, 0.2);
 
   .card-header {
-    background-color: rgba(255, 255, 255, 0.02);
-    border-bottom: 1px solid var(--border);
+    background-color: rgba(3, 218, 198, 0.03);
+    border-bottom: 1px solid rgba(3, 218, 198, 0.1);
   }
 
   .card-type {
-    color: var(--text-2);
+    color: var(--primary);
     font-family: var(--mono-text-font);
     font-size: 0.7rem;
     opacity: 0.6;
   }
 
   &:hover {
-    border-color: var(--highlight);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border-color: var(--primary);
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.4),
+      0 0 0 1px var(--primary) inset,
+      0 0 30px rgba(3, 218, 198, 0.2);
     transform: translateY(-2px);
 
     .action-btn {
-      background-color: var(--highlight);
-      color: #000;
-      box-shadow: 0 0 10px var(--highlight);
+      background-color: rgba(0, 0, 0, 0.6);
+      color: var(--primary);
+      box-shadow: 0 0 15px rgba(3, 218, 198, 0.5);
+      border: 1px solid var(--primary);
     }
   }
 }
 
 .card-header {
-  padding: 0.8rem 1rem;
+  padding: 1.25rem 1.5rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   h3 {
     margin: 0;
-    font-size: 1rem;
-    color: var(--foreground);
+    font-size: 1.15rem;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: -0.01em;
+    color: var(--foreground);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    /* Limit to 2 lines with ellipsis */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+    min-height: 2.8rem;
   }
 }
 
 .card-meta {
-  padding: 1rem 1rem 0.5rem 1rem;
-  color: var(--text-1);
+  padding: 0.75rem 1.5rem 1rem;
+  color: var(--muted-foreground);
   font-size: 0.9rem;
-  line-height: 1.5;
+  line-height: 1.65;
   flex-grow: 1;
+  min-height: 4rem;
 }
 
 .card-tags {
@@ -117,22 +142,22 @@
   .mini-tag {
     font-family: var(--mono-text-font);
     font-size: 0.75rem;
-    color: var(--highlight);
-    background-color: rgba(56, 139, 253, 0.1);
+    color: var(--primary);
+    background-color: rgba(3, 218, 198, 0.1);
     padding: 6px 10px;
     display: inline-flex;
     align-items: center;
     border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(3, 218, 198, 0.25);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     text-decoration: none;
 
     &:hover {
-      background-color: var(--highlight);
-      color: #000;
-      border-color: var(--highlight);
-      box-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+      background-color: rgba(3, 218, 198, 0.2);
+      color: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(3, 218, 198, 0.4);
     }
   }
 }
@@ -143,33 +168,43 @@
 }
 
 .card-footer {
-  padding: 0.6rem 1rem;
+  padding: 1rem 1.5rem;
   border-top: 1px solid var(--border);
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.15);
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: var(--mono-text-font);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .status-label {
-  color: var(--text-2);
-  font-weight: bold;
+  color: var(--primary);
+  font-weight: 600;
+  opacity: 0.8;
+  letter-spacing: 0.5px;
 }
 
 .status-value {
   color: var(--primary);
+  font-weight: 600;
+  background: rgba(3, 218, 198, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid rgba(3, 218, 198, 0.3);
 }
 
 .action-footer {
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .action-btn {
   display: inline-block;
-  color: var(--highlight);
+  color: var(--primary);
   font-weight: bold;
   transition: all 0.2s;
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
 }

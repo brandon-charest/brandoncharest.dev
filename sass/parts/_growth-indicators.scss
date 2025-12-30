@@ -1,0 +1,41 @@
+/* sass/parts/_cards.scss - Growth Stage Subtle Styling */
+
+/* Add subtle visual cues based on growth stage via data attributes */
+
+/* Seedling - Subtle, dim appearance */
+.card-link[data-growth="seedling"] {
+    opacity: 0.85;
+
+    .card-header {
+        opacity: 0.9;
+    }
+}
+
+/* Growing - Normal appearance with slight glow */
+.card-link[data-growth="growing"] {
+    opacity: 0.95;
+
+    &:hover {
+        box-shadow:
+            0 4px 20px rgba(0, 0, 0, 0.4),
+            0 0 0 1px var(--primary) inset,
+            0 0 35px rgba(3, 218, 198, 0.25) !important;
+    }
+}
+
+/* Evergreen - Full opacity with stronger glow */
+.card-link[data-growth="evergreen"] {
+    opacity: 1;
+    border-color: rgba(3, 218, 198, 0.25);
+
+    &:hover {
+        box-shadow:
+            0 6px 24px rgba(0, 0, 0, 0.5),
+            0 0 0 2px var(--primary) inset,
+            0 0 40px rgba(3, 218, 198, 0.3) !important;
+    }
+
+    .card-header h3 {
+        font-weight: 600;
+    }
+}

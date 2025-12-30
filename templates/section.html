@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% import "macros/ui.html" as ui %}
 
-{# FIX: Define the recursive TOC macro locally to prevent scope errors #}
+{# Local TOC macro for sections with subsections #}
+{# Note: Using imported toc_macros doesn't work for section.toc with subsections due to Tera macro scoping #}
 {% macro tree(toc) %}
 <ul class="toc-list">
     {% for node in toc %}
     <li>
         <a href="{{ node.permalink | safe }}">{{ node.title }}</a>
         {% if node.children %}
-        {# Recursive call works perfectly when defined in the same file #}
         {{ self::tree(toc=node.children) }}
         {% endif %}
     </li>
@@ -27,7 +27,6 @@
             <span class="toc-title">SECTOR_MAP</span>
         </div>
         <nav class="toc-tree">
-            {# Call the local macro using 'self' #}
             {{ self::tree(toc=section.toc) }}
         </nav>
     </aside>
@@ -90,11 +89,29 @@
 
                         {# LOOP THROUGH PAGES (FILES) #}
                         {% for page in section.pages %}
-                        <tr class="file-row">
+                        {% set growth_stage = page.extra.growth | default(value="seedling") %}
+                        {% set content_type = page.extra.type | default(value="note") %}
+                        <tr class="file-row" data-growth="{{ growth_stage }}" data-type="{{ content_type }}">
                             <td class="perms">-rw-r--r--</td>
                             <td class="size">{{ page.content | length }}b</td>
                             <td class="date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
                             <td class="name">
+                                <span class="growth-indicator" title="{{ growth_stage | capitalize }}">
+                                    {% if growth_stage == "seedling" %}🌱
+                                    {% elif growth_stage == "growing" %}🌿
+                                    {% elif growth_stage == "evergreen" %}🌲
+                                    {% else %}🌱
+                                    {% endif %}
+                                </span>
+                                <span class="type-indicator" title="{{ content_type | capitalize }}">
+                                    {% if content_type == "blog" %}📝
+                                    {% elif content_type == "project" %}🚀
+                                    {% elif content_type == "reference" %}📚
+                                    {% elif content_type == "tutorial" %}🎓
+                                    {% elif content_type == "snippet" %}💾
+                                    {% else %}📄
+                                    {% endif %}
+                                </span>
                                 <a href="{{ page.permalink }}">{{ page.title }}</a>
 
                                 {% if page.extra and page.extra.status %}
