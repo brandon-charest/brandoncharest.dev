@@ -7,6 +7,7 @@ weight = 100
 +++
 
 # 🛡️ Password Roaster API
+
 **Status:** [ 🔥 LIVE ](https://roastmypassword.com)  
 **Stack:** Rust (Axum) / AWS Lambda / Judgment as a Service
 

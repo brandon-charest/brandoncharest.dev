@@ -16,6 +16,7 @@ Given an array of integers `nums` and an integer `target`, return indices of the
 
 You can return the answer in any order.
 **Examples**
+
 ```text
 Input: nums = [2,7,11,15], target = 9
 Output: [0,1]
@@ -31,6 +32,7 @@ Output: [0,1]
 ```
 
 ## The Process
+
 Before coding, I like to whiteboard the approach. Since we are looking for two numbers `a + b = target`, we are essentially iterating through `a` and checking if `b` (which is `target - a`) exists in the array.
 
 ```text
@@ -41,10 +43,12 @@ because nums[0] = 2, nums[1] = 7
 2 + 7 == 9
 ```
 
-### Brute Force Way:
+### Brute Force Way
+
 The most intuitive approach is a nested loop. We take each number and add it to every other number to see if they match the target.
 
 pseudo code:
+
 ``` python
 def twoSum(nums, target):
     # Iterate through the first number
@@ -54,10 +58,9 @@ def twoSum(nums, target):
             if nums[i] + nums[j] == target:
                 return [i, j]
 ```
+
 - Time Complexity: $O(n^2)$ - We loop through the array twice.
 - Space Complexity: $O(1)$ - We don't store any extra data.
-
-
 
 _Can we do better? Turns out we can bring the runtime down to O(n)._
 
@@ -78,6 +81,8 @@ def twoSum(self, nums: List[int], target: int) -> List[int]:
         prev_map[num] = idx
     return []
 ```
-Analysis
+
+### Analysis
+
 - Time Complexity: $O(n)$ We only iterate through the list once. Dictionary lookups are $O(1)$ on average.
 - Space Complexity: $O(n)$ In the worst case, we might store every element in the dictionary before finding a match.

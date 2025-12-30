@@ -1,7 +1,7 @@
 +++
 title = "Escaping tutorial hell"
 date = "2025-12-27T19:21:19.940Z"
-description = "How I stop over-thnking and started shipping"
+description = "How I stop over-thinking and started shipping"
 [taxonomies]
     tags = [ "rust", "aws", "lambda" ]
 [extra]

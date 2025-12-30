@@ -1,5 +1,5 @@
 +++
-title = "Implimenting the CPU"
+title = "Implementing the CPU"
 date = "2025-12-19T16:32:46.935Z"
 description = "Handling interrupts and pushing the program counter to the stack."
 

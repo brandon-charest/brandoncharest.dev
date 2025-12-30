@@ -16,7 +16,8 @@ problem_number = "443"
 The problem asks us to compress a list of characters **in-place** and return the new length. Since we need to modify the array while reading it, a **Two Pointer** approach is perfect. One pointer (`read_index`) reads through the original characters to find groups, and another pointer (`write_index`) keeps track of where we are writing the compressed result.
 
 ## Approach
-1. Initalize two pointers:
+
+1. Initialize two pointers:
    - `read_index`: used to iterate through the array and counting consecutive characters.
    - `write_index`: used to overwrite `chars` with our compressed results.
 2. Iterate through the array `while read_index < len(chars)`.
@@ -26,27 +27,34 @@ The problem asks us to compress a list of characters **in-place** and return the
    - If the count is greater than 1, we convert the count to a string and write each digit to the `chars` array, incrementing `write_index` as we go.
 5. Finally, we return `write_index`, which represents the new length of the compressed array.
 
+### Example Trace: Chars = ["a", "a", "B", "B", "C"]
 
-### Example Trace: chars = ["a", "a", "b", "b", "c"]
 1. Start Pointers **read_index** (`R`) and **write_index** (`W`) start at the beginning.
+
 ```bash
 ["a", "a", "b", "b", "c"]
   ^    ^
   W    R
 ```
-1. Process Group `a`. We find two `a`s. We write `a` and `2`.
+
+2. Process Group `a`. We find two `a`s. We write `a` and `2`.
+
 ```bash
 ["a", "2", "b", "b", "c"]
             ^    ^
             W    R
 ```
-1. Process Group `b` We find two `b`s. We write `b` and `2`.
+
+3. Process Group `b` We find two `b`s. We write `b` and `2`.
+
 ```bash
 ["a", "2", "b", "2", "c"]
                       ^    ^
                       W    R
 ```
-1. Process Group `c` We find one `c`. We write `c`. _(no number needed)_
+
+4. Process Group `c` We find one `c`. We write `c`. _(no number needed)_
+
 ```bash
 ["a", "2", "b", "2", "c"]
                            ^ (Done)
@@ -54,6 +62,7 @@ The problem asks us to compress a list of characters **in-place** and return the
 ```
 
 ## Code
+
 ```python
 def compress(self, chars: List[str]) -> int:
     if not chars:
@@ -81,8 +90,10 @@ def compress(self, chars: List[str]) -> int:
 ```
 
 ## Complexity
+
 - **Time complexity:** $O(N)$<br>
   We iterate through the `chars` array exactly once.
 
 - **Space complexity:** $O(1)$<br>
   We perform the compression in-place.
+  

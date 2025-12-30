@@ -11,6 +11,7 @@ type = "blog"
 growth = "evergreen"
 pinned = true
 +++
+
 ## TLDR
 
 Create this alias into your `.aliases/.zshrc/.bashrc` or where ever you store aliases for easier use later.
@@ -21,9 +22,9 @@ alias cpwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
 
 Recently I have been spending a little more time using the terminal for work and have had a few instances where I needed to copy the current directory I am in. Now in most cases you could just use the mouse to highlight and copy the directory you need, but I am ~~pretty lazy~~ motivated to try and make this a little easier as I suppose there could be a time where using a mouse is not an option.
 
-## Parts Breakdown
+## Parts Break Down
 
-### pwd: print working directory
+### pwd: Print Working Directory
 
 ```bash
 $ pwd
@@ -34,7 +35,7 @@ Prints the current directory path you are in.
 
 ---
 
-### tr: translate characters
+### tr: Translate Characters
 
 ```bash
 tr -d '\n'
@@ -48,7 +49,7 @@ We use the `-d` command to signal that we want to delete a character off the str
 
 ---
 
-### Copying to system clipboard
+### Copying to System Clipboard
 
 Depending on if you are on OSX or Windows the copy command could be different
 
@@ -60,11 +61,11 @@ _OSX_
 
 - **pbcopy**
 
-this will copy text to the system clipboard (by default).
+This will copy text to the system clipboard (by default).
 
 ---
 
-### echo: Writes to the standard output
+### echo: Writes to the Standard Output
 
 ```bash
 echo 'pwd copied to clipboard'
@@ -74,7 +75,7 @@ This part is not needed I just personally like to have something in my commands 
 
 ---
 
-## Pipe it all together
+## Pipe It All Together
 
 All of these above commands are used with a pipe `|` which will feed the 'output' of one command to the next.
 
@@ -82,7 +83,7 @@ So the flow will be the following.
 
 1. pwd prints out the working directory
 2. That output is now fed to our **tr** argument which will remove the trailing newline character
-3. finally that entire string will be placed into our clipboard for use with the help of pbcopy/clip.
+3. Finally that entire string will be placed into our clipboard for use with the help of pbcopy/clip.
 4. Then an echo at the very end will just print to the screen that the command has been executed
 
 ## Final
