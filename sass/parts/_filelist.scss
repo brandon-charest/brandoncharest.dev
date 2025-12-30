@@ -231,17 +231,74 @@
         color: var(--highlight);
     }
 
-    ul,
-    ol {
-        margin: 1rem 0;
-        padding-left: 2rem;
+    /* Enhanced link styling with hover effects */
+    a {
+        color: var(--primary);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(3, 218, 198, 0.3);
+        transition: all 0.2s ease;
+        position: relative;
 
-        li {
-            margin-bottom: 0.5rem;
-            color: var(--muted-foreground);
+        &:hover {
+            color: var(--highlight);
+            border-bottom-color: var(--highlight);
+            text-shadow: 0 0 8px rgba(128, 222, 234, 0.4);
+        }
+
+        &:visited {
+            color: rgba(3, 218, 198, 0.8);
         }
     }
 
+    /* Enhanced list formatting */
+    ul,
+    ol {
+        margin: 1.5rem 0;
+        padding-left: 2rem;
+
+        li {
+            margin-bottom: 0.75rem;
+            color: var(--muted-foreground);
+            line-height: 1.8;
+            padding-left: 0.5rem;
+            transition: all 0.2s ease;
+
+            &:hover {
+                color: var(--foreground);
+                transform: translateX(2px);
+            }
+
+            /* Nested lists */
+            ul,
+            ol {
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+
+    /* Custom bullet styling for unordered lists */
+    ul {
+        li {
+            position: relative;
+
+            &::marker {
+                color: var(--primary);
+            }
+        }
+    }
+
+    /* Numbered list styling */
+    ol {
+        li {
+            &::marker {
+                color: var(--primary);
+                font-weight: bold;
+            }
+        }
+    }
+
+    /* Inline code styling */
     code {
         background: rgba(0, 0, 0, 0.3);
         padding: 0.2rem 0.5rem;
@@ -249,5 +306,61 @@
         font-size: 0.9em;
         color: var(--highlight);
         border: 1px solid rgba(255, 255, 255, 0.05);
+        font-family: var(--font-mono);
+    }
+
+    /* Code blocks (pre > code) */
+    pre {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 1.5rem;
+        overflow-x: auto;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+        code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--foreground);
+            /* Ensure monospace font for ASCII art */
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            white-space: pre;
+        }
+    }
+
+    /* Blockquote styling */
+    blockquote {
+        border-left: 3px solid var(--primary);
+        padding-left: 1.5rem;
+        margin: 1.5rem 0;
+        color: var(--muted-foreground);
+        font-style: italic;
+        background: rgba(3, 218, 198, 0.05);
+        padding: 1rem 1.5rem;
+        border-radius: 0 6px 6px 0;
+    }
+
+    /* Horizontal rule styling */
+    hr {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 2rem 0;
+        opacity: 0.5;
+    }
+
+    /* Strong/bold text */
+    strong {
+        color: var(--foreground);
+        font-weight: 600;
+    }
+
+    /* Emphasis/italic text */
+    em {
+        color: var(--highlight);
+        font-style: italic;
     }
 }

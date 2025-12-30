@@ -96,13 +96,6 @@
                             <td class="size">{{ page.content | length }}b</td>
                             <td class="date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
                             <td class="name">
-                                <span class="growth-indicator" title="{{ growth_stage | capitalize }}">
-                                    {% if growth_stage == "seedling" %}🌱
-                                    {% elif growth_stage == "growing" %}🌿
-                                    {% elif growth_stage == "evergreen" %}🌲
-                                    {% else %}🌱
-                                    {% endif %}
-                                </span>
                                 <span class="type-indicator" title="{{ content_type | capitalize }}">
                                     {% if content_type == "blog" %}📝
                                     {% elif content_type == "project" %}🚀
