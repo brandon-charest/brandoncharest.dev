@@ -10,5 +10,4 @@ growth = "seedling"
 local_image="images/6502/6502-opcode-table.png"
 +++
 
-# Opcode Table
 ![OpCodes](/images/6502/6502-opcode-table.png)

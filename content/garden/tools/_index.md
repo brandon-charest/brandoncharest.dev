@@ -9,4 +9,5 @@ transparent = true
 Productivity tips, terminal workflows, and developer tooling. Small utilities and shortcuts that make daily work easier.
 
 ## Terminal
+
 Command-line tricks and shell productivity enhancements.
