@@ -5,7 +5,7 @@ description = "Solving the 'Lobby' battery problem"
 [taxonomies]
     tags = [ "aoc", "rust" ]
 [extra]
-    status = "stable"
+    growth = "evergreen"
     problem_link = "[AoC_2025_D03](https://adventofcode.com/2025/day/3)"
 +++
 # Part 01

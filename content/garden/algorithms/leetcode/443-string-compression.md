@@ -8,9 +8,9 @@ transparent = false
 tags = [ "leetcode", "two-pointers", "medium" ]
 
 [extra]
+growth = "evergreen"
 problem_link = "[https://leetcode.com/problems/](https://leetcode.com/problems/string-compression/description/)"
 problem_number = "443"
-status="stable"
 +++
 
 The problem asks us to compress a list of characters **in-place** and return the new length. Since we need to modify the array while reading it, a **Two Pointer** approach is perfect. One pointer (`read_index`) reads through the original characters to find groups, and another pointer (`write_index`) keeps track of where we are writing the compressed result.

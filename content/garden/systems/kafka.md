@@ -5,6 +5,8 @@ description = "Notes about Kafka"
 
 [taxonomies]
 tags = [ "kafka" ]
+[extra]
+growth = "growing"
 +++
 
 ## Core Concept

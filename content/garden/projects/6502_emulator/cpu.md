@@ -7,6 +7,5 @@ description = "Handling interrupts and pushing the program counter to the stack.
 tags = [ "6502", "emulator" ]
 
 [extra]
-type = "reference"
-status = "building"
+growth = "seedling"
 +++

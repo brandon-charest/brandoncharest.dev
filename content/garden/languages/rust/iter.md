@@ -7,6 +7,5 @@ description = "iter"
 tags = [ "rust" ]
 
 [extra]
-type = "reference"
-status = "building"
+growth = "seedling"
 +++

@@ -5,7 +5,7 @@ description = "Finding invalid product IDs"
 [taxonomies]
     tags = [ "aoc", "rust" ]
 [extra]
-    status = "stable"
+    growth = "evergreen"
     problem_link = "[AoC_2025_D02](https://adventofcode.com/2025/day/2)"
 +++
 # Part 01

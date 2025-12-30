@@ -8,7 +8,7 @@ tags = ["rust", "memory-safety"]
 
 [extra]
 # Status: 'building' makes the dot yellow (WIP)
-status = "building"
+growth = "growing"
 +++
 
 The Borrow Checker is the hardest part of the Rust learning curve. It forces you to think about **Ownership** and **Lifetimes** at compile time.

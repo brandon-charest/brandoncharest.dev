@@ -5,7 +5,7 @@ description = "Deciphering the Elfs Safe Combination"
 [taxonomies]
     tags = [ "aoc", "rust" ]
 [extra]
-    status = "stable"
+    growth = "evergreen"
 +++
 
 

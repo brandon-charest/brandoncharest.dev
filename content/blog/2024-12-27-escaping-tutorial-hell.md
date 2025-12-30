@@ -7,6 +7,7 @@ description = "How I stop over-thnking and started shipping"
 [extra]
     pinned = true
     type = "blog"
+    growth = "evergreen"
 +++
 
 

@@ -5,16 +5,17 @@ date = "2025-12-19T15:34:29.514Z"
 [taxonomies]
 tags = [ "6502", "emulator" ]
 [extra]
-type = "reference"
+growth = "growing"
+type = "project"
 +++
 
-# Modeling the 6502 Registers
+## Why Does a CPU Need Registers?
 
-### Why does a CPU need registers? 
-Lets imagine for a moment that a large bookshelf is in front of you, you are the CPU, and the bookshelf represents RAM. We can think of your hands as registers, our hands will pick books from the bookshelf for us to read, or write in, when we are done, we return it to the bookshelf.
+Let's imagine for a moment that a large bookshelf is in front of you, you are the CPU, and the bookshelf represents RAM. We can think of your hands as registers, our hands will pick books from the bookshelf for us to read, or write in, when we are done, we return it to the bookshelf.
 
-### Ok... but why u8?
-The 6502 chip has 8 physical wires attached to it, it can physically only consume one byte at a time. This means the `ALU` which is essentially the calculator part within the chip itself, can only handle 8-bits at a time. If we need to add two 16-bit numbers together, the `ALU` needs to perform two separate 8-bit additions. _(one for the low byte, one for the high byte)_
+### OK... but Why U8?
+
+The 6502 chip has 8 physical wires attached to it, it can physically only consume one byte at a time. This means the `ALU` which is essentially the calculator part within the chip itself, can only handle 8-bits at a time. If we have to add two 16-bit numbers together, the `ALU` needs to perform two separate 8-bit additions. _(one for the low byte, one for the high byte)_
 
 ```rust
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
@@ -47,12 +48,13 @@ impl Registers {
     }
 }
 ```
-### Hang on... the Program Counter is 16-bits??
-Even though the CPU thinks in terms of 8-bits we would need more then memory then what 8-bits can provide. An 8-bit number only has a range of `0-255` where as a 16-bit gives us 64KB of space to use. In order to achieve this the 6502 uses two 8-bit registers.
 
+### Hang on... the Program Counter Is 16-Bits??
 
+Even though the CPU thinks in terms of 8-bits we would need more than memory then what 8-bits can provide. An 8-bit number only has a range of `0-255` whereas a 16-bit gives us 64KB of space to use. In order to achieve this the 6502 uses two 8-bit registers.
 
-# Registers
+## Registers
+
 | Register | Size (bits) | Purpose|
 | :--- | :--- | :--- |
 | Accumulator (**A**) | 8 | Used to perform calculations on data. Instructions can operate directly on the accumulator instead of spending CPU cycles to access memory|
@@ -62,12 +64,12 @@ Even though the CPU thinks in terms of 8-bits we would need more then memory the
 | Stack Pointer (**SP**)| 8 | Stores the stack index into which the next stack element will be inserted. The address of this position is **`$0100`** + **`SP`**. **`SP`** is initially set to **`$FD`**|
 | Status (**P**)| 8 | Each bit represents a status flag.<br>Flags indicate the state of the CPU, or information about the result of the previous instruction. PHP and PLP can save/restore P from the stack. Various instructions can directly set or clear bits in P: SEC, CLC, SEI, CLI, SED, CLD, CLV.<br>See the table below for a description of each flag.  |
 
-# Status Register
+## Status Register
 
 | Bit | Symbol | Name | Description |
 | :--- | :--- | :--- | :--- |
 | 7 | N | Negative | Set if the result was negative. |
-| 6 | V | Overflow | Set if signed overflow occured during addition or subtraction. |
+| 6 | V | Overflow | Set if signed overflow occurred during addition or subtraction. |
 | 5 | - | (Unused) | Always set |
 | 4 | B | Break |Set if an interrupt request has been triggered by a **`BRK`** instruction  |
 | 3 | D | Decimal mode: mathematical instructions will treat the inputs and outputs as "Binary Coded Decimal"   |
