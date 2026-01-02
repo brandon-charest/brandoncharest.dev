@@ -1,13 +1,14 @@
 +++
 title = "Escaping tutorial hell"
 date = "2025-12-27T19:21:19.940Z"
-description = "How I stop over-thinking and started shipping"
+description = "Breaking free from analysis paralysis by building a ridiculous password-roasting API. How I learned to ship first and optimize later."
 [taxonomies]
     tags = [ "rust", "aws", "lambda" ]
 [extra]
     pinned = true
     type = "blog"
     growth = "evergreen"
+    cover_image = "/images/tutorial-hell-cover.png"
 +++
 
 
@@ -40,7 +41,7 @@ No sooner did I start, I caught myself thinking too far ahead...
 - _"What if I need a database?_
 - _"What kind of database?"_
 
-..and various other thoughts about clever ways I could implement the insult generator.
+...and various other thoughts about clever ways I could implement the insult generator.
 
 ### Breaking Free
 

@@ -20,8 +20,7 @@ Static Title: {{ ui::window_bar(title="My Title") }}
             <a href="/" class="path-segment root">~</a>
             {% for part in resource.components %}
             <span class="path-sep">/</span>
-            <a href="/{{ resource.components | slice(end=loop.index) | join(sep=" /") }}" class="path-segment">{{ part
-                }}</a>
+            <a href="/{{ resource.components | slice(end=loop.index) | join(sep="/") }}" class="path-segment">{{ part }}</a>
             {% endfor %}
         </span>
         {% elif path %}
@@ -30,7 +29,7 @@ Static Title: {{ ui::window_bar(title="My Title") }}
             <a href="/" class="path-segment root">~</a>
             {% for part in path %}
             <span class="path-sep">/</span>
-            <a href="/{{ path | slice(end=loop.index) | join(sep=" /") }}" class="path-segment">{{ part }}</a>
+            <a href="/{{ path | slice(end=loop.index) | join(sep="/") }}" class="path-segment">{{ part }}</a>
             {% endfor %}
         </span>
         {% else %}

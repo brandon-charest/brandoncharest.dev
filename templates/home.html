@@ -17,32 +17,55 @@
                     {% set blog = get_section(path="blog/_index.md") %}
 
                     <!-- PINNED SECTION -->
-                    {% set blog_pinned = blog.pages | filter(attribute="extra.pinned", value=true) %}
+{% set blog_pinned = blog.pages | filter(attribute="extra.pinned", value=true) %}
                     {% set garden_pinned = garden.pages | filter(attribute="extra.pinned", value=true) %}
                     {% set pinned_pages = blog_pinned | concat(with=garden_pinned) %}
+                    
                     {% if pinned_pages %}
                     <div class="highlight-section pinned-section">
                         <h3 class="section-label">
                             <span class="label-icon">📌</span>
-                            <span class="label-text">Pinned</span>
+                            <span class="label-text">Featured</span>
                         </h3>
+                        
                         {% set pinned = pinned_pages | first %}
-                        {% set growth_stage = pinned.extra.growth | default(value="seedling") %}
-                        {% set content_type = pinned.extra.type | default(value="note") %}
-                        <div class="card-link file-card featured-card" data-growth="{{ growth_stage }}">
-                            <a href="{{ pinned.permalink }}" class="card-overlay"
-                                aria-label="Read {{ pinned.title }}"></a>
+                        {% set growth = pinned.extra.growth | default(value="seedling") %}
+                        {% set type = pinned.extra.type | default(value="note") %}
+                        {% set cover = pinned.extra.cover_image | default(value=false) %}
 
-                            {{ ui::card_header(title=pinned.title, growth_stage=growth_stage, content_type=content_type)
-                            }}
+                        <div class="card-link file-card featured-card {% if cover %}has-cover{% endif %}" data-growth="{{ growth }}">
+                            <a href="{{ pinned.permalink }}" class="card-overlay" aria-label="Read {{ pinned.title }}"></a>
 
-                            <div class="card-meta">
-                                {{ pinned.description | default(value="No description provided.") | truncate(length=150)
-                                }}
+                            <div class="hero-content">
+                                
+                                <div class="hero-inner">
+                                    <div class="hero-eyebrow">
+                                        <span class="eyebrow-tag">FEATURED</span>
+                                        <span class="eyebrow-date">{{ pinned.date | date(format="%B %d, %Y") }}</span>
+                                    </div>
+
+                                    {{ ui::card_header(title=pinned.title, growth_stage=growth, content_type=type, show_type=false) }}
+                                    
+                                    <div class="card-meta">
+                                        {{ pinned.description | default(value="No description provided.") | truncate(length=160) }}
+                                    </div>
+
+                                    {{ ui::card_tags(tags=pinned.taxonomies.tags, max_tags=3) }}
+                                </div>
+
+                                <div class="hero-footer">
+                                    <span class="read-btn-premium">
+                                        <span class="btn-text">Read Story</span>
+                                        <span class="arrow">→</span>
+                                    </span>
+                                </div>
                             </div>
 
-                            {{ ui::card_tags(tags=pinned.taxonomies.tags, max_tags=3) }}
-                            {{ ui::card_footer(action_text="→ READ") }}
+                            {% if cover %}
+                            <div class="hero-image-wrapper">
+                                <img src="{{ cover }}" alt="Cover Art" loading="lazy" />
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                     {% endif %}
@@ -63,12 +86,15 @@
                             }}
 
                             <div class="card-meta">
-                                {{ page.description | default(value="No description provided.") | truncate(length=120)
-                                }}
+                                {{ page.description | default(value="No description provided.") | truncate(length=120) }}
                             </div>
 
-                            {{ ui::card_tags(tags=page.taxonomies.tags, max_tags=3) }}
-                            {{ ui::card_footer(action_text="→ READ") }}
+                            <div class="card-footer-bar">
+                                {{ ui::card_tags(tags=page.taxonomies.tags, max_tags=3) }}
+                                <a href="{{ page.permalink }}" class="read-link">
+                                    READ <span class="arrow">→</span>
+                                </a>
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
@@ -76,7 +102,7 @@
                     <!-- GROWING SECTION (Seedlings) -->
                     <div class="highlight-section growing-section">
                         <h3 class="section-label">
-                            <span class="label-icon">🌱</span>
+                            <span class="label-icon">🌿</span>
                             <span class="label-text">Growing</span>
                         </h3>
                         {% set seedlings = garden.pages | filter(attribute="extra.growth", value="seedling") |
@@ -92,7 +118,12 @@
                                 {{ page.description | default(value="No description provided.") | truncate(length=80) }}
                             </div>
 
-                            {{ ui::card_footer(action_text="→ READ") }}
+                            <div class="card-footer-bar">
+                                {{ ui::card_tags(tags=page.taxonomies.tags, max_tags=3) }}
+                                <a href="{{ page.permalink }}" class="read-link">
+                                    READ <span class="arrow">→</span>
+                                </a>
+                            </div>
                         </div>
                         {% endfor %}
                     </div>

@@ -131,6 +131,45 @@
   min-height: 4rem;
 }
 
+/* NEW: Unified Card Footer Bar (Site-wide) */
+.card-footer-bar {
+  margin-top: auto;
+  padding: 0.75rem 1.5rem;
+  border-top: 1px solid rgba(3, 218, 198, 0.1);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.08), transparent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  .card-tags {
+    flex: 1;
+    padding: 0;
+    margin: 0;
+  }
+
+  .read-link {
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    .arrow {
+      transition: transform 0.2s;
+    }
+
+    &:hover {
+      .arrow {
+        transform: translateX(3px);
+      }
+    }
+  }
+}
+
 .card-tags {
   position: relative;
   z-index: 2;
