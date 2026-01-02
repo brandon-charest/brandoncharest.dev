@@ -56,16 +56,45 @@ To avoid conflicts when updating cells:
 ### Counting Neighbors
 
 For each cell at `(row, col)`, check the 8 surrounding cells:
-```bash
-[ ][ ][ ]
-[ ][X][ ]  ← Current cell
-[ ][ ][ ]
+
+```rust
+const NEIGHBORS: [(i32, i32); 8] = [
+    (-1, -1),
+    (-1, 0),
+    (-1, 1),
+    (0, -1),
+    (0, 1),
+    (1, -1),
+    (1, 0),
+    (1, 1),
+];
 ```
 
-Handle edge cases:
+Each number corresponds to NEIGHBORS array index. The tuples show (`row_offset`,`col_offset`)
 
-- Wrap around (torus topology)
-- Or treat edges as dead cells
+```text
+[0][1][2]     (-1,-1) (-1, 0) (-1,+1)   
+[3][X][4]  ←  ( 0,-1)    X    ( 0,+1)  Current cell
+[5][6][7]     (+1,-1) (+1, 0) (+1,+1)
+```
+
+```rust
+fn live_neighbor_count(&self, row: u32, column: u32) -> u8 {
+    NEIGHBORS
+        .iter()  // Iterate over all 8 neighbor offsets
+        .map(|&(dr, dc)| {
+            // Apply offset and wrap around edges
+            // rem_euclid handles negative numbers correctly for wrapping
+            let neighbor_row = (row as i32 + dr).rem_euclid(self.height as i32) as u32;
+            let neighbor_col = (column as i32 + dc).rem_euclid(self.width as i32) as u32;
+            
+            // Get the cell state (0 = dead, 1 = alive)
+            let idx = self.get_index(neighbor_row, neighbor_col);
+            self.cells[idx] as u8
+        })
+        .sum()  // Count total live neighbors
+}
+```
 
 ## Optimization Ideas
 

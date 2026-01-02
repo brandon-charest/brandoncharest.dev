@@ -8,16 +8,17 @@ description = "Finding invalid product IDs"
     growth = "evergreen"
     problem_link = "[AoC_2025_D02](https://adventofcode.com/2025/day/2)"
 +++
-# Part 01
+## Part 01
+
 Day 1 done, we made it to the gift shop! (who is even visiting this shop??).
 
-An elf has added a bunch of invalid product IDs to their database, and we are given a list of ranges we need to check. 
+An elf has added a bunch of invalid product IDs to their database, and we are given a list of ranges we need to check.
 ```text
 11-22,95-115,998-1012,1188511880-1188511890,222220-222224,...
 ```
 An invalid product ID is made only of some sequence of digits repeated twice. So, 55 (5 twice), 6464 (64 twice), and 123123 (123 twice).
 
-First step is to parse the input into a more manageable state. Rust allows us to write a small compact "one-liner", which is in a functional style. [chaining-methods](@/garden/languages/rust/chaining-methods.md)
+First step is to parse the input into a more manageable state. Rust allows us to write a small compact "one-liner", which is in a functional style. [Chaining-methods](@/garden/languages/rust/chaining-methods.md)
 ```rust
 // create a struct to hold our range
 struct Range {
@@ -51,7 +52,8 @@ impl FromStr for Range {
 }
 ```
 
-    With that out of the way we now need to loop through all our nicely parsed data.
+With that out of the way we now need to loop through all our nicely parsed data.
+
 ```rust
 impl Range {
     fn iter(&self) -> std::ops::RangeInclusive<i64> {
@@ -72,18 +74,20 @@ for range in ranges {
 ```
 
 We didn't need to implement a custom [iter](@/garden/languages/rust/iter.md) on our object we could have...
+
 ```rust
 for num in range.start..=range.end {
     // awesome logic here..
 }
 ```
+
 But since I am doing this to learn some Rust I figured why not...
 
 ## Pattern
 
 One observation we can make is that the invalid product IDs will have have some sequence of its numbers repeated twice. Meaning only numbers that have an even amount of digits in them can be considered!
 
-Since we know the sub sequence is repeated twice that means that if we split the number in half, the first half **must** equal the second half
+Since we know the subsequence is repeated twice that means that if we split the number in half, the first half **must** equal the second half
 
 ```rust
 fn valid_pattern(num: i64) -> bool {
@@ -103,7 +107,7 @@ fn valid_pattern(num: i64) -> bool {
 }
 ```
 
-# Part 02
+## Part 02
 
 For part 02 the added twist is a product ID is invalid if it is made only of some sequence of digits repeated **at least** twice.
 
@@ -135,6 +139,7 @@ fn valid_pattern2(num: i64) -> bool {
     false
 }
 ```
+
 Ex. `123123123` length = 9
 | Iteration | Pattern Length | Divisible? (9 % len) | Candidate | Check | Result |
 | :--- | :--- | :--- | :--- | :--- | :--- |
