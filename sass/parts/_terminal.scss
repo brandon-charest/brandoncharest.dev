@@ -152,7 +152,6 @@
     letter-spacing: 0.05em;
 }
 
-/* Breadcrumb Navigation - Premium */
 .terminal-path {
   font-family: var(--mono-text-font);
   font-size: 0.85rem;
@@ -177,13 +176,7 @@
     position: relative;
     font-weight: 500;
     letter-spacing: 0.02em;
-    
-    /* Subtle text shadow for depth */
     text-shadow: 0 0 10px rgba(3, 218, 198, 0.3);
-
-    /* Premium gradient border */
-
-
 
     &:hover {
 
@@ -192,7 +185,6 @@
 
       transform: translateY(-1px);
       
-      /* Animated underline */
       &::after {
         content: '';
         position: absolute;
@@ -210,7 +202,7 @@
       font-weight: 700;
       padding: 0.35rem 0.6rem;
       
-      /* Stronger glow for home */
+
       text-shadow: 0 0 12px rgba(3, 218, 198, 0.4);
       
       &:hover {

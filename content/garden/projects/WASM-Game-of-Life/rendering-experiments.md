@@ -21,8 +21,6 @@ For a generative art tool, I need:
 - Visual effects (bloom, chromatic aberration)
 - Custom color palettes
 
----
-
 ## Rendering Options
 
 ### 1. Canvas 2D (Current)
@@ -61,8 +59,6 @@ For a generative art tool, I need:
 - Limited browser support
 - Steeper learning curve
 
----
-
 ## Current Focus: WebGL Migration
 
 ### Plan
@@ -76,9 +72,6 @@ For a generative art tool, I need:
 
 - [WebGPU Fundamentals](https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl.html)
 - Rust `wgpu` crate documentation
-- Three.js shaders for inspiration
-
----
 
 ## Experiments Log
 
@@ -87,8 +80,6 @@ For a generative art tool, I need:
 - [ ] Bloom post-processing
 - [ ] 4K export functionality
 - [ ] Performance comparison: 1M vs 10M cells
-
----
 
 ## Questions to Explore
 
