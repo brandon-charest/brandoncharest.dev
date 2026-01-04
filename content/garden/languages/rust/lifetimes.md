@@ -57,7 +57,7 @@ Highlight {
 }
 ```
 
-setting content to `parts[1].trim()` looked like we were just "getting" a lifetime reference from no where, because I had stated the struct Highlight is defined needing `content: &'a str,`. Digging a little deeper I found Rust's [Lifetime Elision](https://doc.rust-lang.org/nomicon/lifetime-elision.html) rules. which means although the `trim()` function in the std written as `pub fn trim(&self) -> &str` is expanded to `fn trim<'b>(&'b self) -> &'b str`. Which satisfy s our definition.
+Setting content to `parts[1].trim()` looked like we were just "getting" a lifetime reference from nowhere, because I had stated the struct Highlight is defined needing `content: &'a str,`. Digging a little deeper I found Rust's [Lifetime Elision](https://doc.rust-lang.org/nomicon/lifetime-elision.html) rules. Which means although the `trim()` function in the std written as `pub fn trim(&self) -> &str` is expanded to `fn trim<'b>(&'b self) -> &'b str`. Which satisfies our definition.
 
 ### Variables Sharing Lifetimes
 
@@ -96,7 +96,7 @@ println!("Result: {}", result);
 // Error: borrowed value does not live long enough
 ```
 
-The solution here is to deal with the ownership of the string. instead of `&'a str` we can change the return to `String`. The con here is we are taking a small performance hit, this is probably still an acceptable solution unless you are writing some high performance code or working with embeded systems.
+The solution here is to deal with the ownership of the string. Instead of `&'a str` we can change the return to `String`. The con here is we are taking a small performance hit, this is probably still an acceptable solution unless you are writing some high performance code or working with embeded systems.
 
 The Embeded systems way which has higher performance would be create a type that can hold either type.
 
@@ -139,4 +139,3 @@ fn main() {
       // If we had matched 'Left', 'result' would still be valid
 }
 ```
-#### Distinct Lifetimes
