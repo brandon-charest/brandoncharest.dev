@@ -55,7 +55,8 @@ impl Registers {
 Even though the CPU thinks in terms of 8-bits we would need more than memory then what 8-bits can provide. An 8-bit number only has a range of `0-255` whereas a 16-bit gives us 64KB of space to use. In order to achieve this the 6502 uses two 8-bit registers.
 
 ### Status Struct
-[Status]
+
+[Status](@/garden/projects/6502_emulator/status.md)
 
 ## Registers
 

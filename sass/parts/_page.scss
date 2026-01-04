@@ -203,58 +203,88 @@
 
 .backlinks-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
     list-style: none;
     padding: 0;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 
     li {
         margin: 0;
+        padding: 0;
     }
 }
 
 .signal-card {
-    display: block;
-    background-color: rgba(0, 0, 0, 0.3);
-    border: 1px solid #333;
-    border-left: 3px solid #555;
-    padding: 1rem;
-    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.25) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid var(--primary);
+    padding: 1.25rem;
+    border-radius: 6px;
     text-decoration: none !important;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     font-family: var(--mono-text-font);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(3, 218, 198, 0.03) 0%, transparent 100%);
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
 
     &:hover {
-        border-color: var(--highlight);
-        border-left-color: var(--highlight);
-        background-color: rgba(34, 211, 238, 0.05);
-        transform: translateX(5px);
+        border-color: rgba(3, 218, 198, 0.4);
+        border-left-color: var(--primary);
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(3, 218, 198, 0.08) 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(3, 218, 198, 0.15);
+
+        &::before {
+            opacity: 1;
+        }
+
+        .signal-arrow {
+            opacity: 1;
+            transform: translateX(4px);
+        }
     }
 }
 
 .signal-path {
     display: block;
     font-size: 0.75rem;
-    color: #888;
-    margin-bottom: 0.25rem;
+    color: var(--text-2);
+    margin-bottom: 0.5rem;
+    opacity: 0.7;
+    font-weight: 500;
 }
 
 .signal-title {
     display: block;
-    font-size: 1rem;
-    font-weight: bold;
+    font-size: 1.05rem;
+    font-weight: 600;
     color: var(--foreground);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
 }
 
 .signal-arrow {
     display: block;
-    font-size: 0.7rem;
+    font-size: 1rem;
     color: var(--primary);
-    opacity: 0.6;
+    opacity: 0.5;
     text-align: right;
-    letter-spacing: 1px;
+    transition: all 0.25s ease;
+    margin-top: auto;
 }
 
 .file-footer {
@@ -276,4 +306,8 @@
 .log-success {
     color: var(--primary);
     text-shadow: 0 0 5px rgba(0, 255, 204, 0.2);
+}
+
+.log-dim {
+    opacity: 0.5;
 }
