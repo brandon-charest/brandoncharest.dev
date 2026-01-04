@@ -96,4 +96,47 @@ println!("Result: {}", result);
 // Error: borrowed value does not live long enough
 ```
 
+The solution here is to deal with the ownership of the string. instead of `&'a str` we can change the return to `String`. The con here is we are taking a small performance hit, this is probably still an acceptable solution unless you are writing some high performance code or working with embeded systems.
+
+The Embeded systems way which has higher performance would be create a type that can hold either type.
+
+```rust
+// Can hold EITHER a reference to 'a OR a reference to 'b
+enum Longest<'a, 'b> {
+    Left(&'a str),
+    Right(&'b str),
+}
+
+fn longer<'a, 'b>(x: &'a str, y: &'b str) -> Longest<'a, 'b> {
+    if x.len() > y.len() {
+        Longest::Left(x)
+    } else {
+        Longest::Right(y)
+    }
+}
+
+fn main() {
+    let s1 = String::from("long lived");
+    let result;
+    {
+        let s2 = String::from("short");
+        
+        // We get back an Enum, preserving the specific lifetime of what we picked
+        let outcome = longer(&s1, &s2);
+        
+        match outcome {
+            Longest::Left(val) => {
+                // val is &'a str (Alive!)
+                result = val; 
+                println!("Result is safe: {}", result);
+            },
+            Longest::Right(val) => {
+                // val is &'b str (About to die!)
+                println!("Result is short-lived: {}", val);
+            }
+        }
+    } // s2 dies here. 
+      // If we had matched 'Left', 'result' would still be valid
+}
+```
 #### Distinct Lifetimes

@@ -1,6 +1,7 @@
 +++
 title = "6502 Registers"
 date = "2025-12-19T15:34:29.514Z"
+updated = 2026-01-04
 
 [taxonomies]
 tags = [ "6502", "emulator" ]
@@ -25,7 +26,7 @@ pub struct Registers {
     pub y_register: u8,
     pub stack_pointer: u8,
     pub program_counter: u16,
-    pub status_register: u8
+    pub status_register: Status
 }
 
 impl Default for Registers {
@@ -43,7 +44,7 @@ impl Registers {
             y_register: 0,
             stack_pointer: 0,
             program_counter: 0,
-            status_register: 0
+            status_register: Status::default(),
         }
     }
 }
@@ -52,6 +53,9 @@ impl Registers {
 ### Hang on... the Program Counter Is 16-Bits??
 
 Even though the CPU thinks in terms of 8-bits we would need more than memory then what 8-bits can provide. An 8-bit number only has a range of `0-255` whereas a 16-bit gives us 64KB of space to use. In order to achieve this the 6502 uses two 8-bit registers.
+
+### Status Struct
+[Status]
 
 ## Registers
 
