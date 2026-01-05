@@ -3,7 +3,7 @@
 .highlights-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
+  gap: 1rem;
   margin-top: 1rem;
   grid-template-areas: 
     "pinned"
@@ -71,26 +71,27 @@
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     position: relative;
-    overflow: hidden;
+
 
     /* Flex Layout */
     display: flex;
     flex-direction: column-reverse; /* Mobile: Image on top, Content below */
-
     /* Desktop: Side-by-Side */
     @media (min-width: 768px) {
       flex-direction: row;
       align-items: stretch;
+      min-height: 250px;
     }
 
     /* --- LEFT: CONTENT --- */
     .hero-content {
-      flex: 1.8;
+      flex: 2;
       padding: 0 !important;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
+
 
       /* Gradient ensures text is readable if image bleeds over */
       background: linear-gradient(90deg, var(--bg-1) 60%, transparent 100%);
@@ -113,7 +114,6 @@
         margin-bottom: 0.5rem;
         font-weight: bold;
         letter-spacing: 1px;
-
         .eyebrow-date {
           color: var(--text-2);
           font-weight: normal;
@@ -141,6 +141,11 @@
 
         opacity: 0.9;
         max-width: 95%;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
 
       .card-tags {
@@ -160,19 +165,18 @@
     }
 
     .hero-footer {
+      flex-shrink: 0;
       padding: 1rem 2rem;
       border-top: 1px solid rgba(3, 218, 198, 0.1);
       background: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent);
 
-      @media (max-width: 600px) {
-        padding: 1rem 2rem;
-      }
+
     }
 
     .read-btn-premium {
       display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.5rem;
       padding: 0.75rem 1.5rem;
       background: rgba(3, 218, 198, 0.1);
       border: 1px solid var(--primary);
@@ -255,7 +259,7 @@
     background: var(--bg-1);
     border: 1px solid var(--border);
     transition: all 0.2s ease;
-    padding: 1.25rem;
+    padding: 0.75rem;
     display: flex;
     flex-direction: column;
 
@@ -265,19 +269,22 @@
     }
 
     .card-header {
-      padding: 0 0 0.5rem 0;
       border-bottom: 1px dashed var(--border);
       background: transparent;
+      padding: 0.75rem 1rem 0.5rem;
 
       h3 {
-        font-size: 1.1rem;
+       font-size: 1rem;
+       min-height: auto;
       }
     }
 
     .card-meta {
-      padding: 0.75rem 0;
-      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
       flex: 1;
+      min-height: auto;
+      line-height: 1.5;
     }
 
     /* Use card-footer-bar from _cards.scss */

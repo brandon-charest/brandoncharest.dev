@@ -1,0 +1,247 @@
+/* sass/parts/_garden.scss */
+
+/* ===== UNIFIED GARDEN HEADER ===== */
+.garden-bonsai {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0;
+
+  img {
+    max-width: 280px;
+    width: 100%;
+    height: auto;
+    opacity: 0.6;
+    mix-blend-mode: lighten;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  @media (max-width: 767px) {
+    margin-bottom: 1rem;
+    
+    img {
+      max-width: 220px;
+    }
+  }
+}
+
+/* ===== GARDEN STATS SECTION ===== */
+.garden-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  padding: 1.5rem 0;
+  margin-bottom: 1.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(3, 218, 198, 0.15);
+
+  @media (max-width: 767px) {
+    gap: 1.25rem;
+    padding: 1rem 0;
+    font-size: 0.8rem;
+  }
+}
+
+.stat-item {
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+
+  .stat-label {
+    color: var(--text-2);
+    opacity: 0.7;
+  }
+
+  .stat-value {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.1em;
+  }
+}
+
+/* ===== GROWTH FILTER PILLS ===== */
+.growth-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+  padding: 0;
+
+  @media (max-width: 767px) {
+    gap: 0.5rem;
+  }
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(3, 218, 198, 0.08);
+  border: 1px solid rgba(3, 218, 198, 0.25);
+  border-radius: 20px;
+  color: var(--text-1);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba(3, 218, 198, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(3, 218, 198, 0.2);
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    background: rgba(3, 218, 198, 0.2);
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 20px rgba(3, 218, 198, 0.3);
+  }
+
+  @media (max-width: 767px) {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* ===== CATEGORY SECTIONS ===== */
+.garden-category {
+  margin-bottom: 3rem;
+
+  @media (max-width: 767px) {
+    margin-bottom: 2rem;
+  }
+}
+
+.category-header {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-1);
+  margin: 0 0 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.9;
+
+  @media (max-width: 767px) {
+    font-size: 0.8rem;
+  }
+
+  .category-link {
+    color: var(--text-1);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    opacity: 0.9;
+
+    &:hover {
+      color: var(--primary);
+      opacity: 1;
+      transform: translateX(2px);
+    }
+  }
+}
+
+.category-divider {
+  width: 100%;
+  height: 2px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--border) 0px,
+    var(--border) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 1.5rem;
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.view-all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(3, 218, 198, 0.05);
+  border: 1px solid rgba(3, 218, 198, 0.2);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+
+  .arrow {
+    transition: transform 0.2s;
+  }
+
+  &:hover {
+    background: rgba(3, 218, 198, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(3, 218, 198, 0.15);
+    transform: translateX(2px);
+
+    .arrow {
+      transform: translateX(3px);
+    }
+  }
+}
+
+/* ===== CATEGORY-SPECIFIC CARDS ===== */
+.garden-category .file-card {
+  .card-header {
+    padding: 1rem 1.25rem 0.75rem;
+  }
+
+  .card-meta {
+    padding: 0.5rem 1.25rem 0.75rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    min-height: 3rem;
+  }
+
+  .card-footer-bar {
+    padding: 0.75rem 1.25rem;
+  }
+}

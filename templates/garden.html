@@ -8,63 +8,160 @@
         {{ ui::window_bar(path=section.components) }}
 
         <div class="window-content">
-            <ul class="card-grid">
+            {# Calculate growth stage counts #}
+            {% set total_notes = section.pages | length %}
+            {% set seedling_count = section.pages | filter(attribute="extra.growth", value="seedling") | length %}
+            {% set growing_count = section.pages | filter(attribute="extra.growth", value="growing") | length %}
+            {% set evergreen_count = section.pages | filter(attribute="extra.growth", value="evergreen") | length %}
 
-                {# --- FOLDERS --- #}
-                {% for path in section.subsections %}
-                {% set subsection = get_section(path=path) %}
-                <li>
-                    <div class="card-link folder-card">
-                        <a href="{{ subsection.permalink }}" class="card-overlay"
-                            aria-label="Open {{ subsection.title }}"></a>
+            {# BONSAI HEADER #}
+            <div class="garden-bonsai">
+                <img src="/images/garden-bonsai.png" alt="ASCII Bonsai Tree" />
+            </div>
 
-                        <div class="card-header">
-                            <h3>📂 {{ subsection.title }}</h3>
-                            <span class="card-type">DIR</span>
+            {# GARDEN STATS SECTION #}
+            <div class="garden-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Total Notes:</span>
+                    <span class="stat-value">{{ total_notes }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">🌱 Seedlings:</span>
+                    <span class="stat-value">{{ seedling_count }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">🌿 Growing:</span>
+                    <span class="stat-value">{{ growing_count }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">🌳 Evergreen:</span>
+                    <span class="stat-value">{{ evergreen_count }}</span>
+                </div>
+            </div>
+
+            {# GROWTH FILTERS #}
+            <div class="growth-filters">
+                <span class="filter-pill active">All</span>
+                <span class="filter-pill">🌱 Seedlings</span>
+                <span class="filter-pill">🌿 Growing</span>
+                <span class="filter-pill">🌳 Evergreen</span>
+            </div>
+
+            {# CATEGORY SECTIONS #}
+            {% for subsection_path in section.subsections %}
+            {% set subsection = get_section(path=subsection_path) %}
+            
+            {# Gather all pages from this category and its nested subdirectories #}
+            {% set category_pages = subsection.pages %}
+            {% for nested_path in subsection.subsections %}
+                {% set nested_section = get_section(path=nested_path) %}
+                {% set_global category_pages = category_pages | concat(with=nested_section.pages) %}
+            {% endfor %}
+            
+            {% if category_pages | length > 0 %}
+            <section class="garden-category">
+                <h2 class="category-header">
+                    <a href="{{ subsection.permalink }}" class="category-link">
+                        {% if "tools" in subsection_path %}📂
+                        {% elif "projects" in subsection_path %}🚀
+                        {% elif "languages" in subsection_path %}💻
+                        {% elif "algorithms" in subsection_path %}📊
+                        {% elif "systems" in subsection_path %}🖥️
+                        {% else %}📁
+                        {% endif %}
+                        {{ subsection.title | upper }}
+                    </a>
+                </h2>
+                <div class="category-divider"></div>
+
+                <ul class="category-grid">
+                    {% for page in category_pages | slice(end=6) %}
+                    {% set growth_stage = page.extra.growth | default(value="seedling") %}
+                    {% set content_type = page.extra.type | default(value="note") %}
+                    <li>
+                        <div class="card-link file-card" data-growth="{{ growth_stage }}">
+                            <a href="{{ page.permalink }}" class="card-overlay" aria-label="Read {{ page.title }}"></a>
+
+                            {{ ui::card_header(
+                                title=page.title,
+                                growth_stage=growth_stage,
+                                content_type=content_type
+                            ) }}
+
+                            <div class="card-meta">
+                                {{ page.description | default(value="No description.") | truncate(length=100) }}
+                            </div>
+
+                            <div class="card-footer-bar">
+                                {{ ui::card_tags(tags=page.taxonomies.tags, max_tags=3) }}
+                                <a href="{{ page.permalink }}" class="read-link">
+                                    READ <span class="arrow">→</span>
+                                </a>
+                            </div>
                         </div>
-                        <div class="card-meta">
-                            {{ subsection.description | default(value="Directory container.") }}
-                        </div>
-                        <div class="card-footer">
-                            <span class="status-label">CONTENTS:</span>
-                            <span class="status-value">{{ subsection.pages | length }} {% if subsection.pages | length
-                                == 1 %}NODE{% else %}NODES{% endif %}</span>
-                        </div>
-                    </div>
-                </li>
-                {% endfor %}
+                    </li>
+                    {% endfor %}
+                </ul>
 
-                {# --- FILES --- #}
-                {% for page in section.pages %}
-                {% set growth_stage = page.extra.growth | default(value="seedling") %}
-                {% set content_type = page.extra.type | default(value="note") %}
-                <li>
-                    <div class="card-link file-card" data-growth="{{ growth_stage }}">
-                        <a href="{{ page.permalink }}" class="card-overlay" aria-label="Read {{ page.title }}"></a>
-
-                        {{ ui::card_header(
-                        title=page.title,
-                        growth_stage=growth_stage,
-                        content_type=content_type
-                        ) }}
-
-                        <div class="card-meta">
-                            {{ page.description | default(value="No description.") | truncate(length=100) }}
-                        </div>
-
-                        {# Use modular macro for tags #}
-                        {{ ui::card_tags(tags=page.taxonomies.tags, max_tags=3) }}
-
-                        {# Use modular macro for footer #}
-                        {{ ui::card_footer(action_text="→ READ") }}
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
+                {% if category_pages | length > 6 %}
+                <a href="{{ subsection.permalink }}" class="view-all-link">
+                    View all {{ category_pages | length }} notes <span class="arrow">→</span>
+                </a>
+                {% endif %}
+            </section>
+            {% endif %}
+            {% endfor %}
 
             {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="3rem", opacity=0.5) }}
 
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterPills = document.querySelectorAll('.filter-pill');
+    const cards = document.querySelectorAll('.file-card');
+    
+    filterPills.forEach(pill => {
+        pill.addEventListener('click', function() {
+            filterPills.forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            
+            const pillText = this.textContent.trim().toLowerCase();
+            
+            // Determine filter type
+            let filterType = 'all';
+            if (pillText.includes('seedling')) {
+                filterType = 'seedling';
+            } else if (pillText.includes('growing')) {
+                filterType = 'growing';
+            } else if (pillText.includes('evergreen')) {
+                filterType = 'evergreen';
+            }
+            
+            // Filter cards
+            cards.forEach(card => {
+                const cardGrowth = card.getAttribute('data-growth');
+                
+                if (filterType === 'all' || cardGrowth === filterType) {
+                    card.parentElement.style.display = '';
+                } else {
+                    card.parentElement.style.display = 'none';
+                }
+            });
+            
+            // Hide/show category sections if all cards are hidden
+            document.querySelectorAll('.garden-category').forEach(section => {
+                const visibleCards = section.querySelectorAll('.category-grid li:not([style*="display: none"])');
+                if (visibleCards.length === 0) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = '';
+                }
+            });
+        });
+    });
+});
+</script>
 {% endblock main_content %}
