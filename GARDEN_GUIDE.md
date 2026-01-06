@@ -36,6 +36,8 @@ type = "reference"  # 📚 Reference material
 type = "tutorial"   # 🎓 Tutorial/guide
 # or
 type = "snippet"    # 💾 Code snippet
+# or
+type = "log"        # 🛠️ Dev log/build journal
 ```
 
 ## Example Frontmatter
