@@ -75,4 +75,4 @@ _(I'm looking at you Database Abstraction Layer. You know, just in case I decide
 
 But for a side project, future-proofing is just procrastination with extra steps.
 
-By choosing to build something "stupid", I was able to make that mental shift and removed the pressure to be "smart". I learned more about Rust, and managing my own deployment to AWS in a weekend then I would have if I spent the next few days/months watching more tutorials and researching to build a more "serious" project. Not everything needs to be perfect or serious, sometimes its nice to just have fun.
+By choosing to build something "stupid", I was able to make that mental shift and removed the pressure to be "smart". I learned more about Rust, and managing my own deployment to AWS in a weekend then I would have if I spent the next few days/months watching more tutorials and researching to build a more "serious" project. Not everything needs to be perfect or serious, sometimes it's nice to just have fun.
