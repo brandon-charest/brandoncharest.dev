@@ -38,7 +38,7 @@ I still wanted to learn something along the way, and since I use Python, JavaScr
 No sooner did I start, I caught myself thinking too far ahead...
 
 - _"Whats the best structure I should use so I could scale this easier in the future?"_
-- _"What if I need a database?_
+- _"What if I need a database?"_
 - _"What kind of database?"_
 
 ...and various other thoughts about clever ways I could implement the insult generator.

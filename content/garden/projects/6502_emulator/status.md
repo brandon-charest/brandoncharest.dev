@@ -1,6 +1,7 @@
 +++
 title = "6502 Status"
 date = "2026-01-04"
+description = "How I used Rust's bitflags to make the 6502 status register readable."
 
 [taxonomies]
 tags = [ "6502", "emulator" ]
