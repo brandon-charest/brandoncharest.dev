@@ -14,6 +14,41 @@ growth = "growing"
 
 *A chronological record of my suffering.*
 
+## 📅 2026-01-08
+
+### CPU Refactoring
+
+The CPU file was starting to become way too large and was a pain to read. I decided to move the instructions into their own files.
+
+```bash
+src/hardware/cpu/
+├── instructions/
+│   ├── arithmetic.rs
+│   ├── branch.rs
+│   ├── compare.rs
+│   ├── control.rs
+│   ├── flags.rs
+│   ├── increment.rs
+│   ├── load.rs
+│   ├── logic.rs
+│   ├── mod.rs
+│   ├── noop.rs
+│   ├── shift.rs
+│   ├── stack.rs
+│   └── transfer.rs
+├── addressing.rs
+├── mod.rs
+└── tests.rs
+```
+
+### Testing the NES 6502
+
+I as able to make good progress with Klaus Dormann's functional tests, until I keep running into some loop traps. After debugging for longer than I am willing to admit, I realized it is because I have not implemented the Decimal Mode flag.
+
+So for now ill abandon the Klaus Dormann's functional tests, and instead for on testing again known good NES ROM logs. Specifically the [NES Test ROMs](https://github.com/christopherpow/nes-test-roms/tree/master).
+
+This means I need to look into loading ROMs into memory and running them.
+
 ## 📅 2026-01-07
 
 ### Refactor For `AccessMode`
@@ -67,9 +102,9 @@ The nice part of all that was since I am writing unit tests for the opcodes as I
 
 ### Klaus Dormann's 6502 Functional Test framework
 
-I just found [6502 Functional Test framework](https://github.com/klaus-dormann/6502-functional-test-framework). And I have already written and unit tested a good amount of the opcodes, so I thought lets start this sooner then later.
+I just found [6502 Functional Test framework](https://github.com/klaus-dormann/6502-functional-test-framework). And I have already written and unit tested a good amount of the opcodes, so I thought let's start this sooner rather than later.
 
-I set it up to run and.....  it failed.  Not only did it fail, it failed on the VERY FIRST LINE!! 😂
+I set it up to run and.....  it failed. Not only did it fail, it failed on the VERY FIRST LINE!! 😂
 
 ```bash
 0000: PC=$0400 OP=$D8 A=$00 X=$00 Y=$00 SP=$FD P=24
