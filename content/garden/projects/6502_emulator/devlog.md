@@ -14,6 +14,8 @@ growth = "growing"
 
 *A chronological record of my suffering.*
 
+[Main Branch](https://github.com/brandon-charest/Rust6502)
+
 ## 📅 2026-01-08
 
 ### CPU Refactoring
