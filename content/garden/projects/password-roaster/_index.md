@@ -19,7 +19,7 @@ I didn't just build this to be mean. I built it to break out of "Tutorial Hell" 
 
 ### Read the Build Log: Escaping Tutorial Hell
 
-[How I stopped worrying about perfection and just had fun.](/content/blog/2024-12-27-escaping-tutorial-hell.md)
+[How I stopped worrying about perfection and just had fun.](@/blog/2024-12-27-escaping-tutorial-hell.md)
 
 ### Architecture Notes (Coming Soon)
 
