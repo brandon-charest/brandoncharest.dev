@@ -3,7 +3,7 @@ title = "What I'm Working On Now"
 description = "Current focus areas, research queue, and active projects"
 +++
 
-> Last updated: December 2025
+> Last updated: January 2026
 
 ## Currently Learning
 
@@ -17,11 +17,9 @@ I'm diving deep into **low-level systems programming** with a focus on:
 
 Topics I'm actively researching or planning to explore:
 
-- [ ] **Kafka**: Deep dive into partitioning strategies and consumer group rebalancing
-- [ ] **Redis Pub/Sub**: Implementing scalable event-driven architectures
-- [ ] **WASM at the Edge**: Running WebAssembly on Cloudflare Workers and similar platforms
-- [ ] **Zig**: Evaluating as a potential alternative to C for systems programming
-- [ ] **SIMD Operations**: Understanding vectorization for performance-critical code
+- [ ] **[Temporal](https://temporal.io/)**: Learning about distributed tracing and observability
+- [ ] **[Zig](https://ziglang.org/)**: Evaluating as a potential alternative to C for systems programming
+- [ ] **[SIMD Operations](https://en.wikipedia.org/wiki/SIMD)**: Understanding vectorization for performance-critical code
 
 ## Active Projects
 
@@ -31,7 +29,7 @@ A playful password strength checker API with snarky feedback, built with Rust an
 
 ### 🎮 [6502 Emulator](@/garden/projects/6502_emulator/_index.md)
 
-Building a cycle-accurate 6502 CPU emulator to understand computer architecture at a fundamental level. Currently working on interrupt handling and stack operations.
+Building a cycle-accurate 6502 CPU emulator to understand computer architecture at a fundamental level. Currently working on implementing a test framework to compare against known good NES ROM logs. 
 
 ## Reading
 
@@ -47,8 +45,8 @@ Building a cycle-accurate 6502 CPU emulator to understand computer architecture 
 
 ---
 
-## About This Page
+## About this Page
 
 This page is inspired by [Derek Sivers' /now movement](https://nownownow.com/about). It's a snapshot of what I'm focused on right now, updated every few months. If you're interested in collaborating or have thoughts on any of these topics, feel free to reach out!
 
-*Note: This page serves as my research queue and current focus tracker. Individual explorations may eventually become full posts in my [digital garden](/garden).*
+*Note: This page serves as my research queue and current focus tracker. Individual explorations may eventually become full posts in my [digital garden](@/garden/_index.md).*
