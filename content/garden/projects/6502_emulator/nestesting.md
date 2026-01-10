@@ -7,7 +7,7 @@ description = "Quest for the Golden Logs and how I verified the CPU logic"
 tags = [ "6502", "emulator" ]
 
 [extra]
-growth = "seedling"
+growth = "growing"
 type = "project"
 +++
 

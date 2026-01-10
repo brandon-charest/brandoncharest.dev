@@ -16,6 +16,98 @@ growth = "growing"
 
 [Main Branch](https://github.com/brandon-charest/Rust6502)
 
+## 📅 2026-01-09
+
+### NES Test Verification
+
+Implemented the remaining NES opcodes (official and unofficial) and verified them against the [NES Test ROMs](@/garden/projects/6502_emulator/nestesting.md). Also wrote a small disassembler to be able to be able to see easier whats happening, I am assuming this will be useful for debugging in the future.
+
+### Refactor, Refactor, Refactor...
+
+My files were growing way out of hand, especially since I wanted to try and have some form of unit tests for each instruction, which has already saved me some headache as I continue to tinker with the logic. I decided to move the instruction tests into their own files.  
+
+```bash
+src/hardware/cpu/tests/
+├── mod.rs
+├── arithmetic.rs
+├── branch.rs
+├── compare.rs
+├── control.rs
+├── core.rs
+├── flags.rs
+├── increment.rs
+├── load_store.rs
+├── shift.rs
+├── stack.rs
+├── transfer.rs
+└── unofficial.rs
+```
+
+This makes it a little easier to write tests and verify, plus I added code coverage to my CI pipeline. I don't think I need to shoot for 100% coverage, but I will try to work and bump it up some more before moving onto the next parts.
+
+```text
+Filename                           Regions    Missed Regions     Cover   Functions  Missed Functions  Executed       Lines      Missed Lines     Cover    Branches   Missed Branches     Cover
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bus.rs                                  90                 3    96.67%          11                 0   100.00%          52                 0   100.00%           0                 0         -
+cpu/addressing.rs                      143                 5    96.50%           1                 0   100.00%          63                 2    96.83%           0                 0         -
+cpu/disassembler.rs                     91                 0   100.00%           2                 0   100.00%          37                 0   100.00%           0                 0         -
+cpu/instructions/arithmetic.rs          60                19    68.33%           3                 1    66.67%          32                 9    71.88%           0                 0         -
+cpu/instructions/branch.rs              89                38    57.30%           9                 4    55.56%          46                17    63.04%           0                 0         -
+cpu/instructions/compare.rs             62                34    45.16%           4                 2    50.00%          24                10    58.33%           0                 0         -
+cpu/instructions/control.rs             97                 0   100.00%           7                 0   100.00%          44                 0   100.00%           0                 0         -
+cpu/instructions/flags.rs               28                 0   100.00%           7                 0   100.00%          21                 0   100.00%           0                 0         -
+cpu/instructions/increment.rs           94                 0   100.00%           6                 0   100.00%          36                 0   100.00%           0                 0         -
+cpu/instructions/load.rs                90                 0   100.00%           6                 0   100.00%          30                 0   100.00%           0                 0         -
+cpu/instructions/logic.rs               80                63    21.25%           4                 3    25.00%          31                25    19.35%           0                 0         -
+cpu/instructions/noop.rs                 5                 0   100.00%           1                 0   100.00%           3                 0   100.00%           0                 0         -
+cpu/instructions/shift.rs              194                 0   100.00%           8                 0   100.00%          98                 0   100.00%           0                 0         -
+cpu/instructions/stack.rs               43                 0   100.00%           4                 0   100.00%          21                 0   100.00%           0                 0         -
+cpu/instructions/transfer.rs            33                 6    81.82%           6                 1    83.33%          23                 4    82.61%           0                 0         -
+cpu/instructions/unofficial.rs         107                 0   100.00%           5                 0   100.00%          47                 0   100.00%           0                 0         -
+cpu/memory_access.rs                    60                 0   100.00%           7                 0   100.00%          32                 0   100.00%           0                 0         -
+cpu/mod.rs                             340               156    54.12%           9                 5    44.44%         147                71    51.70%           0                 0         -
+opcodes.rs                             381               229    39.90%           2                 0   100.00%        1294               793    38.72%           0                 0         -
+registers.rs                            30                 0   100.00%           4                 0   100.00%          31                 0   100.00%           0                 0         -
+status.rs                              102                 3    97.06%           7                 0   100.00%         110                 3    97.27%           0                 0         -
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                 2219               556    74.94%         113                16    85.84%        2222               934    57.97%           0                 0         -
+```
+
+### Disassembler
+
+I came across some interesting pieces of data when running the ROM test through the disassembler.
+
+```text,hl_lines=10-11
+EBDA: JSR $FADA
+EBDD: LDA $0647
+EBE0: CMP #$38
+EBE2: BEQ $EBE6
+EBE4: STY $00
+EBE6: INY
+EBE7: LDA #$EB
+EBE9: STA $47
+EBEB: JSR $FAB1
+EBEE: .db E7 (Unknown)
+EBEF: .db 47 (Unknown)
+EBF0: NOP
+EBF1: NOP
+EBF2: NOP
+EBF3: NOP
+EBF4: JSR $FAB7
+EBF7: LDA $47
+EBF9: CMP #$EC
+EBFB: BEQ $EBFF
+EBFD: STY $00
+```
+
+What is `.db`? From a quick search called code/data interleaving?? 🤔
+
+ I guess ill have to figure out what that is.
+
+### Next Steps? PPU
+
+With the CPU verified and for what I can tell at the moment is correct. I will move on to being able to now see something. The [PPU](https://www.nesdev.org/wiki/PPU)!
+
 ## 📅 2026-01-08
 
 ### CPU Refactoring
