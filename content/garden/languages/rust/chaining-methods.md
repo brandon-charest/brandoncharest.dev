@@ -7,5 +7,5 @@ description = "Rusts functional style"
 tags = [ "rust", "patterns" ]
 
 [extra]
-growth = "growing"
+growth = "seedling"
 +++
