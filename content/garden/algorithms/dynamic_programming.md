@@ -102,6 +102,7 @@ Finally something interesting... Now we can choose from Item 1 and Item 2.
 ### Why Look at the Row Above?
 
 The table is built row by row.
+
 - Row 1 tells us "What's the best value I can make with **only** Item 1 and $w$ capacity".
 - Row 2 tells us "What's the best I can do with Items 1-2 and $w$ capacity?"
 Since we have 1kg left over we already know whats the best value we can make with Item 1 with a weight of 1. It's **1**
