@@ -13,8 +13,8 @@ feed_filenames = ["atom.xml"]
 
 
 [markdown]
-highlight_code = true
-highlight_theme = "material-dark"
+highlighting.theme = "material-dark"
+highlighting.enabled = true
 
 [extra]
 theme = "auto"
