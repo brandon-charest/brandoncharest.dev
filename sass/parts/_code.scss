@@ -150,8 +150,12 @@ pre {
   }
 
   mark {
-    background-color: var(--highlight-color) !important;
-    border-radius: 0px;
+    background-color: rgba(3, 218, 198, 0.12) !important;
+    border-left: 3px solid rgba(3, 218, 198, 0.5);
+    border-radius: 2px;
+    padding-left: 0.5rem;
+    margin-left: -0.5rem;
+    color: inherit !important;
   }
 
   code {
@@ -168,10 +172,12 @@ pre {
 
       mark {
         display: block;
-        color: unset;
-        padding: 0;
-        background-color: var(--highlight-color) !important;
-        filter: brightness(1.2);
+        color: inherit !important;
+        padding-left: 0.5rem;
+        margin-left: -0.5rem;
+        background-color: rgba(3, 218, 198, 0.12) !important;
+        border-left: 3px solid rgba(3, 218, 198, 0.5);
+        border-radius: 2px;
       }
     }
 
