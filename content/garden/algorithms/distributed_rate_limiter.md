@@ -4,10 +4,10 @@ date = "2026-01-12"
 description = "Thread-safe Python reference implementations"
 
 [taxonomies]
-tags = ["algorithms", "distributed-systems"]
+tags = ["system-design", "python"]
 
 [extra]
-growth = "growing"
+growth = "evergreen"
 type="resource"
 +++
 
@@ -104,11 +104,63 @@ Excellent! Now we have a thread-safe implementation, this will work great... one
 
 **Scenario:**
 
-- User A makes a request to Server 1, they get a token
-- User A makes a request to Server 2. Server 2 has no idea that User A already got a token from Server 1. All it knows is that this user as far as its concerned has 1 token left. So it allows the request.
+- `User A` makes a request to Server 1, they get a token
+- `User A` makes a request to Server 2. Server 2 has no idea that `User A` already got a token from Server 1. All it knows is that this user as far as its concerned has 1 token left. So it allows the request.
 
-User A effectively now has `Limit * Number of Servers` tokens.
+`User A` effectively now has `Limit * Number of Servers` tokens.
 
 This is where we need a distributed rate limiter.
 
 ### Distributed State
+
+```python
+class DistributedRateLimiter:
+    def __init__(self, redis_client, key, capacity, fill_rate):
+        self.redis = redis_client
+        self.key = key
+        self.capacity = capacity
+        self.fill_rate = fill_rate
+        self.last_timestamp_key = f"{key}:ts"
+
+    def allow_request(self, tokens_needed=1):
+        """
+        Lua script to atomicaly:
+        1. Refill tokens based on time passed.
+        2. Check if enough tokens exist.
+        3. Decrement and update timestamp.
+        """
+        lua_script = """
+        local tokens_key = KEYS[1]
+        local timestamp_key = KEYS[2]
+        local capacity = tonumber(ARGV[1])
+        local fill_rate = tonumber(ARGV[2])
+        local now = tonumber(ARGV[3])
+        local requested = tonumber(ARGV[4])
+
+        -- Get current state
+        local last_tokens = tonumber(redis.call("get", tokens_key)) or capacity
+        local last_refill = tonumber(redis.call("get", timestamp_key)) or now
+
+        -- Refill tokens
+        local delta = math.max(0, now - last_refill)
+        local filled_tokens = math.min(capacity, last_tokens + (delta * fill_rate))
+
+        -- Check if allowed
+        if filled_tokens >= requested then
+            local new_tokens = filled_tokens - requested
+            redis.call("set", tokens_key, new_tokens)
+            redis.call("set", timestamp_key, now)
+            return 1 -- Allowed
+        end
+
+        return 0 -- Denied
+        """
+
+        cmd = self.redis.register_script(lua_script)
+        return bool(cmd(
+            keys=[self.key, self.last_timestamp_key],
+            args=[self.capacity, self.fill_rate, time.time(), tokens_needed]
+        ))
+```
+
+Notice how we are not using `Lock`. This is because the Lua script is atomic. It will execute in a single step and no other thread can access the state in between.
