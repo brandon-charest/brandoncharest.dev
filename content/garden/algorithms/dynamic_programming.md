@@ -10,6 +10,7 @@ tags = ["algorithms", "dynamic-programming"]
 growth = "seedling"
 +++
 
+
 ## The Knapsack Problem
 
 Dynamic Programming is often a struggle for most developers. The **0/1 Knapsack Problem** was one of the first times I was able to understand the issue on a fundamental level.
