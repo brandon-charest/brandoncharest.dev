@@ -15,8 +15,14 @@ I'm diving deep into **low-level systems programming** with a focus on:
 
 ## Research Queue
 
-Topics I'm actively researching or planning to explore:
+It has become abundantly clear to me that I do **not** understand exactly how some systems work, on a fundamental level. To fix this I am going to explore implementing my own version.
+- [ ] **Kafka**
+- [ ] **Redis**
+- [ ] **PostgreSQL**
+- [ ] **Cassandra**
 
+
+Topics I'm actively researching or planning to explore:
 - [ ] **[Temporal](https://temporal.io/)**: Learning about distributed tracing and observability
 - [ ] **[Zig](https://ziglang.org/)**: Evaluating as a potential alternative to C for systems programming
 - [ ] **[SIMD Operations](https://en.wikipedia.org/wiki/SIMD)**: Understanding vectorization for performance-critical code

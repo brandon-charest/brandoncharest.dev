@@ -71,7 +71,7 @@ For example, a Redis Cluster with 3 nodes:
 - Node B contains hash slots from 5501 to 11000.
 - Node C contains hash slots from 11001 to 16383.
 
-### Redis Streams Vs. [Kafka](@/garden/systems/kafka.md)
+### Redis Streams Vs. [Kafka](@/garden/concepts/kafka.md)
 
 ## Ref
 
