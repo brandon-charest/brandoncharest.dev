@@ -16,6 +16,117 @@ growth = "growing"
 
 [Main Branch](https://github.com/brandon-charest/http-rust)
 
+## 📅 2026-01-27
+
+HTTP 1.1, [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html), [RFC 9112](https://www.rfc-editor.org/rfc/rfc9112.html)
+
+Layout of a HTTP Message.
+
+HTTP Message Syntax
+
+> `METHOD` `/resource-path` `PROTOCOL-VERSION`\r\n
+
+> `GET` `/cat-jokes` `HTTP/1.1`\r\n
+
+
+Created an enum to track HTTP Errors.
+
+```rust
+pub enum HttpError {
+    MissingRequestLine,
+    InvalidMethod(String),
+    InvalidPath(String),
+    InvalidVersion(String),
+    MalformedRequestLine,
+    MissingCRLF,
+    IoError(std::io::Error),
+}
+
+impl From<std::io::Error> for HttpError {
+    fn from(err: std::io::Error) -> Self {
+        HttpError::IoError(err)
+    }
+}
+```
+
+Originally I just had, individual checks for each part.
+
+```rust
+    let method = parts.next().ok_or(std::io::Error::new(
+        std::io::ErrorKind::InvalidData,
+        "Invalid request line",
+    ))?;
+    let request_target = parts.next().ok_or(std::io::Error::new(
+        std::io::ErrorKind::InvalidData,
+        "Invalid request line",
+    ))?;
+    let version = parts.next().ok_or(std::io::Error::new(
+        std::io::ErrorKind::InvalidData,
+        "Invalid request line",
+    ))?;
+```
+
+but thats pretty awful...  I decided to use the `thiserror` crate.
+
+```rust
+use thiserror::Error;
+#[derive(Error, Debug)]
+pub enum HttpError {
+    #[error("missing request line")]
+    MissingRequestLine,
+    
+    #[error("invalid HTTP method: {0}")]
+    InvalidMethod(String),
+    
+    #[error("invalid request path: {0}")]
+    InvalidPath(String),
+    
+    #[error("invalid HTTP version: {0}, expected HTTP/1.0 or HTTP/1.1")]
+    InvalidVersion(String),
+    
+    #[error("malformed request line: expected 'METHOD PATH VERSION'")]
+    MalformedRequestLine,
+    
+    #[error("missing CRLF line terminator")]
+    MissingCRLF,
+    
+    #[error("missing required header: {0}")]
+    MissingHeader(String),
+    
+    #[error("invalid header format: {0}")]
+    InvalidHeader(String),
+    
+    #[error(transparent)]
+    IoError(#[from] std::io::Error),
+}
+```
+
+We need to have the ability to read in a request in chunks and then parse it.
+
+```rust
+loop {
+    let bytes_read = reader.read(&mut read_buffer)?;
+
+    if bytes_read == 0 {
+        // End of stream
+        if request.state != ParseState::Complete {
+            return Err(HttpError::MissingRequestLine);
+        }
+        break;
+    }
+
+    // Convert bytes to string
+    let chunk = String::from_utf8_lossy(&read_buffer[..bytes_read]);
+
+    // Parse the chunk
+    let complete = request.parse_chunk(&chunk, &mut buffer)?;
+
+    if complete {
+        break;
+    }
+}
+```
+
 ## 📅 2026-01-24
 
 Basic implementation of a reader loop that reads in `8 bytes` at time from socket connection. For this I technically do not need to use `mpsc::channel` but in some of the examples I have seen (which happened to be in Go) it seems like a channel was implemented.
