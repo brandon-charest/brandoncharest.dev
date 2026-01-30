@@ -73,6 +73,32 @@ For example, a Redis Cluster with 3 nodes:
 
 ### Redis Streams Vs. [Kafka](@/garden/concepts/kafka.md)
 
+## RESP Protocol
+
+RESP is a binary protocol that uses control sequences encoded in ASCII.
+
+
+### Payload Structure
+
+![RESP Protocol Structure](/images/resp_protocol_structure.png)
+
+The first byte of every RESP message acts as a **type indicator**, determining how the rest of the payload should be parsed:
+
+| Type Indicator | Data Type | Structure | Example |
+| :--- | :--- | :--- | :--- |
+| `+` | **Simple String** | `+<string>\r\n` | `+OK\r\n` |
+| `-` | **Error** | `-<error message>\r\n` | `-ERR unknown command\r\n` |
+| `:` | **Integer** | `:<number>\r\n` | `:1000\r\n` |
+| `$` | **Bulk String** | `$<length>\r\n<data>\r\n` | `$6\r\nfoobar\r\n` |
+| `*` | **Array** | `*<count>\r\n<elements>` | `*2\r\n$3\r\nfoo\r\n$3\r\nbar\r\n` |
+
+**Key Points:**
+- **Simple Strings** and **Errors** are human-readable, single-line responses
+- **Bulk Strings** are binary-safe and prefixed with their length
+- **Arrays** can contain nested RESP messages of any type
+- `\r\n` (**CLRF**) is the *terminator* for this protocol.
+
+
 ## Ref
 
 - [redis.io](https://redis.io/)
