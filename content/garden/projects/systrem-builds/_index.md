@@ -6,9 +6,6 @@ template = "section.html"
 sort_by = "weight"
 weight = 1
 transparent = true
-
-[taxonomies]
-tags = ["systems", "rust", "go", "engineering"]
 +++
 
 > **"What I cannot create, I do not understand."** — Richard Feynman
