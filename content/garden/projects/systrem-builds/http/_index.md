@@ -1,15 +1,10 @@
 +++
 title = "HTTP Server from Scratch"
 description = "Reinventing the wheel to learn how the road works. Building a compliant HTTP/1.1 server using only Rust std::net."
-date = "2025-01-24"
-updated = "2025-01-24"
 template = "section.html"
 sort_by = "date"
 weight = 1
 transparent = true
-
-[taxonomies]
-tags = ["rust", "systems", "http", "networking"]
 +++
 
 > **"Imagine not using AI in the Lord's year 2025..."** — ThePrimeagen
