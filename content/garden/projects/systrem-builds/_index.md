@@ -1,11 +1,12 @@
 +++
 title = "System Builds"
 description = "Reinventing the wheel to see how it rolls. Deep dives into low-level infrastructure."
-date = "2026-01-24"
+
 template = "section.html"
 sort_by = "weight"
 weight = 1
 transparent = true
+
 [taxonomies]
 tags = ["systems", "rust", "go", "engineering"]
 +++
