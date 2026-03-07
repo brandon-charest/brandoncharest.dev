@@ -1,7 +1,7 @@
 +++
 title = "Dynamic Programming"
 date = "2026-01-05"
-description = ""
+description = "Notes on dynamic programming patterns, including the knapsack problem"
 
 [taxonomies]
 tags = ["algorithms", "dynamic-programming"]

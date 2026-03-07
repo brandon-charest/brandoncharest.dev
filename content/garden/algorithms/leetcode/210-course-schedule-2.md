@@ -1,7 +1,7 @@
 +++
 title = "LC 210: Course Schedule II"
 date = "2026-01-15"
-description = ""
+description = "Finding a valid course ordering using topological sort with cycle detection"
 transparent = false
 
 [taxonomies]

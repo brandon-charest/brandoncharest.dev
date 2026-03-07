@@ -17,8 +17,7 @@
             <meta {% for key, value in data %} {% if key == "property" and value == "og:title" %} {% set_global page_has_og_title = true -%} {% endif %}
                   {% if key == "property" and value == "og:description" %} {% set_global page_has_og_description = true -%} {% endif %}
                   {% if key == "name" and value == "description" %} {% set_global page_has_description = true -%} {% endif %}
-                  {{ key }}
-                  None="{{ value }}"
+                  {{ key }}="{{ value }}"
                   {% endfor %} />
         {% endfor %}
     {% endif %}
@@ -65,6 +64,24 @@
             <meta name="description" content="{{ config.description }}" />
         {% endif %}
     {% endif %}
+
+    {# Open Graph & Twitter Card #}
+    <meta property="og:type" content="{% if page.title %}article{% else %}website{% endif %}" />
+    {% if page.permalink %}
+        <meta property="og:url" content="{{ page.permalink }}" />
+        <link rel="canonical" href="{{ page.permalink }}" />
+    {% elif section.permalink %}
+        <meta property="og:url" content="{{ section.permalink }}" />
+        <link rel="canonical" href="{{ section.permalink }}" />
+    {% else %}
+        <meta property="og:url" content="{{ config.base_url }}" />
+        <link rel="canonical" href="{{ config.base_url }}" />
+    {% endif %}
+    {% if page.extra.cover_image %}
+        <meta property="og:image" content="{{ page.extra.cover_image }}" />
+        <meta name="twitter:image" content="{{ page.extra.cover_image }}" />
+    {% endif %}
+    <meta name="twitter:card" content="summary_large_image" />
 
     {# Favicon #}
     {% if config.extra.favicon %}
@@ -158,20 +175,23 @@
     {% endif %}
 
     {% if config.extra.mathjax | default(value=false) %}
-        {% if config.extra.mathjax_dollar_inline_enable | default(value=false) %}
-            <script>
-                MathJax = {
-                    tex: {
-                        inlineMath: [
-                            ['$', '$'],
-                            ['\\(', '\\)']
-                        ]
-                    }
-                };
+        {% set page_content = page.content | default(value="") %}
+        {% if page_content is containing("$$") or page_content is containing("\\(") or page_content is containing("\\[") %}
+            {% if config.extra.mathjax_dollar_inline_enable | default(value=false) %}
+                <script>
+                    MathJax = {
+                        tex: {
+                            inlineMath: [
+                                ['$', '$'],
+                                ['\\(', '\\)']
+                            ]
+                        }
+                    };
+                </script>
+            {% endif %}
+            <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
             </script>
         {% endif %}
-        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-        </script>
     {% endif %}
 
     {# RSS #}
@@ -239,6 +259,11 @@
         {% endif %}
     {% endif %}
 
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+          rel="stylesheet">
 
     <link rel="stylesheet"
           type="text/css"

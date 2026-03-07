@@ -23,10 +23,10 @@
                     
                     {% if pinned_pages %}
                     <div class="highlight-section pinned-section">
-                        <h3 class="section-label">
+                        <h2 class="section-label">
                             <span class="label-icon">📌</span>
                             <span class="label-text">Featured</span>
-                        </h3>
+                        </h2>
                         
                         {% set pinned = pinned_pages | first %}
                         {% set growth = pinned.extra.growth | default(value="seedling") %}
@@ -63,7 +63,7 @@
 
                             {% if cover %}
                             <div class="hero-image-wrapper">
-                                <img src="{{ cover }}" alt="Cover Art" loading="lazy" />
+                                <img src="{{ cover }}" alt="{{ pinned.title }} cover image" loading="lazy" />
                             </div>
                             {% endif %}
                         </div>
@@ -72,10 +72,10 @@
 
                     <!-- RECENT SECTION -->
                     <div class="highlight-section recent-section">
-                        <h3 class="section-label">
+                        <h2 class="section-label">
                             <span class="label-icon">🔥</span>
                             <span class="label-text">Recent</span>
-                        </h3>
+                        </h2>
                         {% set recent_pages = garden.pages | slice(end=2) %}
                         {% for page in recent_pages %}
                         {% set growth_stage = page.extra.growth | default(value="seedling") %}
@@ -102,10 +102,10 @@
 
                     <!-- GROWING SECTION (Seedlings) -->
                     <div class="highlight-section growing-section">
-                        <h3 class="section-label">
+                        <h2 class="section-label">
                             <span class="label-icon">🌿</span>
                             <span class="label-text">Growing</span>
-                        </h3>
+                        </h2>
                         {% set recent_permalinks = recent_pages | map(attribute="permalink") %}
                         {% set all_seedlings = garden.pages | filter(attribute="extra.growth", value="seedling") %}
                         {% set displayed_count = 0 %}

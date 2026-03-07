@@ -108,21 +108,9 @@ nav {
   }
 }
 
-.logo,
-.meta {
+.logo {
   border: unset;
   background: unset;
-}
-
-/* TODO: Is this still used? */
-.meta {
-  color: #999;
-  display: flexbox;
-  /* This changes the meta class to use flexbox, which ensures inline display */
-  align-items: center;
-  /* Aligns items vertically in the middle */
-  flex-wrap: wrap;
-  /* Allows items to wrap as needed */
 }
 
 h1,
@@ -136,32 +124,3 @@ h6 {
   margin-top: 2em;
 }
 
-// h1::before {
-//   color: var(--primary-color);
-//   content: "# ";
-// }
-
-// h2::before {
-//   color: var(--primary-color);
-//   content: "## ";
-// }
-
-// h3::before {
-//   color: var(--primary-color);
-//   content: "### ";
-// }
-
-// h4::before {
-//   color: var(--primary-color);
-//   content: "#### ";
-// }
-
-// h5::before {
-//   color: var(--primary-color);
-//   content: "##### ";
-// }
-
-// h6::before {
-//   color: var(--primary-color);
-//   content: "###### ";
-// }

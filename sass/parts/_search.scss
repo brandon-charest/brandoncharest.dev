@@ -40,17 +40,6 @@ $icon-size: 1.3rem;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 
-  #modal-content {
-    position: relative;
-    margin: 8% auto;
-    width: 80%;
-    max-width: 28rem;
-    background-color: var(--bg-0);
-    border: 1px solid var(--bg-1);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
   #searchBar {
     display: flex;
     align-items: center;

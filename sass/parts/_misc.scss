@@ -251,3 +251,47 @@ del {
     transform: translateY(-50%) translate(-40px, -20px) scale(0.9);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  nav,
+  .system-status,
+  .window-bar,
+  .ambient-shape,
+  .toc-floating-widget,
+  .skip-link,
+  .search-modal,
+  .cmd-line {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .terminal-window {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #666;
+  }
+
+  nav a[href]::after,
+  .card-link a[href]::after {
+    content: none;
+  }
+}

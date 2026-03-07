@@ -1,6 +1,6 @@
 +++
 title = "Blog"
-description = "Polished articles and project retrosp ectives"
+description = "Polished articles and project retrospectives"
 sort_by = "date"
 template = "section.html"
 page_template = "blog.html"

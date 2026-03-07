@@ -46,9 +46,9 @@
       ]
     }
   ],
-  "frontMatter.framework.id": "hugo",
+  "frontMatter.framework.id": "other",
   "frontMatter.content.publicFolder": "static",
-  "frontMatter.preview.host": "http://localhost:1313",
+  "frontMatter.preview.host": "http://localhost:1111",
   "frontMatter.framework.startCommand": "zola serve",
   "frontMatter.content.pageFolders": [
     {

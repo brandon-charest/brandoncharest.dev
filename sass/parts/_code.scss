@@ -3,11 +3,14 @@
   --bg-primary: var(--bg-1);
   --text-color: var(--text-0);
   --label-color: #f0f0f0;
-
+  --code-bg: #f5f5f5;
   --highlight-color: #f0f0f0;
+  --code-mark-bg: rgba(3, 218, 198, 0.12);
+  --code-mark-border: rgba(3, 218, 198, 0.5);
 }
 
 :root.dark {
+  --code-bg: #1a1e26;
   --highlight-color: #204e8a;
 }
 
@@ -124,7 +127,7 @@ code {
 }
 
 pre {
-  background: #1a1e26 !important;
+  background: var(--code-bg);
   border: 1px solid rgba(3, 218, 198, 0.15);
   border-radius: 8px;
   padding: 1.75rem;
@@ -150,17 +153,17 @@ pre {
   }
 
   mark {
-    background-color: rgba(3, 218, 198, 0.12) !important;
-    border-left: 3px solid rgba(3, 218, 198, 0.5);
+    background-color: var(--code-mark-bg);
+    border-left: 3px solid var(--code-mark-border);
     border-radius: 2px;
     padding-left: 0.5rem;
     margin-left: -0.5rem;
-    color: inherit !important;
+    color: inherit;
   }
 
   code {
-    background: transparent !important;
-    border: none !important;
+    background: transparent;
+    border: none;
     padding: 0;
     color: inherit;
     font-size: 0.9em;
@@ -172,11 +175,11 @@ pre {
 
       mark {
         display: block;
-        color: inherit !important;
+        color: inherit;
         padding-left: 0.5rem;
         margin-left: -0.5rem;
-        background-color: rgba(3, 218, 198, 0.12) !important;
-        border-left: 3px solid rgba(3, 218, 198, 0.5);
+        background-color: var(--code-mark-bg);
+        border-left: 3px solid var(--code-mark-border);
         border-radius: 2px;
       }
     }

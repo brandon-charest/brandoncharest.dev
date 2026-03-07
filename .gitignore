@@ -3,3 +3,9 @@ public/
 .idea/
 content/.obsidian/
 content/garden/notes/*
+.DS_Store
+*.swp
+*.swo
+node_modules/
+.env
+.env.local

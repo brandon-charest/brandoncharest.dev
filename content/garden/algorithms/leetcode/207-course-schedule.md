@@ -1,7 +1,7 @@
 +++
 title = "LC 207: Course Schedule"
 date = "2026-01-15"
-description = ""
+description = "Detecting cycles in a directed graph using topological sort (BFS/Kahn's algorithm)"
 transparent = false
 
 [taxonomies]
