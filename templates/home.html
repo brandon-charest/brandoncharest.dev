@@ -2,16 +2,10 @@
 {% import "macros/ui.html" as ui %}
 
 {% block main_content %}
-<div class="body">
+<div class="body full-width-layout">
 
-    <div class="terminal-window">
-        {{ ui::window_bar(title="root@dev: ~") }}
-        <div class="window-content">
             {% include "partials/neofetch.html" %}
             <!-- HIGHLIGHTS SECTION -->
-            <div class="buffer-list-container">
-                {{ ui::cmd(cmd="cat", args="./featured.txt", margin_top="0", margin_bottom="1.5rem", opacity=1) }}
-
                 <div class="highlights-grid">
                     {% set garden = get_section(path="garden/_index.md") %}
                     {% set blog = get_section(path="blog/_index.md") %}
@@ -76,7 +70,7 @@
                             <span class="label-icon">🔥</span>
                             <span class="label-text">Recent</span>
                         </h2>
-                        {% set recent_pages = garden.pages | slice(end=2) %}
+                        {% set recent_pages = garden.pages | slice(end=3) %}
                         {% for page in recent_pages %}
                         {% set growth_stage = page.extra.growth | default(value="seedling") %}
                         {% set content_type = page.extra.type | default(value="note") %}
@@ -100,48 +94,7 @@
                         {% endfor %}
                     </div>
 
-                    <!-- GROWING SECTION (Seedlings) -->
-                    <div class="highlight-section growing-section">
-                        <h2 class="section-label">
-                            <span class="label-icon">🌿</span>
-                            <span class="label-text">Growing</span>
-                        </h2>
-                        {% set recent_permalinks = recent_pages | map(attribute="permalink") %}
-                        {% set all_seedlings = garden.pages | filter(attribute="extra.growth", value="seedling") %}
-                        {% set displayed_count = 0 %}
-                        {% for page in all_seedlings %}
-                        {% if page.permalink not in recent_permalinks and displayed_count < 3 %}
-                        {% set_global displayed_count = displayed_count + 1 %}
-                        {% set content_type = page.extra.type | default(value="note") %}
-                        <div class="card-link file-card compact-card" data-growth="seedling">
-                            <a href="{{ page.permalink }}" class="card-overlay" aria-label="Read {{ page.title }}"></a>
-
-                            {{ ui::card_header(title=page.title, content_type=content_type, show_type=true) }}
-
-                            <div class="card-meta">
-                                {{ page.description | default(value="No description provided.") | truncate(length=80) }}
-                            </div>
-
-                            <div class="card-footer-bar">
-                                {{ ui::card_tags(tags=page.taxonomies.tags, max_tags=3) }}
-                                <a href="{{ page.permalink }}" class="read-link">
-                                    READ <span class="arrow">→</span>
-                                </a>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
                 </div>
-            </div>
 
-
-            <div class="cmd-line" style="margin-top: 2rem;">
-                <span class="cmd-prompt">&gt;</span>
-                <span class="cursor">_</span>
-            </div>
-
-        </div>
-    </div>
 </div>
 {% endblock main_content %}

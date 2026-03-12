@@ -9,14 +9,7 @@
 
 <body class="light dark">
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div class="ambient-shape shape-1"></div>
-    <div class="ambient-shape shape-2"></div>
-    <div class="ambient-shape shape-3"></div>
-
-    <div class="left-content">
-        {% block left_content %}
-        {% endblock left_content %}
-    </div>
+    <div class="ambient-shape shape-1" aria-hidden="true"></div>
 
     <div class="content" id="main-content">
         {% include "partials/nav.html" %}
@@ -42,10 +35,6 @@
         {% endif %}
     </div>
 
-    <div class="right-content">
-        {% block right_content %}
-        {% endblock right_content %}
-    </div>
     <footer class="system-status">
         <div class="status-item">
             <span class="status-label">MODE:</span>
@@ -53,15 +42,15 @@
         </div>
         <div class="status-item">
             <span class="status-label">LOC:</span>
-            <span class="status-value">Boston, MA</span>
+            <span class="status-value">{{ config.extra.location }}</span>
         </div>
         <div class="status-item">
             <span class="status-label">UPTIME:</span>
             <span class="status-value" id="uptime">00:00:00</span>
         </div>
         <div class="status-item right">
-            <span class="status-label">GIT::</span>
-            <span class="status-value">MAIN</span>
+            <span class="status-label">GIT:</span>
+            <span class="status-value">{{ config.extra.branch }}</span>
         </div>
     </footer>
 </body>

@@ -7,27 +7,28 @@
   --foreground: #0c0c1d;
   --card: #ffffff;
   --card-foreground: #0c0c1d;
-  --primary: #ff00c8;
+  --primary: #0d9488;
   --primary-foreground: #ffffff;
   --secondary: #f0f0ff;
   --secondary-foreground: #0c0c1d;
   --muted: #f0f0ff;
   --muted-foreground: #0c0c1d;
   --border: #dfe6e9;
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-muted: rgba(0, 0, 0, 0.1);
 
-  /* Legacy Mapping */
-  --bg-0: var(--background);
+  /* Legacy Mapping (still referenced by components) */
   --bg-1: var(--secondary);
   --bg-2: var(--muted);
-
-  --text-0: var(--foreground);
-  --text-1: var(--muted-foreground);
   --text-2: #4a4a4a;
-  /* Manually set a mid-grey if sidebar-foreground is too dark */
-
-  --primary-color: var(--primary);
-  --hover-color: var(--primary-foreground);
-  --border-color: var(--border);
-
   --icon-filter: none;
+
+  /* Primary alpha variants */
+  --primary-a05: rgba(13, 148, 136, 0.05);
+  --primary-a08: rgba(13, 148, 136, 0.08);
+  --primary-a10: rgba(13, 148, 136, 0.10);
+  --primary-a15: rgba(13, 148, 136, 0.15);
+  --primary-a20: rgba(13, 148, 136, 0.20);
+  --primary-a25: rgba(13, 148, 136, 0.25);
+  --primary-a30: rgba(13, 148, 136, 0.30);
 }

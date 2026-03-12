@@ -8,7 +8,7 @@ Static Title: {{ ui::window_bar(title="My Title") }}
 {% macro window_bar(resource=false, path=false, title="") %}
 
 <div class="window-bar">
-    <div class="window-controls">
+    <div class="window-controls" aria-hidden="true">
         <span class="control close"></span>
         <span class="control minimize"></span>
         <span class="control maximize"></span>
@@ -107,14 +107,3 @@ Static Title: {{ ui::window_bar(title="My Title") }}
 </div>
 {% endif %}
 {% endmacro card_tags %}
-
-
-{# 6. CARD FOOTER #}
-{# Renders action button footer #}
-{% macro card_footer(action_text="→ READ", show_footer=true) %}
-{% if show_footer %}
-<div class="card-footer action-footer">
-    <span class="action-btn">{{ action_text }}</span>
-</div>
-{% endif %}
-{% endmacro card_footer %}

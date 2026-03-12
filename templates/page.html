@@ -6,42 +6,73 @@
 
 {% block main_content %}
 <div class="body">
-    
-    {# --- FLOATING TOC WIDGET (Only visible on wide screens) --- #}
-    {% if page.toc %}
-    <aside class="toc-floating-widget">
-        <div class="toc-header">
-            <span class="toc-icon">Ξ</span>
-            <span class="toc-title">DOCUMENT_MAP</span>
-        </div>
-        <nav class="toc-tree">
-            {{ toc_macros::tree(toc=page.toc) }}
-        </nav>
-        <div class="toc-progress-bar"></div>
-    </aside>
-    {% endif %}
 
-    <div class="terminal-window">
-        
-        {{ ui::window_bar(path=page.components) }}
+    <div class="article-layout">
 
-        <div class="window-content">
-            {# RESTORED: Simple centered article layout #}
-            <article class="terminal-article">
-                {{ meta::header(page=page) }}
-                
-                <div class="article-body">
-                    {{ page.content | safe }}
+        {# --- LEFT SIDEBAR: TOC + BACKLINKS (desktop only) --- #}
+        {% if page.toc or page.backlinks | length > 0 %}
+        <aside class="article-sidebar">
+            {% if page.toc %}
+            <div class="sidebar-section">
+                <div class="toc-header">
+                    <span class="toc-icon">Ξ</span>
+                    <span class="toc-title">DOCUMENT_MAP</span>
                 </div>
-            </article>
-
-            <div class="content-footer">
-                {% include "partials/backlinks.html" %}
-                {{ meta::tags(taxonomies=page.taxonomies) }}
+                <nav class="toc-tree">
+                    {{ toc_macros::tree(toc=page.toc) }}
+                </nav>
             </div>
-            
-            {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="4rem", opacity=0.5) }}
+            {% endif %}
+
+            {% if page.backlinks | length > 0 %}
+            <div class="sidebar-section sidebar-backlinks">
+                <div class="toc-header">
+                    <span class="toc-icon">←</span>
+                    <span class="toc-title">BACKLINKS</span>
+                </div>
+                <ul class="sidebar-backlinks-list">
+                    {% for link in page.backlinks %}
+                    <li>
+                        <a href="{{ link.permalink }}" class="sidebar-backlink">
+                            {{ link.title }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </aside>
+        {% endif %}
+
+        {# --- MAIN ARTICLE CONTENT --- #}
+        <div class="article-main">
+            <div class="terminal-window">
+
+                {{ ui::window_bar(path=page.components) }}
+
+                <div class="window-content">
+                    <article class="terminal-article">
+                        {{ meta::header(page=page) }}
+
+                        <div class="article-body">
+                            {{ page.content | safe }}
+                        </div>
+                    </article>
+
+                    <div class="content-footer">
+                        {# Backlinks shown inline on mobile (sidebar hidden) #}
+                        <div class="mobile-backlinks">
+                            {% include "partials/backlinks.html" %}
+                        </div>
+                        {{ meta::tags(taxonomies=page.taxonomies) }}
+                    </div>
+
+                    {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="4rem", opacity=0.5) }}
+                </div>
+            </div>
         </div>
+
     </div>
+
 </div>
 {% endblock main_content %}

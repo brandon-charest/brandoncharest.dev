@@ -4,15 +4,15 @@
     overflow-x: auto;
     margin-top: 1.5rem;
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: var(--radius);
     background: var(--secondary);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-sm);
 }
 
 .file-list {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Consolas', 'Monaco', monospace;
+    font-family: var(--font-mono);
     font-size: 0.9rem;
 
     th {
@@ -24,20 +24,20 @@
         letter-spacing: 1.5px;
         font-weight: bold;
         text-transform: uppercase;
-        background: rgba(0, 0, 0, 0.2);
+        background: var(--secondary);
     }
 
     td {
         padding: 0.9rem 1.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        color: var(--text-1);
+        border-bottom: 1px solid var(--border-subtle);
+        color: var(--muted-foreground);
     }
 
     tbody tr {
         transition: all 0.2s ease;
 
         &:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.01);
+            background-color: var(--primary-a05);
         }
     }
 
@@ -49,7 +49,7 @@
         cursor: pointer;
 
         &:hover {
-            background-color: rgba(3, 218, 198, 0.08) !important;
+            background-color: var(--primary-a08) !important;
 
             .name a {
                 color: var(--highlight);
@@ -155,11 +155,11 @@
 
     /* Content type specific styling */
     .file-row[data-type="blog"] {
-        border-left: 2px solid rgba(128, 222, 234, 0.3);
+        border-left: 2px solid var(--primary-a30);
     }
 
     .file-row[data-type="project"] {
-        border-left: 2px solid rgba(3, 218, 198, 0.3);
+        border-left: 2px solid var(--primary-a30);
     }
 }
 
@@ -168,13 +168,13 @@
     margin-bottom: 2rem;
     margin-top: 1.5rem;
     background: var(--secondary);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
     overflow: hidden;
 }
 
 .readme-header {
-    background: linear-gradient(180deg, rgba(3, 218, 198, 0.1) 0%, rgba(0, 0, 0, 0.15) 100%);
+    background: linear-gradient(180deg, var(--primary-a10) 0%, var(--border-subtle) 100%);
     padding: 0.8rem 1.5rem;
     font-family: var(--font-mono);
     font-size: 0.8rem;
@@ -222,7 +222,7 @@
         font-size: 1.4rem;
         margin-bottom: 1rem;
         padding-bottom: 0.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid var(--border-subtle);
     }
 
     h3 {
@@ -235,7 +235,7 @@
     a {
         color: var(--primary);
         text-decoration: none;
-        border-bottom: 1px solid rgba(3, 218, 198, 0.3);
+        border-bottom: 1px solid var(--primary-a30);
         transition: all 0.2s ease;
         position: relative;
 
@@ -246,7 +246,7 @@
         }
 
         &:visited {
-            color: rgba(3, 218, 198, 0.8);
+            color: var(--primary);
         }
     }
 
@@ -265,7 +265,6 @@
 
             &:hover {
                 color: var(--foreground);
-                transform: translateX(2px);
             }
 
             /* Nested lists */
@@ -300,24 +299,24 @@
 
     /* Inline code styling */
     code {
-        background: rgba(0, 0, 0, 0.3);
+        background: var(--secondary);
         padding: 0.2rem 0.5rem;
-        border-radius: 3px;
+        border-radius: var(--radius-sm);
         font-size: 0.9em;
         color: var(--highlight);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-subtle);
         font-family: var(--font-mono);
     }
 
     /* Code blocks (pre > code) */
     pre {
-        background: rgba(0, 0, 0, 0.4);
+        background: var(--secondary);
         border: 1px solid var(--border);
-        border-radius: 6px;
+        border-radius: var(--radius-sm);
         padding: 1.5rem;
         overflow-x: auto;
         margin: 1.5rem 0;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: var(--shadow-sm);
 
         code {
             background: transparent;
@@ -327,7 +326,7 @@
             line-height: 1.6;
             color: var(--foreground);
             /* Ensure monospace font for ASCII art */
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-family: var(--font-mono);
             white-space: pre;
         }
     }
@@ -339,9 +338,9 @@
         margin: 1.5rem 0;
         color: var(--muted-foreground);
         font-style: italic;
-        background: rgba(3, 218, 198, 0.05);
+        background: var(--primary-a05);
         padding: 1rem 1.5rem;
-        border-radius: 0 6px 6px 0;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     }
 
     /* Horizontal rule styling */

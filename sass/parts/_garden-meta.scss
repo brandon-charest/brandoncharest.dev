@@ -11,8 +11,8 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    font-family: var(--mono-text-font);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
     font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: 0.5px;
@@ -26,8 +26,8 @@
 }
 
 .growth-badge.growing {
-    background: rgba(3, 218, 198, 0.1);
-    border: 1px solid rgba(3, 218, 198, 0.3);
+    background: var(--primary-a10);
+    border: 1px solid var(--primary-a30);
     color: var(--primary);
 }
 
@@ -64,7 +64,7 @@
 
 .meta-item .label {
     color: var(--primary);
-    font-family: var(--mono-text-font);
+    font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.1em;

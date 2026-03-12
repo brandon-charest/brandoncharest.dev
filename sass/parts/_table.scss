@@ -5,16 +5,16 @@
     width: 100%;
     border-collapse: collapse;
     margin: 2.5rem 0;
-    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-family: var(--font-mono);
     font-size: 0.95rem;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
+    background: var(--secondary);
+    border-radius: var(--radius);
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-md);
 }
 
 .article-body thead {
-    background: rgba(3, 218, 198, 0.15);
+    background: var(--primary-a15);
     border-bottom: 2px solid var(--primary);
 }
 
@@ -26,7 +26,7 @@
     text-transform: uppercase;
     font-size: 0.85rem;
     letter-spacing: 0.05em;
-    border-right: 1px dashed rgba(255, 255, 255, 0.1);
+    border-right: 1px dashed var(--border-muted);
 
     &:last-child {
         border-right: none;
@@ -34,7 +34,7 @@
 }
 
 .article-body tbody tr {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-subtle);
     transition: background 0.2s ease;
 
     &:last-child {
@@ -42,16 +42,16 @@
     }
 
     &:hover {
-        background: rgba(3, 218, 198, 0.05);
+        background: var(--primary-a05);
     }
 }
 
 .article-body td {
     padding: 0.875rem 1rem;
-    color: var(--text-1);
+    color: var(--muted-foreground);
     vertical-align: top;
     line-height: 1.5;
-    border-right: 1px dashed rgba(255, 255, 255, 0.05);
+    border-right: 1px dashed var(--border-subtle);
 
     &:last-child {
         border-right: none;
@@ -65,11 +65,11 @@
 
     /* Style code blocks inside tables */
     code {
-        background: rgba(255, 255, 255, 0.08) !important;
-        color: var(--text-0) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: var(--primary-a08) !important;
+        color: var(--foreground) !important;
+        border: 1px solid var(--border-muted);
         padding: 0.2em 0.4em;
-        border-radius: 3px;
+        border-radius: var(--radius-sm);
     }
 }
 

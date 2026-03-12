@@ -1,65 +1,26 @@
 /* sass/parts/_toc.scss */
 
-.toc-floating-widget {
-    display: none;
-
-    @media (min-width: 1280px) {
-        display: block;
-        position: fixed;
-        top: 150px;
-        right: 3rem;
-        width: 260px;
-        max-height: 70vh;
-        z-index: 50;
-        background: rgba(10, 10, 15, 0.4);
-        backdrop-filter: blur(4px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-left: 2px solid var(--primary);
-        border-radius: 0 8px 8px 0;
-        padding: 1rem;
-        transition: all 0.3s ease;
-        opacity: 0.4;
-        transform: translateX(10px);
-    }
-}
-
-.toc-floating-widget:hover {
-    opacity: 1;
-    transform: translateX(0);
-    background: rgba(10, 10, 15, 0.9);
-    border-color: var(--border);
-    box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.toc-header {
+/* ===== ARTICLE SIDEBAR LAYOUT ===== */
+.article-layout {
     display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px dashed var(--border);
-    padding-bottom: 0.5rem;
+    gap: 2rem;
+    align-items: flex-start;
 
-    .toc-icon {
-        color: var(--primary);
-        font-weight: bold;
-    }
-
-    .toc-title {
-        font-family: var(--mono-text-font);
-        font-size: 0.75rem;
-        letter-spacing: 1px;
-        color: var(--text-2);
-        font-weight: bold;
+    @media (max-width: 1100px) {
+        flex-direction: column;
     }
 }
 
-.toc-tree {
-    font-family: var(--mono-text-font);
-    font-size: 0.8rem;
+.article-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
     overflow-y: auto;
-    max-height: 60vh;
     padding-right: 0.5rem;
 
+    /* Scrollbar styling */
     &::-webkit-scrollbar {
         width: 3px;
     }
@@ -70,13 +31,70 @@
 
     &::-webkit-scrollbar-thumb {
         background: var(--primary);
+        border-radius: 2px;
     }
+
+    @media (max-width: 1100px) {
+        display: none;
+    }
+}
+
+.article-main {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Show inline backlinks only on mobile (sidebar hidden) */
+.mobile-backlinks {
+    @media (min-width: 1101px) {
+        display: none;
+    }
+}
+
+/* ===== SIDEBAR SECTIONS ===== */
+.sidebar-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+
+    &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+}
+
+/* ===== TOC HEADER ===== */
+.toc-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+
+    .toc-icon {
+        color: var(--primary);
+        font-weight: bold;
+    }
+
+    .toc-title {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        color: var(--text-2);
+        font-weight: bold;
+    }
+}
+
+/* ===== TOC TREE ===== */
+.toc-tree {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
 
     ul {
         list-style: none;
         padding-left: 0.8rem;
         margin: 0;
-        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 1px solid var(--border-muted);
     }
 
     &>ul {
@@ -97,7 +115,66 @@
 
         &:hover {
             color: var(--highlight);
-            text-shadow: 0 0 8px var(--highlight);
         }
     }
+}
+
+/* ===== SIDEBAR BACKLINKS ===== */
+.sidebar-backlinks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        margin-bottom: 0.5rem;
+    }
+}
+
+.sidebar-backlink {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-2);
+    text-decoration: none;
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-sm);
+    border-left: 2px solid var(--primary-a20);
+    transition: all 0.2s ease;
+    line-height: 1.4;
+
+    &:hover {
+        color: var(--primary);
+        background: var(--primary-a05);
+        border-left-color: var(--primary);
+    }
+}
+
+/* ===== FLOATING TOC (fallback for section pages) ===== */
+.toc-floating-widget {
+    display: none;
+
+    @media (min-width: 1280px) {
+        display: block;
+        position: fixed;
+        top: 150px;
+        right: 3rem;
+        width: 260px;
+        max-height: 70vh;
+        z-index: 50;
+        background: var(--secondary);
+        backdrop-filter: blur(4px);
+        border: 1px solid var(--border-subtle);
+        border-left: 2px solid var(--primary);
+        border-radius: 0 var(--radius) var(--radius) 0;
+        padding: 1rem;
+        transition: all 0.3s ease;
+        opacity: 0.4;
+    }
+}
+
+.toc-floating-widget:hover {
+    opacity: 1;
+    background: var(--card);
+    border-color: var(--border);
+    box-shadow: var(--shadow-lg);
 }

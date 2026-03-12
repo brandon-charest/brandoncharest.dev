@@ -29,6 +29,9 @@ menu = [
     { name = "About", url = "/about", weight = 4 },
 ]
 
+location = "Boston, MA"
+branch = "MAIN"
+
 socials = [
     { name = "GitHub", url = "https://github.com/brandon-charest", icon = "github" },
     { name = "LinkedIn", url = "https://www.linkedin.com/in/brandon-charest/", icon = "linkedin" },

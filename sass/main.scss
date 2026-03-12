@@ -36,6 +36,7 @@
   // Base Colors
   --background: #f8f9fa;
   --foreground: #0c0c1d;
+  --grid-color: rgba(0, 0, 0, 0.07);
 
   // Components
   --card: #ffffff;
@@ -44,89 +45,57 @@
   --popover-foreground: #0c0c1d;
 
   // Brand / State
-  --primary: #00ffcc;
+  --primary: #0d9488;
   --primary-foreground: #ffffff;
   --highlight: #fbbf24;
   --secondary: #f0f0ff;
   --secondary-foreground: #0c0c1d;
   --muted: #f0f0ff;
   --muted-foreground: #0c0c1d;
-  --accent: #ff00c8;
-  --accent-foreground: #0c0c1d;
   --destructive: #ff3d00;
   --destructive-foreground: #ffffff;
 
   // UI Elements
   --border: #dfe6e9;
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-muted: rgba(0, 0, 0, 0.1);
   --input: #dfe6e9;
   --ring: #ff00c8;
 
-  // Charts
-  --chart-1: #ff00c8;
-  --chart-2: #9000ff;
-  --chart-3: #00e5ff;
-  --chart-4: #00ffcc;
-  --chart-5: #ffe600;
-
-  // Sidebar
-  --sidebar: #f0f0ff;
-  --sidebar-foreground: #0c0c1d;
-  --sidebar-primary: #ff00c8;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #00ffcc;
-  --sidebar-accent-foreground: #0c0c1d;
-  --sidebar-border: #dfe6e9;
-  --sidebar-ring: #ff00c8;
-
   // Typography
-  --font-sans: Outfit, sans-serif;
-  --font-serif: "Libre Baskerville", Georgia, serif;
-  --font-mono: Fira Code, monospace;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Consolas', monospace;
 
   // Shape
-  --radius: 0.5rem;
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
 
-  // Shadows
-  --shadow-x: 0px;
-  --shadow-y: 4px;
-  --shadow-blur: 8px;
-  --shadow-spread: -2px;
-  --shadow-opacity: 0.1;
-  --shadow-color: 0 0% 0%;
+  // Shadows (light mode defaults)
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 10px 30px rgba(0, 0, 0, 0.15);
+  --shadow-2xl: 0 20px 50px rgba(0, 0, 0, 0.2);
 
-  --shadow-2xs: 0px 4px 8px -2px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0px 4px 8px -2px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 1px 2px -3px hsl(0 0% 0% / 0.10);
-  --shadow: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 1px 2px -3px hsl(0 0% 0% / 0.10);
-  --shadow-md: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 2px 4px -3px hsl(0 0% 0% / 0.10);
-  --shadow-lg: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 4px 6px -3px hsl(0 0% 0% / 0.10);
-  --shadow-xl: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 8px 10px -3px hsl(0 0% 0% / 0.10);
-  --shadow-2xl: 0px 4px 8px -2px hsl(0 0% 0% / 0.25);
-
-  --tracking-normal: 0em;
-  --spacing: 0.25rem;
+  /* Primary alpha variants */
+  --primary-a05: rgba(13, 148, 136, 0.05);
+  --primary-a08: rgba(13, 148, 136, 0.08);
+  --primary-a10: rgba(13, 148, 136, 0.10);
+  --primary-a15: rgba(13, 148, 136, 0.15);
+  --primary-a20: rgba(13, 148, 136, 0.20);
+  --primary-a25: rgba(13, 148, 136, 0.25);
+  --primary-a30: rgba(13, 148, 136, 0.30);
 
   /* -------------------------------------------------------------------------- */
-  /* 2. LEGACY MAPPING (Bridge to existing components)                          */
+  /* 2. LEGACY MAPPING (still referenced by components)                         */
   /* -------------------------------------------------------------------------- */
 
-  --bg-0: var(--background);
   --bg-1: var(--secondary);
   --bg-2: var(--muted);
-  --text-0: var(--foreground);
-  --text-1: var(--muted-foreground);
-  --text-2: var(--sidebar-foreground);
-
-  --primary-color: var(--primary);
-  --hover-color: var(--primary-foreground);
-  --border-color: var(--border);
-
+  --text-2: var(--sidebar-foreground, #64748b);
   --icon-filter: none;
-
-  --header-font: var(--font-mono);
-  --text-font: var(--font-sans);
-  --mono-text-font: var(--font-mono);
-  --code-font: var(--font-mono);
 
   --line-height: 1.6;
   --page-width: 1400px;
@@ -140,8 +109,8 @@ html {
   line-height: var(--line-height);
 
   /* Refined Dot Grid Pattern */
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0.5px, transparent 0.5px);
-  background-size: 40px 40px;
+  background-image: radial-gradient(circle, var(--grid-color) 0.5px, transparent 0.5px);
+  background-size: 50px 50px;
   background-attachment: fixed;
 
   min-height: 100%;
@@ -167,18 +136,13 @@ html {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 9999;
-    background:
-      radial-gradient(circle at 50% 30%,
-        transparent 0%,
-        transparent 20%,
-        rgba(0, 0, 0, 0.2) 50%,
-        var(--background) 100%),
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-
-    background-size: 100% 100%, 200px 200px;
+    z-index: 1;
+    background: radial-gradient(circle at 50% 30%,
+        transparent 0%, transparent 40%,
+        rgba(0, 0, 0, 0.15) 70%, var(--background) 100%);
+    background-size: 100% 100%;
     mix-blend-mode: overlay;
-    opacity: 0.8;
+    opacity: 0.15;
   }
 }
 
@@ -193,26 +157,6 @@ body {
   background-image: none;
 
 
-  &::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0.05;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-size: 200px 200px;
-  }
-
-  @media (min-width: 992px) {
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 0.9rem;
-  }
 
   .content {
     width: 100%;
@@ -220,34 +164,6 @@ body {
     word-wrap: break-word;
     margin-left: auto;
     margin-right: auto;
-  }
-
-  .left-content {
-    width: 100%;
-
-    @media (min-width: 992px) {
-      flex: 1 1 0;
-      min-width: 0;
-      position: sticky;
-      top: 60px;
-      padding: 1em;
-      overflow-y: auto;
-      max-height: calc(100vh - 100px);
-    }
-  }
-
-  .right-content {
-    width: 100%;
-
-    @media (min-width: 992px) {
-      flex: 1 1 0;
-      min-width: 0;
-      position: sticky;
-      top: 60px;
-      padding: 1em;
-      overflow-y: auto;
-      max-height: calc(100vh - 100px);
-    }
   }
 
 
@@ -262,7 +178,7 @@ body {
   padding: 0.5rem 1rem;
   z-index: 9999;
   font-weight: bold;
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   transition: top 0.2s ease-in-out;
   text-decoration: none;
 
@@ -288,30 +204,3 @@ body {
     flex-direction: row;
   }
 }
-
-/* SCSS Variables (Mapped to CSS Vars for usage in other files) */
-$background: var(--background);
-$foreground: var(--foreground);
-$card: var(--card);
-$card-foreground: var(--card-foreground);
-$popover: var(--popover);
-$popover-foreground: var(--popover-foreground);
-$primary: var(--primary);
-$primary-foreground: var(--primary-foreground);
-$highlight: var(--highlight);
-$secondary: var(--secondary);
-$secondary-foreground: var(--secondary-foreground);
-$muted: var(--muted);
-$muted-foreground: var(--muted-foreground);
-$accent: var(--accent);
-$accent-foreground: var(--accent-foreground);
-$destructive: var(--destructive);
-$destructive-foreground: var(--destructive-foreground);
-$border: var(--border);
-$input: var(--input);
-$ring: var(--ring);
-
-$radius: var(--radius);
-$font-sans: var(--font-sans);
-$font-mono: var(--font-mono);
-$font-serif: var(--font-serif);

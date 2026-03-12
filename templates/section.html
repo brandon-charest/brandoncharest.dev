@@ -96,16 +96,7 @@
                             <td class="size">{{ page.content | length }}b</td>
                             <td class="date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
                             <td class="name">
-                                <span class="type-indicator" title="{{ content_type | capitalize }}">
-                                    {% if content_type == "blog" %}📝
-                                    {% elif content_type == "project" %}🚀
-                                    {% elif content_type == "reference" %}📚
-                                    {% elif content_type == "tutorial" %}🎓
-                                    {% elif content_type == "snippet" %}💾
-                                    {% elif content_type == "log" %}🛠️
-                                    {% else %}📄
-                                    {% endif %}
-                                </span>
+                                {{ ui::card_indicators(growth_stage=growth_stage, content_type=content_type, show_growth=false, show_type=true) }}
                                 <a href="{{ page.permalink }}">{{ page.title }}</a>
 
                                 {% if page.extra and page.extra.status %}

@@ -6,11 +6,11 @@
   gap: 3px;
   background: var(--bg-2);
   font-size: 0.75rem;
-  color: var(--text-color);
+  color: var(--foreground);
 
   /* Ensure that the a tag has also a bottom border, which is by default hidden */
-  border: 1px solid var(--border-color) !important;
-  border-radius: 6px;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm);
 
   svg,
   img {
@@ -26,9 +26,9 @@
   &:hover {
     cursor: pointer;
     background: var(--bg-1);
-    color: var(--text-color);
+    color: var(--foreground);
 
     // FIXME: Exclude this in the `main a` tag which adds it's own underline
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
   }
 }

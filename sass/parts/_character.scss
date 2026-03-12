@@ -38,12 +38,12 @@
 
     .character-bubble {
         --character-bubble-bg: var(--bg-1);
-        --character-bubble-border: var(--border-color);
-        --character-code-bg: var(--bg-0);
+        --character-bubble-border: var(--border);
+        --character-code-bg: var(--background);
 
         background: var(--character-bubble-bg);
         border: 1px solid var(--character-bubble-border);
-        border-radius: 0.5rem;
+        border-radius: var(--radius);
         padding-inline: 0.9em;
         padding-block: 0.2em;
     }

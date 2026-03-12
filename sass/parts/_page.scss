@@ -22,7 +22,7 @@
     }
 
     .article-meta {
-        font-family: var(--mono-text-font);
+        font-family: var(--font-mono);
         font-size: 0.85rem;
         color: var(--text-2);
         display: flex;
@@ -49,16 +49,16 @@
 }
 
 .article-body {
-    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: var(--font-sans);
     font-size: 1.125rem;
     line-height: 1.75;
     letter-spacing: 0.01em;
-    color: #e8eef5;
+    color: var(--foreground);
     max-width: none;
     margin: 0;
 
     strong {
-        color: #fff;
+        color: var(--foreground);
         font-weight: 700;
     }
 
@@ -68,13 +68,13 @@
     }
 
     em {
-        color: var(--text-1);
-        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--muted-foreground);
+        font-family: var(--font-sans);
         font-style: italic;
     }
 
     h1 {
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: var(--font-sans);
         color: var(--primary);
         font-size: 2.2rem;
         text-align: center;
@@ -91,7 +91,7 @@
     }
 
     h2 {
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: var(--font-sans);
         color: var(--foreground);
         font-size: 1.8rem;
         margin-top: 4rem;
@@ -126,7 +126,7 @@
     }
 
     h3 {
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: var(--font-sans);
         color: var(--primary);
         font-size: 1.4rem;
         margin-top: 3rem;
@@ -135,11 +135,21 @@
         scroll-margin-top: 4rem;
     }
 
+    h4 {
+        font-family: var(--font-sans);
+        color: var(--foreground);
+        font-size: 1.15rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        scroll-margin-top: 4rem;
+    }
+
     ul,
     ol {
         margin-bottom: 2rem;
         padding-left: 1.5rem;
-        color: #d1d5db;
+        color: var(--muted-foreground);
     }
 
     li {
@@ -150,41 +160,40 @@
     a {
         color: var(--primary);
         text-decoration: none;
-        border-bottom: 2px solid rgba(3, 218, 198, 0.3);
+        border-bottom: 2px solid var(--primary-a30);
         transition: all 0.2s ease;
 
         &:hover {
             border-bottom-color: var(--primary);
-            background: rgba(3, 218, 198, 0.08);
-            box-shadow: 0 0 12px rgba(3, 218, 198, 0.15);
+            background: var(--primary-a08);
         }
     }
 
     blockquote {
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: var(--font-sans);
         font-style: italic;
         border-left: 3px solid var(--highlight);
-        background: rgba(255, 255, 255, 0.03);
-        color: var(--text-1);
+        background: var(--primary-a05);
+        color: var(--muted-foreground);
         padding: 1rem 1.5rem;
         margin: 2rem auto;
-        border-radius: 0 6px 6px 0;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     }
 
     img {
-        border-radius: 8px;
+        border-radius: var(--radius);
         border: 1px solid var(--border);
         margin: 2rem 0;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        box-shadow: var(--shadow-xl);
     }
 
     :not(pre)>code {
-        font-family: 'JetBrains Mono', 'Consolas', monospace;
+        font-family: var(--font-mono);
         color: var(--primary);
-        background: rgba(3, 218, 198, 0.15);
-        border: 1px solid rgba(3, 218, 198, 0.3);
+        background: var(--primary-a15);
+        border: 1px solid var(--primary-a30);
         padding: 0.15em 0.45em;
-        border-radius: 4px;
+        border-radius: var(--radius-sm);
         font-size: 0.9em;
         font-weight: 500;
     }
@@ -218,14 +227,14 @@
 .signal-card {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.25) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--secondary);
+    border: 1px solid var(--border-subtle);
     border-left: 3px solid var(--primary);
     padding: 1.25rem;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     text-decoration: none !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    font-family: var(--mono-text-font);
+    font-family: var(--font-mono);
     position: relative;
     overflow: hidden;
 
@@ -236,17 +245,16 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(3, 218, 198, 0.03) 0%, transparent 100%);
+        background: linear-gradient(135deg, var(--primary-a05) 0%, transparent 100%);
         opacity: 0;
         transition: opacity 0.25s ease;
     }
 
     &:hover {
-        border-color: rgba(3, 218, 198, 0.4);
+        border-color: var(--primary-a30);
         border-left-color: var(--primary);
-        background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(3, 218, 198, 0.08) 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(3, 218, 198, 0.15);
+        background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-a08) 100%);
+        box-shadow: 0 8px 24px var(--primary-a15);
 
         &::before {
             opacity: 1;
@@ -290,7 +298,7 @@
 .file-footer {
     margin-top: 2rem;
     padding-top: 1.5rem;
-    border-top: 1px dashed #333;
+    border-top: 1px dashed var(--border);
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -305,7 +313,7 @@
 
 .log-success {
     color: var(--primary);
-    text-shadow: 0 0 5px rgba(0, 255, 204, 0.2);
+    text-shadow: 0 0 5px var(--primary-a20);
 }
 
 .log-dim {

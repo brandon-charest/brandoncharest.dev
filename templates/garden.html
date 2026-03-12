@@ -2,12 +2,7 @@
 {% import "macros/ui.html" as ui %}
 
 {% block main_content %}
-<div class="body">
-    <div class="terminal-window">
-        {# 1. UNIFIED WINDOW BAR (Clickable Breadcrumbs) #}
-        {{ ui::window_bar(path=section.components) }}
-
-        <div class="window-content">
+<div class="body full-width-layout">
             {# Calculate growth stage counts #}
             {% set total_notes = section.pages | length %}
             {% set seedling_count = section.pages | filter(attribute="extra.growth", value="seedling") | length %}
@@ -41,10 +36,10 @@
 
             {# GROWTH FILTERS #}
             <div class="growth-filters">
-                <span class="filter-pill active">All</span>
-                <span class="filter-pill">🌱 Seedlings</span>
-                <span class="filter-pill">🌿 Growing</span>
-                <span class="filter-pill">🌳 Evergreen</span>
+                <span class="filter-pill active" role="button" tabindex="0" aria-pressed="true">All</span>
+                <span class="filter-pill" role="button" tabindex="0" aria-pressed="false">🌱 Seedlings</span>
+                <span class="filter-pill" role="button" tabindex="0" aria-pressed="false">🌿 Growing</span>
+                <span class="filter-pill" role="button" tabindex="0" aria-pressed="false">🌳 Evergreen</span>
             </div>
 
             {# CATEGORY SECTIONS #}
@@ -112,10 +107,6 @@
             {% endif %}
             {% endfor %}
 
-            {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="3rem", opacity=0.5) }}
-
-        </div>
-    </div>
 </div>
 
 <script>
@@ -123,43 +114,57 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterPills = document.querySelectorAll('.filter-pill');
     const cards = document.querySelectorAll('.file-card');
     
+    function activatePill(pill) {
+        filterPills.forEach(p => {
+            p.classList.remove('active');
+            p.setAttribute('aria-pressed', 'false');
+        });
+        pill.classList.add('active');
+        pill.setAttribute('aria-pressed', 'true');
+
+        const pillText = pill.textContent.trim().toLowerCase();
+
+        // Determine filter type
+        let filterType = 'all';
+        if (pillText.includes('seedling')) {
+            filterType = 'seedling';
+        } else if (pillText.includes('growing')) {
+            filterType = 'growing';
+        } else if (pillText.includes('evergreen')) {
+            filterType = 'evergreen';
+        }
+
+        // Filter cards
+        cards.forEach(card => {
+            const cardGrowth = card.getAttribute('data-growth');
+
+            if (filterType === 'all' || cardGrowth === filterType) {
+                card.parentElement.style.display = '';
+            } else {
+                card.parentElement.style.display = 'none';
+            }
+        });
+
+        // Hide/show category sections if all cards are hidden
+        document.querySelectorAll('.garden-category').forEach(section => {
+            const visibleCards = section.querySelectorAll('.category-grid li:not([style*="display: none"])');
+            if (visibleCards.length === 0) {
+                section.style.display = 'none';
+            } else {
+                section.style.display = '';
+            }
+        });
+    }
+
     filterPills.forEach(pill => {
         pill.addEventListener('click', function() {
-            filterPills.forEach(p => p.classList.remove('active'));
-            this.classList.add('active');
-            
-            const pillText = this.textContent.trim().toLowerCase();
-            
-            // Determine filter type
-            let filterType = 'all';
-            if (pillText.includes('seedling')) {
-                filterType = 'seedling';
-            } else if (pillText.includes('growing')) {
-                filterType = 'growing';
-            } else if (pillText.includes('evergreen')) {
-                filterType = 'evergreen';
+            activatePill(this);
+        });
+        pill.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                activatePill(this);
             }
-            
-            // Filter cards
-            cards.forEach(card => {
-                const cardGrowth = card.getAttribute('data-growth');
-                
-                if (filterType === 'all' || cardGrowth === filterType) {
-                    card.parentElement.style.display = '';
-                } else {
-                    card.parentElement.style.display = 'none';
-                }
-            });
-            
-            // Hide/show category sections if all cards are hidden
-            document.querySelectorAll('.garden-category').forEach(section => {
-                const visibleCards = section.querySelectorAll('.category-grid li:not([style*="display: none"])');
-                if (visibleCards.length === 0) {
-                    section.style.display = 'none';
-                } else {
-                    section.style.display = '';
-                }
-            });
         });
     });
 });

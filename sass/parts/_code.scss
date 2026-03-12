@@ -1,12 +1,9 @@
 :root {
-  --code-font: var(--code-font), monospace;
-  --bg-primary: var(--bg-1);
-  --text-color: var(--text-0);
   --label-color: #f0f0f0;
   --code-bg: #f5f5f5;
   --highlight-color: #f0f0f0;
-  --code-mark-bg: rgba(3, 218, 198, 0.12);
-  --code-mark-border: rgba(3, 218, 198, 0.5);
+  --code-mark-bg: var(--primary-a10);
+  --code-mark-border: var(--primary);
 }
 
 :root.dark {
@@ -94,7 +91,7 @@ $language-colors: (
 @mixin base-label-style($bg-color, $text-color: var(--label-color)) {
   background: $bg-color;
   color: $text-color;
-  border-radius: 0 0 0.5rem 0.5rem;
+  border-radius: 0 0 var(--radius) var(--radius);
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.05rem;
@@ -105,7 +102,7 @@ $language-colors: (
   right: 0;
   top: 0;
   margin-top: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-sm);
 }
 
 .code-label {
@@ -119,17 +116,17 @@ $language-colors: (
 }
 
 code {
-  background-color: var(--bg-primary);
+  background-color: var(--secondary);
   padding: 0.1em 0.2em;
-  border-radius: 5px;
-  border: 1px solid var(--border-color);
-  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
 }
 
 pre {
   background: var(--code-bg);
-  border: 1px solid rgba(3, 218, 198, 0.15);
-  border-radius: 8px;
+  border: 1px solid var(--primary-a15);
+  border-radius: var(--radius);
   padding: 1.75rem;
   overflow-x: auto;
   box-shadow:
@@ -171,7 +168,7 @@ pre {
     table {
       margin: 0;
       border-collapse: collapse;
-      font-family: var(--code-font);
+      font-family: var(--font-mono);
 
       mark {
         display: block;
@@ -216,16 +213,15 @@ pre {
   z-index: 10;
   background-color: transparent;
   border: none;
-  fill: var(--text-color);
+  fill: var(--foreground);
   padding: 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   opacity: 0.5;
   transition: all 0.2s ease;
 
   &:hover {
     opacity: 1;
-    background: rgba(3, 218, 198, 0.15);
-    transform: scale(1.1);
+    background: var(--primary-a15);
   }
 
   &:active {

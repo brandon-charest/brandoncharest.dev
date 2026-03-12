@@ -29,11 +29,11 @@ hr {
 blockquote {
   border-left: 3px solid var(--primary);
   background: var(--bg-1);
-  color: var(--text-1);
+  color: var(--muted-foreground);
   margin: 1.5rem 0;
   padding: 1rem 1.5rem;
   font-style: italic;
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
 a {
@@ -52,7 +52,7 @@ main {
     border-bottom: 1px solid var(--primary);
 
     &:hover {
-      background-color: rgba(59, 130, 246, 0.1);
+      background-color: var(--primary-a10);
       color: var(--primary);
     }
   }
@@ -91,7 +91,7 @@ main {
 
 time {
   color: var(--text-2);
-  font-family: var(--mono-text-font);
+  font-family: var(--font-mono);
   font-size: 0.85rem;
 }
 
@@ -127,7 +127,7 @@ time {
     h1 {
       margin: 0;
       font-weight: normal;
-      font-family: var(--header-font);
+      font-family: var(--font-mono);
 
       a {
         border-bottom: none;
@@ -135,7 +135,7 @@ time {
     }
 
     time {
-      font-family: var(--mono-text-font);
+      font-family: var(--font-mono);
       text-align: left;
 
       margin: 0;
@@ -145,7 +145,7 @@ time {
 }
 
 del {
-  text-decoration-color: var(--primary-color);
+  text-decoration-color: var(--primary);
   text-decoration-thickness: 3px;
 }
 
@@ -163,41 +163,18 @@ del {
   filter: blur(120px);
   z-index: -1;
   pointer-events: none;
-  opacity: 0.2;
   mix-blend-mode: screen;
 }
 
 /* Top Right - Primary color orb */
 .shape-1 {
-  width: 700px;
-  height: 700px;
+  width: 500px;
+  height: 500px;
   top: -200px;
   right: -150px;
   background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-  animation: float1 25s ease-in-out infinite;
-}
-
-/* Bottom Left - Highlight color orb */
-.shape-2 {
-  width: 800px;
-  height: 800px;
-  bottom: -250px;
-  left: -200px;
-  background: radial-gradient(circle, var(--highlight) 0%, transparent 70%);
-  opacity: 0.15;
-  animation: float2 30s ease-in-out infinite;
-}
-
-/* Middle Right - Accent orb */
-.shape-3 {
-  width: 600px;
-  height: 600px;
-  top: 50%;
-  right: -100px;
-  transform: translateY(-50%);
-  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-  opacity: 0.12;
-  animation: float3 35s ease-in-out infinite;
+  opacity: 0.08;
+  animation: float1 30s ease-in-out infinite;
 }
 
 @keyframes float1 {
@@ -207,48 +184,8 @@ del {
     transform: translate(0, 0) scale(1);
   }
 
-  25% {
-    transform: translate(-30px, 40px) scale(1.05);
-  }
-
   50% {
-    transform: translate(-50px, 20px) scale(0.95);
-  }
-
-  75% {
-    transform: translate(-20px, 60px) scale(1.02);
-  }
-}
-
-@keyframes float2 {
-
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  33% {
-    transform: translate(40px, -30px) scale(1.08);
-  }
-
-  66% {
-    transform: translate(20px, -60px) scale(0.92);
-  }
-}
-
-@keyframes float3 {
-
-  0%,
-  100% {
-    transform: translateY(-50%) translate(0, 0) scale(1);
-  }
-
-  40% {
-    transform: translateY(-50%) translate(-25px, 30px) scale(1.1);
-  }
-
-  80% {
-    transform: translateY(-50%) translate(-40px, -20px) scale(0.9);
+    transform: translate(-30px, 30px) scale(1.03);
   }
 }
 

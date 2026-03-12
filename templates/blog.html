@@ -6,98 +6,126 @@
 {% block main_content %}
 <div class="body">
 
-    {# --- FLOATING TOC WIDGET (Only visible on wide screens) --- #}
-    {% if page.toc %}
-    <aside class="toc-floating-widget">
-        <div class="toc-header">
-            <span class="toc-icon">Ξ</span>
-            <span class="toc-title">ARTICLE_OUTLINE</span>
-        </div>
-        <nav class="toc-tree">
-            {{ toc_macros::tree(toc=page.toc) }}
-        </nav>
-        <div class="toc-progress-bar"></div>
-    </aside>
-    {% endif %}
+    <div class="article-layout">
 
-    <div class="terminal-window">
-
-        {{ ui::window_bar(path=page.components) }}
-
-        <div class="window-content">
-            <article class="blog-post">
-                {# BLOG POST HEADER #}
-                <header class="blog-header">
-                    <div class="post-category">
-                        <span class="category-icon">📝</span>
-                        <span class="category-label">BLOG POST</span>
-                        {% if page.extra.series %}
-                        <span class="series-badge">Part {{ page.extra.series_index | default(value=1) }} of {{
-                            page.extra.series_total }}</span>
-                        {% endif %}
-                    </div>
-
-                    <h1 class="blog-title">{{ page.title }}</h1>
-
-                    <div class="blog-meta">
-                        <div class="meta-row">
-                            {% if page.date %}
-                            <span class="meta-item">
-                                <span class="meta-icon">📅</span>
-                                <span class="meta-label">PUBLISHED:</span>
-                                <time datetime="{{ page.date }}" class="meta-value">{{ page.date | date(format="%B %d,
-                                    %Y") }}</time>
-                            </span>
-                            {% endif %}
-
-                            {% if page.reading_time %}
-                            <span class="meta-item">
-                                <span class="meta-icon">⏱️</span>
-                                <span class="meta-label">TIME:</span>
-                                <span class="meta-value">{{ page.reading_time }} min read</span>
-                            </span>
-                            {% endif %}
-                        </div>
-
-                        {% if page.description %}
-                        <div class="post-summary">
-                            {{ page.description }}
-                        </div>
-                        {% endif %}
-                    </div>
-
-                    {% if page.taxonomies.tags %}
-                    <div class="blog-tags">
-                        {% for tag in page.taxonomies.tags %}
-                        <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="blog-tag">#{{ tag }}</a>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                </header>
-
-                {# ARTICLE CONTENT #}
-                <div class="article-body">
-                    {{ page.content | safe }}
+        {# --- LEFT SIDEBAR: TOC + BACKLINKS (desktop only) --- #}
+        {% if page.toc or page.backlinks | length > 0 %}
+        <aside class="article-sidebar">
+            {% if page.toc %}
+            <div class="sidebar-section">
+                <div class="toc-header">
+                    <span class="toc-icon">Ξ</span>
+                    <span class="toc-title">DOCUMENT_MAP</span>
                 </div>
+                <nav class="toc-tree">
+                    {{ toc_macros::tree(toc=page.toc) }}
+                </nav>
+            </div>
+            {% endif %}
 
-                {# POST FOOTER #}
-                <footer class="blog-footer">
-                    {% if page.extra.series %}
-                    <div class="series-navigation">
-                        <h3>Part of a Series</h3>
-                        <p>This is part {{ page.extra.series_index | default(value=1) }} of <strong>{{ page.extra.series
-                                }}</strong></p>
-                    </div>
-                    {% endif %}
+            {% if page.backlinks | length > 0 %}
+            <div class="sidebar-section sidebar-backlinks">
+                <div class="toc-header">
+                    <span class="toc-icon">←</span>
+                    <span class="toc-title">BACKLINKS</span>
+                </div>
+                <ul class="sidebar-backlinks-list">
+                    {% for link in page.backlinks %}
+                    <li>
+                        <a href="{{ link.permalink }}" class="sidebar-backlink">
+                            {{ link.title }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </aside>
+        {% endif %}
 
-                    <div class="content-footer">
-                        {% include "partials/backlinks.html" %}
-                    </div>
-                </footer>
-            </article>
+        {# --- MAIN ARTICLE CONTENT --- #}
+        <div class="article-main">
+            <div class="terminal-window">
 
-            {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="4rem", opacity=0.5) }}
+                {{ ui::window_bar(path=page.components) }}
+
+                <div class="window-content">
+                    <article class="blog-post">
+                        {# BLOG POST HEADER #}
+                        <header class="blog-header">
+                            <div class="post-category">
+                                <span class="category-label">BLOG_POST</span>
+                                {% if page.extra.series %}
+                                <span class="series-badge">Part {{ page.extra.series_index | default(value=1) }} of {{
+                                    page.extra.series_total }}</span>
+                                {% endif %}
+                            </div>
+
+                            <h1 class="blog-title">{{ page.title }}</h1>
+
+                            <div class="blog-meta">
+                                <div class="meta-row">
+                                    {% if page.date %}
+                                    <span class="meta-item">
+                                        <span class="meta-label">PUBLISHED:</span>
+                                        <time datetime="{{ page.date }}" class="meta-value">{{ page.date | date(format="%B %d,
+                                            %Y") }}</time>
+                                    </span>
+                                    {% endif %}
+
+                                    {% if page.reading_time %}
+                                    <span class="meta-item">
+                                        <span class="meta-label">TIME:</span>
+                                        <span class="meta-value">{{ page.reading_time }} min read</span>
+                                    </span>
+                                    {% endif %}
+                                </div>
+
+                                {% if page.description %}
+                                <div class="post-summary">
+                                    {{ page.description }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            {% if page.taxonomies.tags %}
+                            <div class="blog-tags">
+                                {% for tag in page.taxonomies.tags %}
+                                <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="blog-tag">#{{ tag }}</a>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </header>
+
+                        {# ARTICLE CONTENT #}
+                        <div class="article-body">
+                            {{ page.content | safe }}
+                        </div>
+
+                        {# POST FOOTER #}
+                        <footer class="blog-footer">
+                            {% if page.extra.series %}
+                            <div class="series-navigation">
+                                <h3>Part of a Series</h3>
+                                <p>This is part {{ page.extra.series_index | default(value=1) }} of <strong>{{ page.extra.series
+                                        }}</strong></p>
+                            </div>
+                            {% endif %}
+
+                            <div class="content-footer">
+                                <div class="mobile-backlinks">
+                                    {% include "partials/backlinks.html" %}
+                                </div>
+                            </div>
+                        </footer>
+                    </article>
+
+                    {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="4rem", opacity=0.5) }}
+                </div>
+            </div>
         </div>
+
     </div>
+
 </div>
 {% endblock main_content %}

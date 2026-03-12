@@ -1,14 +1,14 @@
 .page-header {
   font-size: 2.5em;
   line-height: 100%;
-  font-family: var(--header-font);
+  font-family: var(--font-mono);
   margin: 4rem 0px 1rem 0px;
 
 }
 
 /* 404 header */
 .not-found-header {
-  font-family: var(--header-font);
+  font-family: var(--font-mono);
   position: absolute;
   top: 40%;
   left: 50%;
@@ -48,6 +48,9 @@ nav {
 
       .social {
         display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 13px;
         opacity: 0.7;
         transition: opacity 0.2s ease, transform 0.2s ease;
 
@@ -59,7 +62,6 @@ nav {
 
         &:hover {
           opacity: 1;
-          transform: translateY(-1px);
         }
       }
     }
@@ -73,7 +75,7 @@ nav {
 
     a {
       font-size: 1rem;
-      color: var(--text-1);
+      color: var(--muted-foreground);
       text-transform: lowercase;
       transition: color 0.2s ease;
 
@@ -102,7 +104,6 @@ nav {
         opacity: 1;
         background-color: transparent;
         cursor: pointer;
-        transform: rotate(15deg);
       }
     }
   }
@@ -119,7 +120,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: monospace var(--header-font);
+  font-family: var(--font-mono);
   font-size: 1.2rem;
   margin-top: 2em;
 }
