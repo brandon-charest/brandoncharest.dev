@@ -3,16 +3,16 @@
 }
 
 .highlight-color {
-  color: var(--highlight);
+  color: var(--primary);
 }
 
 ::-moz-selection {
-  background: var(--highlight);
+  background: var(--primary);
   color: var(--background);
 }
 
 ::selection {
-  background: var(--highlight);
+  background: var(--primary);
   color: var(--background);
 }
 
@@ -76,7 +76,7 @@ main {
 
   .zola-anchor {
     border-bottom: none;
-    color: var(--text-2);
+    color: var(--text-muted);
     margin-left: 0.5rem;
     opacity: 0;
     transition: opacity 0.2s;
@@ -90,7 +90,7 @@ main {
 }
 
 time {
-  color: var(--text-2);
+  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: 0.85rem;
 }
@@ -173,7 +173,7 @@ del {
   top: -200px;
   right: -150px;
   background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-  opacity: 0.08;
+  opacity: 0.06;
   animation: float1 30s ease-in-out infinite;
 }
 
@@ -196,6 +196,7 @@ del {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

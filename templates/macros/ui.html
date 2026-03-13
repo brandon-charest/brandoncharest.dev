@@ -57,28 +57,13 @@ Static Title: {{ ui::window_bar(title="My Title") }}
 
 
 {# 3. CARD INDICATORS (Growth & Type Badges) #}
-{# Returns the emoji indicators for growth stage and content type #}
+{# Returns terminal text indicators for growth stage and content type #}
 {% macro card_indicators(growth_stage="seedling", content_type="note", show_growth=true, show_type=true) %}
 {% if show_growth %}
-<span class="growth-indicator" title="{{ growth_stage | capitalize }}">
-    {% if growth_stage == "seedling" %}🌱
-    {% elif growth_stage == "growing" %}🌿
-    {% elif growth_stage == "evergreen" %}🌲
-    {% else %}🌱
-    {% endif %}
-</span>
+<span class="growth-indicator" title="{{ growth_stage | capitalize }}">{% if growth_stage == "seedling" %}[seed]{% elif growth_stage == "growing" %}[grow]{% elif growth_stage == "evergreen" %}[ever]{% else %}[seed]{% endif %}</span>
 {% endif %}
 {% if show_type %}
-<span class="type-indicator" title="{{ content_type | capitalize }}">
-    {% if content_type == "blog" %}📝
-    {% elif content_type == "project" %}🚀
-    {% elif content_type == "reference" %}📚
-    {% elif content_type == "tutorial" %}🎓
-    {% elif content_type == "snippet" %}💾
-    {% elif content_type == "log" %}🛠️
-    {% else %}📄
-    {% endif %}
-</span>
+<span class="type-indicator" title="{{ content_type | capitalize }}">{% if content_type == "blog" %}[blog]{% elif content_type == "project" %}[proj]{% elif content_type == "reference" %}[ref]{% elif content_type == "tutorial" %}[tut]{% elif content_type == "snippet" %}[snip]{% elif content_type == "log" %}[log]{% else %}[note]{% endif %}</span>
 {% endif %}
 {% endmacro card_indicators %}
 

@@ -15,7 +15,7 @@ description = "Breaking free from analysis paralysis by building a ridiculous pa
 
 ## The Analysis Paralysis and the Cycle of Abandoned Projects
 
-I found myself constantly stuck _trying_ to create new projects and had perfected the art of quickly killing it by over-analyzing. Each time I came up with a new idea I found myself constantly stuck trying to create new projects and had perfected the art of killing them before they lived. Each time I came up with a new idea, I'd get lost in the smallest details.
+I found myself constantly stuck _trying_ to create new projects and had perfected the art of killing them before they lived. Each time I came up with a new idea, I'd get lost in the smallest details.
 
 You know when those details mattered? **Never.** Because I never finished any of the projects.
 
@@ -37,7 +37,7 @@ I still wanted to learn something along the way, and since I use Python, JavaScr
 
 No sooner did I start, I caught myself thinking too far ahead...
 
-- _"Whats the best structure I should use so I could scale this easier in the future?"_
+- _"What's the best structure I should use so I could scale this easier in the future?"_
 - _"What if I need a database?"_
 - _"What kind of database?"_
 
@@ -45,7 +45,7 @@ No sooner did I start, I caught myself thinking too far ahead...
 
 ### Breaking Free
 
-This time I made myself remember, all these thoughts are not getting me any close to finishing this. So I literally stopped worrying about what **could be** needed and just started writing **only** what I needed right now.
+This time I made myself remember, all these thoughts are not getting me any closer to finishing this. So I literally stopped worrying about what **could be** needed and just started writing **only** what I needed right now.
 
 ## Embracing the "Good Enough"
 
@@ -56,6 +56,16 @@ Giving myself permission to be _lazy_ was the hardest part of the project. But o
 - **Frontend:** A single HTML file. No build steps, no node_modules.
 
 The code is simple. It uses the [`zxcvbn`](https://crates.io/crates/zxcvbn) crate to calculate the strength of the password, and a simple "Mad Libs" style insult generator to construct the insult.
+
+```rust
+fn roast(password: &str) -> RoastResponse {
+    let score = zxcvbn(password, &[]);
+    let insult = generate_insult(score.score());
+    RoastResponse { score: score.score(), insult }
+}
+```
+
+That's it. That's the core of the whole thing. One function, one crate, one insult.
 
 ## The $0.00 Deployment
 
@@ -75,4 +85,4 @@ _(I'm looking at you Database Abstraction Layer. You know, just in case I decide
 
 But for a side project, future-proofing is just procrastination with extra steps.
 
-By choosing to build something "stupid", I was able to make that mental shift and removed the pressure to be "smart". I learned more about Rust, and managing my own deployment to AWS in a weekend then I would have if I spent the next few days/months watching more tutorials and researching to build a more "serious" project. Not everything needs to be perfect or serious, sometimes it's nice to just have fun.
+By choosing to build something "stupid", I was able to make that mental shift and removed the pressure to be "smart". I learned more about Rust, and managing my own deployment to AWS in a weekend than I would have if I spent the next few days/months watching more tutorials and researching to build a more "serious" project. Not everything needs to be perfect or serious, sometimes it's nice to just have fun.

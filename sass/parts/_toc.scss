@@ -109,12 +109,12 @@
     a.toc-link {
         display: block;
         text-decoration: none;
-        color: var(--text-2);
-        transition: color 0.2s;
+        color: var(--text-muted);
+        transition: color 0.15s ease;
         line-height: 1.4;
 
         &:hover {
-            color: var(--highlight);
+            color: var(--primary);
         }
     }
 }
@@ -161,20 +161,18 @@
         width: 260px;
         max-height: 70vh;
         z-index: 50;
-        background: var(--secondary);
-        backdrop-filter: blur(4px);
-        border: 1px solid var(--border-subtle);
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
         border-left: 2px solid var(--primary);
         border-radius: 0 var(--radius) var(--radius) 0;
         padding: 1rem;
-        transition: all 0.3s ease;
+        transition: opacity 0.15s ease;
         opacity: 0.4;
     }
 }
 
 .toc-floating-widget:hover {
     opacity: 1;
-    background: var(--card);
+    background: var(--bg-surface);
     border-color: var(--border);
-    box-shadow: var(--shadow-lg);
 }

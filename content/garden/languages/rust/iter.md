@@ -13,7 +13,7 @@ type = "note"
 
 ## Core Concepts
 
-Rust iterators are used for processing collections of data in a functional way. They lazy, meaning they do not consume their values until they are needed.
+Rust iterators are used for processing collections of data in a functional way. They're lazy, meaning they do not consume their values until they are needed.
 
 ### Iterator Trait
 

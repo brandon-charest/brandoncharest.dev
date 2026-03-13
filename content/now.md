@@ -3,7 +3,7 @@ title = "What I'm Working On Now"
 description = "Current focus areas, research queue, and active projects"
 +++
 
-> Last updated: January 2026
+> Last updated: March 2026
 
 ## Currently Learning
 

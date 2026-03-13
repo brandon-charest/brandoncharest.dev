@@ -154,11 +154,11 @@ class ShardedLRUCache:
         self._get_segment(key).put(key, value)
 ```
 
-## Lets Race!!
+## Let's Race!!
 
-My assumption was that the segmented lock LRU cache would be faster then the simple Lock LRU cache. Intuitively it makes sense, we are reducing the amount of contention on the lock. 
+My assumption was that the segmented lock LRU cache would be faster than the simple Lock LRU cache. Intuitively it makes sense, we are reducing the amount of contention on the lock. 
 
-So I crated a stress test to find out.
+So I created a stress test to find out.
 
 ```python
 def run_stress_test(cache_name, cache_instance, num_threads=50, ops_per_thread=2000):
@@ -245,7 +245,7 @@ This means that only one thread can be in a state of execution at any point in t
 
 So Lock sharding just adds complexity without bypassing the GIL for CPU-bound tasks.
 
-well thats boring....
+well that's boring....
 
 ## Race #2: Electric Boogaloo
 
@@ -283,4 +283,8 @@ class SlowShardedLRU(ShardedLRUCache):
 🚀 Speedup Factor: 12.46x faster
 ```
 
-Thats the result I was looking for! You would of thought that since I added a sleep maybe I would of reduced the number of operations... well I didn't, it was a long wait...
+That's the result I was looking for! You would have thought that since I added a sleep maybe I would have reduced the number of operations... well I didn't, it was a long wait...
+
+## Takeaway
+
+The lesson here is that segmented locking shines when threads actually block on I/O (network calls, disk reads, etc.) — not when the GIL is already serializing CPU-bound work. In a real-world cache sitting in front of a database or API, the sharded approach would dominate because threads spend most of their time waiting on external resources, and that's time other segments can use. Pure in-memory Python operations? The GIL makes the extra complexity pointless.

@@ -7,7 +7,7 @@ description = "Conducting the initial smoke test for the emulator."
 tags = [ "6502", "emulator" ]
 
 [extra]
-growth = "seedling"
+growth = "growing"
 type = "project"
 +++
 

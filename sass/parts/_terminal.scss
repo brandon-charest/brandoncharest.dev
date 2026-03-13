@@ -27,16 +27,16 @@
 }
 
 .prompt-char {
-    color: var(--text-2);
+    color: var(--text-muted);
 }
 
 .prompt-path {
-    color: var(--highlight);
+    color: var(--primary);
     font-weight: bold;
 }
 
 .prompt-sign {
-    color: var(--text-2);
+    color: var(--text-muted);
 }
 
 .command-text {
@@ -47,7 +47,9 @@
 .info-tag {
     color: var(--primary);
     font-weight: bold;
-    text-shadow: 0 0 8px var(--primary-a30);
+    background: var(--primary-a10);
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-sm);
     margin-right: 0.5rem;
 }
 
@@ -67,7 +69,7 @@
     display: inline-block;
     width: 0.6em;
     height: 1.2em;
-    background-color: var(--text-2);
+    background-color: var(--primary);
     vertical-align: sub;
     animation: blink 1s step-end infinite;
 }
@@ -81,33 +83,17 @@
     font-family: var(--font-mono);
 
     .dim {
-        color: var(--text-2);
+        color: var(--text-muted);
     }
 }
 
 .terminal-window {
     margin-top: 2rem;
-    background-color: var(--card);
+    background-color: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    /* Multi-layer hero shadow: depth + ambient glow + inset border — intentionally not tokenized */
-    box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.5),
-        0 0 120px -20px rgba(144, 202, 249, 0.15),
-        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
     position: relative;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--border-muted), transparent);
-        pointer-events: none;
-    }
 }
 
 .window-bar {
@@ -116,7 +102,7 @@
     justify-content: center;
     position: relative;
     padding: 0.6rem 1rem;
-    background: linear-gradient(180deg, var(--border-subtle) 0%, var(--primary-a05) 100%);
+    background: var(--primary-a05);
     border-bottom: 1px solid var(--border);
 }
 
@@ -133,22 +119,22 @@
     border-radius: 50%;
 
     &.close {
-        background-color: #ff5f56;
+        background: #ff5f56;
     }
 
     &.minimize {
-        background-color: #ffbd2e;
+        background: #ffbd2e;
     }
 
     &.maximize {
-        background-color: #27c93f;
+        background: #27c93f;
     }
 }
 
 .window-title {
     font-family: var(--font-sans);
     font-size: 0.8rem;
-    color: var(--text-2);
+    color: var(--text-muted);
     font-weight: 500;
     letter-spacing: 0.05em;
 }
@@ -161,7 +147,7 @@
   gap: 0.25rem;
 
   .path-sep {
-    color: var(--text-2);
+    color: var(--text-muted);
     opacity: 0.5;
     padding: 0 0.35rem;
     font-weight: 300;
@@ -170,47 +156,21 @@
   .path-segment {
     color: var(--primary);
     text-decoration: none;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 0.15s ease;
     cursor: pointer;
     padding: 0.35rem 0.75rem;
     border-radius: var(--radius-sm);
     position: relative;
     font-weight: 500;
     letter-spacing: 0.02em;
-    text-shadow: 0 0 10px var(--primary-a30);
 
     &:hover {
-      text-shadow: 0 0 15px var(--primary-a30);
-      
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: 0.15rem;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 70%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, var(--primary), transparent);
-        border-radius: 2px;
-      }
+      color: var(--foreground);
     }
 
     &.root {
       font-weight: 700;
       padding: 0.35rem 0.6rem;
-      
-
-      text-shadow: 0 0 12px var(--primary-a30);
-
-      &:hover {
-        text-shadow: 0 0 20px var(--primary-a30);
-      }
-    }
-
-    /* Active/Current state */
-    &:active {
-      transform: translateY(0);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
     }
   }
 }
@@ -231,7 +191,7 @@
     line-height: 1.5;
 
     .cmd-prompt {
-        color: var(--text-2);
+        color: var(--text-muted);
     }
 
     .cmd {
@@ -253,14 +213,14 @@
     max-width: 100%;
 
     strong {
-        color: var(--highlight);
+        color: var(--primary);
         font-weight: 600;
     }
 }
 
 .terminal-comment {
     font-family: var(--font-mono);
-    color: var(--text-2);
+    color: var(--text-muted);
     font-style: italic;
     margin-bottom: 1.5rem;
     padding-left: 0.2rem;
@@ -273,7 +233,7 @@
     font-size: 0.8rem;
     line-height: 1.3;
     color: var(--foreground);
-    background: var(--secondary);
+    background: var(--bg-surface);
     padding: 1rem;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
@@ -286,12 +246,12 @@
     }
 
     .highlight {
-        color: var(--highlight);
+        color: var(--primary);
         font-weight: bold;
     }
 
     .dim {
-        color: var(--text-2);
+        color: var(--text-muted);
         opacity: 0.7;
     }
 }
@@ -303,4 +263,3 @@
         padding: 1rem;
     }
 }
-

@@ -6,7 +6,7 @@ description = "Handling interrupts and pushing the program counter to the stack.
 tags = ["emulator"]
 [extra]
 type = "notes"
-growth = "seedling" 
+growth = "growing"
 local_image="images/6502/6502-opcode-table.png"
 +++
 

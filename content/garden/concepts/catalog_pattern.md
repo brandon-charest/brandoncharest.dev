@@ -6,7 +6,7 @@ description = "Schema patterns for handling asset variants and internationalizat
 [taxonomies]
 tags = [ "system-design" ]  
 [extra]
-growth = "seedling"
+growth = "growing"
 +++
 
 Design a data model to store the catalog for a show like The Office or Breaking Bad.

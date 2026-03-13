@@ -1,59 +1,53 @@
-/* sass/theme/dark.scss */
+/* sass/theme/dark.scss — Monochrome dark theme */
 :root.dark {
-  /* -------------------------------------------------------------------------- */
-  /* MATERIAL DESIGN DARK THEME (Refined with Better Hierarchy)                */
-  /* https://m2.material.io/design/color/dark-theme.html                        */
-  /* -------------------------------------------------------------------------- */
-  --grid-color: rgba(255, 255, 255, 0.07);
-  --background: #0f141b;
-  /* Slightly lighter for better contrast */
-  --card: #1a1f28;
+  --accent:        #4ec9b0;
+  --accent-dim:    #2a6b5e;
+  --text-primary:  #d4d4d4;
+  --text-secondary:#8a8a8a;
+  --text-muted:    #555555;
+  --bg-primary:    #0d0d0d;
+  --bg-surface:    #141414;
+  --bg-elevated:   #1a1a1a;
 
-  --primary: #03dac6;
+  --grid-color: rgba(255, 255, 255, 0.03);
+  --background: var(--bg-primary);
+  --card: var(--bg-surface);
+  --secondary: var(--bg-surface);
+  --popover: var(--bg-elevated);
+
+  --primary: var(--accent);
   --primary-foreground: #000000;
-  --highlight: #80deea;
+  --highlight: var(--accent);
   --destructive: #cf6679;
   --destructive-foreground: #000000;
-  --border: #2d3642;
+  --border: #222222;
   --border-subtle: rgba(255, 255, 255, 0.05);
   --border-muted: rgba(255, 255, 255, 0.1);
-  /* Slightly lighter for better visibility */
-  --input: #0f141b;
+  --input: #0d0d0d;
 
-  --foreground: #e6edf3;
-  --muted-foreground: #8b949e;
-  --card-foreground: #e6edf3;
-  --sidebar-foreground: #8b949e;
+  --foreground: var(--text-primary);
+  --muted-foreground: var(--text-secondary);
+  --card-foreground: var(--text-primary);
+  --sidebar-foreground: var(--text-secondary);
 
-  --secondary: #1e242e;
-  /* Lighter for better layering */
   --secondary-foreground: #ffffff;
-  --muted: #1e242e;
-  --popover: #252b36;
-  /* More distinct */
+  --muted: var(--bg-surface);
   --popover-foreground: #ffffff;
 
-  --ring: #2f81f7;
+  --ring: var(--accent);
 
-  /* Shadows (stronger for dark surfaces) */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 10px 30px rgba(0, 0, 0, 0.4);
-  --shadow-2xl: 0 20px 50px rgba(0, 0, 0, 0.5);
-
-  /* Legacy Maps (still referenced by components) */
-  --bg-1: var(--card);
-  --bg-2: var(--secondary);
-  --text-2: #7d8590;
+  /* Legacy Maps */
+  --bg-1: var(--bg-surface);
+  --bg-2: var(--bg-elevated);
+  --text-2: var(--text-muted);
   --icon-filter: invert(1) brightness(2);
 
-  /* Primary alpha variants */
-  --primary-a05: rgba(3, 218, 198, 0.05);
-  --primary-a08: rgba(3, 218, 198, 0.08);
-  --primary-a10: rgba(3, 218, 198, 0.10);
-  --primary-a15: rgba(3, 218, 198, 0.15);
-  --primary-a20: rgba(3, 218, 198, 0.20);
-  --primary-a25: rgba(3, 218, 198, 0.25);
-  --primary-a30: rgba(3, 218, 198, 0.30);
+  /* Primary alpha variants (rebased to #4ec9b0) */
+  --primary-a05: rgba(78, 201, 176, 0.05);
+  --primary-a08: rgba(78, 201, 176, 0.08);
+  --primary-a10: rgba(78, 201, 176, 0.10);
+  --primary-a15: rgba(78, 201, 176, 0.15);
+  --primary-a20: rgba(78, 201, 176, 0.20);
+  --primary-a25: rgba(78, 201, 176, 0.25);
+  --primary-a30: rgba(78, 201, 176, 0.30);
 }

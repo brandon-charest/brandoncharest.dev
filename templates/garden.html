@@ -21,15 +21,15 @@
                     <span class="stat-value">{{ total_notes }}</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">🌱 Seedlings:</span>
+                    <span class="stat-label">[seed] Seedlings:</span>
                     <span class="stat-value">{{ seedling_count }}</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">🌿 Growing:</span>
+                    <span class="stat-label">[grow] Growing:</span>
                     <span class="stat-value">{{ growing_count }}</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">🌳 Evergreen:</span>
+                    <span class="stat-label">[ever] Evergreen:</span>
                     <span class="stat-value">{{ evergreen_count }}</span>
                 </div>
             </div>
@@ -37,9 +37,9 @@
             {# GROWTH FILTERS #}
             <div class="growth-filters">
                 <span class="filter-pill active" role="button" tabindex="0" aria-pressed="true">All</span>
-                <span class="filter-pill" role="button" tabindex="0" aria-pressed="false">🌱 Seedlings</span>
-                <span class="filter-pill" role="button" tabindex="0" aria-pressed="false">🌿 Growing</span>
-                <span class="filter-pill" role="button" tabindex="0" aria-pressed="false">🌳 Evergreen</span>
+                <span class="filter-pill" role="button" tabindex="0" aria-pressed="false">[seed] Seedlings</span>
+                <span class="filter-pill" role="button" tabindex="0" aria-pressed="false">[grow] Growing</span>
+                <span class="filter-pill" role="button" tabindex="0" aria-pressed="false">[ever] Evergreen</span>
             </div>
 
             {# CATEGORY SECTIONS #}
@@ -57,14 +57,7 @@
             <section class="garden-category">
                 <h2 class="category-header">
                     <a href="{{ subsection.permalink }}" class="category-link">
-                        {% if "tools" in subsection_path %}📂
-                        {% elif "projects" in subsection_path %}🚀
-                        {% elif "languages" in subsection_path %}💻
-                        {% elif "algorithms" in subsection_path %}📊
-                        {% elif "systems" in subsection_path %}🖥️
-                        {% else %}📁
-                        {% endif %}
-                        {{ subsection.title | upper }}
+                        &gt; {{ subsection.title | upper }}
                     </a>
                 </h2>
                 <div class="category-divider"></div>

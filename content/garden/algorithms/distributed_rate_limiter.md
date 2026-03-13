@@ -16,7 +16,7 @@ type="resource"
 
 First, let's define what a rate limiter is. It's a system that controls the rate at which requests are processed. Ok, simple enough. But how does this work in a distributed system? Each service  cannot have its own logic for rate limiting as it would cause issues with consistency.
 
-So that means we need a single source of truth for rate limiting. For this example we will use Redis as our rate limiter. More specifically we will create a python implementation that interfaces with Redis using `INCR` and `EXPIRE` commands to implement a token bucket.
+So that means we need a single source of truth for rate limiting. For this example we will use [Redis](@/garden/concepts/redis.md) as our rate limiter. More specifically we will create a python implementation that interfaces with Redis using `INCR` and `EXPIRE` commands to implement a token bucket.
 
 ## Token Bucket
 
@@ -100,7 +100,7 @@ class SimpleLimiter:
         return False
 ```
 
-Excellent! Now we have a thread-safe implementation, this will work great... one **one server**. 
+Excellent! Now we have a thread-safe implementation, this will work great... on **one server**. 
 
 **Scenario:**
 
@@ -164,3 +164,10 @@ class DistributedRateLimiter:
 ```
 
 Notice how we are not using `Lock`. This is because the Lua script is atomic. It will execute in a single step and no other thread can access the state in between.
+
+## What's Next
+
+The token bucket is just one approach. Other rate limiting algorithms worth exploring:
+- **Sliding Window Log** — tracks exact timestamps of each request, more precise but uses more memory
+- **Sliding Window Counter** — hybrid of fixed window and sliding log, good balance of accuracy and efficiency
+- **Leaky Bucket** — smooths out burst traffic by processing requests at a fixed rate

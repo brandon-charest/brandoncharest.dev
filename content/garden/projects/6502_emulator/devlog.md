@@ -20,7 +20,7 @@ growth = "growing"
 
 ### NES Test Verification
 
-Implemented the remaining NES opcodes (official and unofficial) and verified them against the [NES Test ROMs](@/garden/projects/6502_emulator/nestesting.md). Also wrote a small disassembler to be able to be able to see easier whats happening, I am assuming this will be useful for debugging in the future.
+Implemented the remaining NES opcodes (official and unofficial) and verified them against the [NES Test ROMs](@/garden/projects/6502_emulator/nestesting.md). Also wrote a small disassembler to be able to see easier whats happening, I am assuming this will be useful for debugging in the future.
 
 ### Refactor, Refactor, Refactor...
 
@@ -137,9 +137,9 @@ src/hardware/cpu/
 
 ### Testing the NES 6502
 
-I as able to make good progress with Klaus Dormann's functional tests, until I keep running into some loop traps. After debugging for longer than I am willing to admit, I realized it is because I have not implemented the Decimal Mode flag.
+I was able to make good progress with Klaus Dormann's functional tests, until I keep running into some loop traps. After debugging for longer than I am willing to admit, I realized it is because I have not implemented the Decimal Mode flag.
 
-So for now ill abandon the Klaus Dormann's functional tests, and instead for on testing again known good NES ROM logs. Specifically the [NES Test ROMs](https://github.com/christopherpow/nes-test-roms/tree/master).
+So for now ill abandon the Klaus Dormann's functional tests, and instead focus on testing again known good NES ROM logs. Specifically the [NES Test ROMs](https://github.com/christopherpow/nes-test-roms/tree/master).
 
 This means I need to look into loading ROMs into memory and running them.
 

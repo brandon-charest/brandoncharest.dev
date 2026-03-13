@@ -14,7 +14,7 @@ pinned = true
 
 ## TLDR
 
-Create this alias into your `.aliases/.zshrc/.bashrc` or where ever you store aliases for easier use later.
+Create this alias into your `.aliases/.zshrc/.bashrc` or wherever you store aliases for easier use later.
 
 ```bash
 alias cpwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
@@ -41,7 +41,7 @@ Prints the current directory path you are in.
 tr -d '\n'
 ```
 
-This will copy standard input to the standard output with substation or deletion of selected characters.
+This will copy standard input to the standard output with substitution or deletion of selected characters.
 
 The pwd command above will produce the working directory string but it will have a line return character `\n` appended to it.
 
@@ -51,15 +51,20 @@ We use the `-d` command to signal that we want to delete a character off the str
 
 ### Copying to System Clipboard
 
-Depending on if you are on OSX or Windows the copy command could be different
+Depending on your OS the copy command will be different:
+
+_macOS_
+
+- **pbcopy**
 
 _Windows_
 
 - **clip**
 
-_OSX_
+_Linux_
 
-- **pbcopy**
+- **xclip** (`xclip -selection clipboard`) — may need to install via `sudo apt install xclip`
+- **xsel** (`xsel --clipboard --input`) — alternative, also usually requires install
 
 This will copy text to the system clipboard (by default).
 
@@ -90,4 +95,4 @@ So the flow will be the following.
 
 Now this is far from the only way to do this, I believe a popular way would be to just use **xclip** but that may take an install and I tried to find a way to use only what is available by default.
 
-I hope that someone may find his useful. What are some of the things you have learned in the terminal that has saved you time/made things easier? Let me know! 😃
+I hope that someone may find this useful. What are some of the things you have learned in the terminal that has saved you time/made things easier? Let me know! 😃

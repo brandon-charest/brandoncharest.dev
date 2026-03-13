@@ -5,8 +5,7 @@
     margin-top: 1.5rem;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--secondary);
-    box-shadow: var(--shadow-sm);
+    background: var(--bg-surface);
 }
 
 .file-list {
@@ -24,7 +23,7 @@
         letter-spacing: 1.5px;
         font-weight: bold;
         text-transform: uppercase;
-        background: var(--secondary);
+        background: var(--bg-surface);
     }
 
     td {
@@ -34,7 +33,7 @@
     }
 
     tbody tr {
-        transition: all 0.2s ease;
+        transition: background-color 0.15s ease;
 
         &:nth-child(even) {
             background-color: var(--primary-a05);
@@ -47,25 +46,26 @@
 
     .file-row {
         cursor: pointer;
+        transition: background-color 0.15s ease;
 
         &:hover {
             background-color: var(--primary-a08) !important;
 
             .name a {
-                color: var(--highlight);
-                text-shadow: 0 0 8px rgba(128, 222, 234, 0.3);
+                color: var(--primary);
             }
 
             .perms {
-                color: var(--highlight);
+                color: var(--primary);
             }
         }
     }
 
     .dir-row {
         .name::before {
-            content: "📁 ";
-            margin-right: 0.5rem;
+            content: "/ ";
+            color: var(--primary);
+            margin-right: 0.25rem;
         }
     }
 
@@ -74,18 +74,18 @@
         color: var(--primary);
         opacity: 0.7;
         font-size: 0.85rem;
-        transition: all 0.2s ease;
+        transition: color 0.15s ease;
     }
 
     .size {
-        color: var(--text-2);
+        color: var(--text-muted);
         text-align: right;
         width: 100px;
         font-variant-numeric: tabular-nums;
     }
 
     .date {
-        color: var(--text-2);
+        color: var(--text-muted);
         width: 140px;
         font-variant-numeric: tabular-nums;
     }
@@ -97,7 +97,7 @@
         a {
             color: var(--foreground);
             text-decoration: none;
-            transition: color 0.1s;
+            transition: color 0.15s ease;
         }
     }
 
@@ -110,7 +110,7 @@
     /* Badges inside list */
     .badge-seedling {
         font-size: 0.7em;
-        color: var(--destructive);
+        color: var(--text-muted);
         margin-left: 8px;
         vertical-align: middle;
     }
@@ -119,19 +119,10 @@
     .growth-indicator,
     .type-indicator {
         display: inline-block;
-        font-size: 1.1em;
+        font-size: 0.8em;
         margin-right: 0.4rem;
-        transition: transform 0.2s ease;
-        filter: grayscale(0.2);
-    }
-
-    .file-row:hover {
-
-        .growth-indicator,
-        .type-indicator {
-            transform: scale(1.15);
-            filter: grayscale(0);
-        }
+        font-family: var(--font-mono);
+        color: var(--text-muted);
     }
 
     /* Color coding for different growth stages */
@@ -167,14 +158,13 @@
     border: 1px solid var(--border);
     margin-bottom: 2rem;
     margin-top: 1.5rem;
-    background: var(--secondary);
+    background: var(--bg-surface);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
     overflow: hidden;
 }
 
 .readme-header {
-    background: linear-gradient(180deg, var(--primary-a10) 0%, var(--border-subtle) 100%);
+    background: var(--primary-a05);
     padding: 0.8rem 1.5rem;
     font-family: var(--font-mono);
     font-size: 0.8rem;
@@ -228,7 +218,7 @@
     h3 {
         font-size: 1.2rem;
         margin-bottom: 0.8rem;
-        color: var(--highlight);
+        color: var(--primary);
     }
 
     /* Enhanced link styling with hover effects */
@@ -240,9 +230,8 @@
         position: relative;
 
         &:hover {
-            color: var(--highlight);
-            border-bottom-color: var(--highlight);
-            text-shadow: 0 0 8px rgba(128, 222, 234, 0.4);
+            color: var(--primary);
+            border-bottom-color: var(--primary);
         }
 
         &:visited {
@@ -261,7 +250,7 @@
             color: var(--muted-foreground);
             line-height: 1.8;
             padding-left: 0.5rem;
-            transition: all 0.2s ease;
+            transition: color 0.2s ease;
 
             &:hover {
                 color: var(--foreground);
@@ -299,24 +288,23 @@
 
     /* Inline code styling */
     code {
-        background: var(--secondary);
+        background: var(--bg-elevated);
         padding: 0.2rem 0.5rem;
         border-radius: var(--radius-sm);
         font-size: 0.9em;
-        color: var(--highlight);
-        border: 1px solid var(--border-subtle);
+        color: var(--primary);
+        border: 1px solid var(--border);
         font-family: var(--font-mono);
     }
 
     /* Code blocks (pre > code) */
     pre {
-        background: var(--secondary);
+        background: var(--bg-elevated);
         border: 1px solid var(--border);
         border-radius: var(--radius-sm);
         padding: 1.5rem;
         overflow-x: auto;
         margin: 1.5rem 0;
-        box-shadow: var(--shadow-sm);
 
         code {
             background: transparent;
@@ -325,7 +313,6 @@
             font-size: 0.85rem;
             line-height: 1.6;
             color: var(--foreground);
-            /* Ensure monospace font for ASCII art */
             font-family: var(--font-mono);
             white-space: pre;
         }
@@ -359,7 +346,7 @@
 
     /* Emphasis/italic text */
     em {
-        color: var(--highlight);
+        color: var(--muted-foreground);
         font-style: italic;
     }
 }

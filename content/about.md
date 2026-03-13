@@ -11,9 +11,9 @@ I'm a senior backend engineer with over 8 years of experience building distribut
 
 ## Why this Site Exists
 
-I created this space as way to document my journey and help me gain a deeper understanding of the technologies I use. I've found that the best way to truly learn something is to explain it to others. It also helps me remember some of the details when I look back on something I've done in the past, because if its past 24 hours... I probably already forgot.
+I created this space as a way to document my journey and help me gain a deeper understanding of the technologies I use. I've found that the best way to truly learn something is to explain it to others. It also helps me remember some of the details when I look back on something I've done in the past, because if it's past 24 hours... I probably already forgot.
 
-This is my digital garden: a place where ideas are planted, cultivated, and sometimes pruned as my understanding evolves. This site is essentially a continuous work in progress.
+This is my [digital garden](@/garden/_index.md): a place where ideas are planted, cultivated, and sometimes pruned as my understanding evolves. This site is essentially a continuous work in progress. You can also check out what I'm up to [now](@/now.md).
 
 ## Beyond the Code
 

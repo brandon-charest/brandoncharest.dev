@@ -7,7 +7,7 @@ description = "How Conway's Game of Life works and implementing it in Rust"
 tags = ["rust", "algorithms"]
 
 [extra]
-growth = "seedling"
+growth = "growing"
 type = "tutorial"
 +++
 

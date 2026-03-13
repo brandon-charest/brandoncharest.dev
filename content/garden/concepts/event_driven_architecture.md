@@ -6,7 +6,7 @@ description = "Moving from monolithic transactions to distributed orchestration 
 [taxonomies]
 tags = [ "system-design", "distributed-systems" ]  
 [extra]
-growth = "seedling"
+growth = "growing"
 +++
 
 ## The Monolith: Simple and Safe
@@ -66,7 +66,7 @@ COMMIT;
 
 ### Automatic Rollback on Failure
 
-In our monolithic system, if server crashes mid update, the database will automatically roll back all changes. Its all or nothing.
+In our monolithic system, if server crashes mid update, the database will automatically roll back all changes. It's all or nothing.
 
 ```sql
 BEGIN TRANSACTION;
@@ -86,7 +86,7 @@ COMMIT;                               -- ❌ Never reached
 
 ### The Problem with Distributed Systems
 
-But lets say our financial system is handled by a 3rd party. Now we have a distributed system where the payment processing happens in a separate service. We can't use a traditional database transaction anymore.
+But let's say our financial system is handled by a 3rd party. Now we have a distributed system where the payment processing happens in a separate service. We can't use a traditional database transaction anymore.
 
 ```sql
 -- This doesn't work across different services!
@@ -112,7 +112,7 @@ Event-Driven Architecture is a design pattern where services communicate by prod
 ### Key Components
 
 - **Event Producers**: Services that publish facts (e.g., `VideoUploaded`).
-- **Event Bus/Broker**: Middleware like Kafka that routes events.
+- **Event Bus/Broker**: Middleware like [Kafka](@/garden/concepts/kafka.md) that routes events.
 - **Event Consumers**: Services that react to events (e.g., a "Search Service" updating its index).
 
 
@@ -271,3 +271,8 @@ Define and validate event schemas (e.g., using JSON Schema, Avro, Protobuf).
 - Need robust event infrastructure
 - Duplicate event handling (idempotency)
 - Ordering guarantees can be difficult
+
+## Related
+
+- [CQRS](@/garden/concepts/cqrs.md) — Often paired with EDA to separate read/write models
+- [Kafka](@/garden/concepts/kafka.md) — A common event bus/broker implementation

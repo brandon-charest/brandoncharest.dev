@@ -73,6 +73,8 @@ For example, a Redis Cluster with 3 nodes:
 
 ### Redis Streams Vs. [Kafka](@/garden/concepts/kafka.md)
 
+Redis Streams gives you Kafka-like semantics (consumer groups, offsets, append-only log) but within Redis itself. The trade-off: Redis Streams is simpler to set up and great for moderate throughput, but Kafka is purpose-built for high-throughput, multi-consumer event streaming with durable partitioned storage across a cluster. If you're already running Redis and don't need Kafka-scale, Streams can save you an entire infrastructure layer.
+
 ## RESP Protocol
 
 RESP is a binary protocol that uses control sequences encoded in ASCII.

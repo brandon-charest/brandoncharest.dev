@@ -4,14 +4,14 @@
         left: 0;
         right: 0;
         height: 32px;
-        background: var(--background);
+        background: var(--bg-surface);
         border-top: 1px solid var(--border);
         display: flex;
         align-items: center;
         padding: 0 1rem;
         font-family: var(--font-mono);
         font-size: 0.75rem;
-        color: var(--text-2);
+        color: var(--text-muted);
         z-index: 100;
     }
 
@@ -28,9 +28,13 @@
 
     .status-label {
         font-weight: bold;
-        color: var(--muted-foreground);
+        color: var(--text-muted);
     }
 
     .status-value {
-        color: var(--highlight)
+        color: var(--text-secondary);
+    }
+
+    .status-item.right .status-value {
+        color: var(--primary);
     }

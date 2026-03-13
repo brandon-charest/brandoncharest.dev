@@ -7,7 +7,7 @@ description = "Notes on dynamic programming patterns, including the knapsack pro
 tags = ["algorithms", "dynamic-programming"]
 
 [extra]
-growth = "seedling"
+growth = "growing"
 +++
 
 
@@ -15,7 +15,7 @@ growth = "seedling"
 
 Dynamic Programming is often a struggle for most developers. The **0/1 Knapsack Problem** was one of the first times I was able to understand the issue on a fundamental level.
 
-Imagine I am thief with a backpack that holds exactly **$W$ kgs**. I am looking at **$N$ items** that I could steal, each with a specific **weight** and **value**.
+Imagine I am a thief with a backpack that holds exactly **$W$ kgs**. I am looking at **$N$ items** that I could steal, each with a specific **weight** and **value**.
 
 - **Goal:** Pack as many items as I can into my bag with the highest possible value.
 - **Constraint:** Cannot go overweight limit **$W$**.
@@ -33,7 +33,7 @@ My intuition was just take the most valuable items first, essentially a **Greedy
 > **Greedy:** We take Item A, Total Value = $4. 1kg of space left but nothing else fits in it.<br>
 > **Optimal:** We take Item B + Item C. Total Value = $6. 0kg space left.
 
-Since we cannot use the Greedy approach we must find a way to identify if its worth taking an Item and adding it to our bag or not.
+Since we cannot use the Greedy approach we must find a way to identify if it's worth taking an Item and adding it to our bag or not.
 
 ## The DP Table
 
@@ -106,7 +106,7 @@ The table is built row by row.
 
 - Row 1 tells us "What's the best value I can make with **only** Item 1 and $w$ capacity".
 - Row 2 tells us "What's the best I can do with Items 1-2 and $w$ capacity?"
-Since we have 1kg left over we already know whats the best value we can make with Item 1 with a weight of 1. It's **1**
+Since we have 1kg left over we already know what's the best value we can make with Item 1 with a weight of 1. It's **1**
 
 $$
 dp[i][w] = \max \begin{cases}
@@ -114,3 +114,68 @@ dp[i][w] = \max \begin{cases}
 \text{Take It:} & \text{Value}[i] + dp[i-1][w-\text{Weight}[i]]
 \end{cases}
 $$
+
+**Row 3 - Item 3 (w=4, v=5):**
+
+| Items ↓ / Capacity → | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+| :---  | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **0** (no items)         | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **Item 1** (w=1, v=1) | 0 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| **Item 2** (w=3, v=4) | 0 | 1 | 1 | 4 | 5 | 5 | 5 | 5 |
+| **Item 3** (w=4, v=5) | 0 | 1 | 1 | 4 | **5** | **6** | **6** | **9** |
+
+- **Capacity 0-3**: Item 3 is too heavy (w=4), keep previous best
+- **Capacity 4**: Item 3 fits! value = 5 vs previous best = 5. Tie, either works → **5**
+- **Capacity 5**: Take Item 3 (5) + best with 1kg remaining (Item 1 = 1) → `5 + 1 = 6` vs previous 5 → **6**
+- **Capacity 7**: Take Item 3 (5) + best with 3kg remaining (Item 2 = 4) → `5 + 4 = 9` vs previous 5 → **9**
+
+**Row 4 - Item 4 (w=5, v=7):**
+
+| Items ↓ / Capacity → | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+| :---  | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **0** (no items)         | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **Item 1** (w=1, v=1) | 0 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| **Item 2** (w=3, v=4) | 0 | 1 | 1 | 4 | 5 | 5 | 5 | 5 |
+| **Item 3** (w=4, v=5) | 0 | 1 | 1 | 4 | 5 | 6 | 6 | 9 |
+| **Item 4** (w=5, v=7) | 0 | 1 | 1 | 4 | 5 | **7** | **8** | **9** |
+
+- **Capacity 5**: Item 4 fits perfectly! value = 7 vs previous 6 → **7**
+- **Capacity 6**: Take Item 4 (7) + best with 1kg remaining (1) → `7 + 1 = 8` vs previous 6 → **8**
+- **Capacity 7**: Take Item 4 (7) + best with 2kg remaining (1) → `7 + 1 = 8` vs previous 9 → keep **9** (Item 2 + Item 3)
+
+**Answer:** The maximum value we can carry with capacity 7 is **$9** (Item 2 + Item 3).
+
+### Implementation
+
+```python
+def knapsack(weights, values, capacity):
+    n = len(weights)
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        for w in range(capacity + 1):
+            # Don't take item i
+            dp[i][w] = dp[i - 1][w]
+
+            # Take item i (if it fits)
+            if weights[i - 1] <= w:
+                take = values[i - 1] + dp[i - 1][w - weights[i - 1]]
+                dp[i][w] = max(dp[i][w], take)
+
+    return dp[n][capacity]
+```
+
+**Complexity:** $O(N \times W)$ time, $O(N \times W)$ space.
+
+Since each row only depends on the row above it, you can optimize space to $O(W)$ by using a single 1D array and iterating capacity **right-to-left** (so you don't overwrite values you still need).
+
+```python
+def knapsack_optimized(weights, values, capacity):
+    dp = [0] * (capacity + 1)
+
+    for i in range(len(weights)):
+        for w in range(capacity, weights[i] - 1, -1):  # right-to-left
+            dp[w] = max(dp[w], values[i] + dp[w - weights[i]])
+
+    return dp[capacity]
+```
