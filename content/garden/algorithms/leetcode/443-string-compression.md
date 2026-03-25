@@ -2,6 +2,7 @@
 title = "LC 443: String Compression"
 date = "2025-12-20T13:48:58.468Z"
 description = "Solved using HashMap and Two Pointers."
+aliases = ["/garden/leetcode/443-string-compression/"]
 transparent = false
 
 [taxonomies]

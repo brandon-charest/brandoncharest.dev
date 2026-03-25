@@ -2,6 +2,7 @@
 title = "Opcode"
 date = "2025-12-05"
 description = "Handling interrupts and pushing the program counter to the stack."
+aliases = ["/garden/6502_emulator/opcodes/"]
 [taxonomies]
 tags = ["emulator"]
 [extra]

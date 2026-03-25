@@ -1,8 +1,9 @@
 +++
 title = "Advent of Code"
 description = "Log of my attempts to solve AoC puzzles."
+aliases = ["/garden/AdventOfCode/"]
 sort_by = "date"
-template = "section.html" 
+template = "section.html"
 transparent = true
 +++
 

@@ -1,6 +1,7 @@
 +++
 title = "Password Strength Roaster"
 description = "A Rust-based API that validates your password security by insulting your intelligence."
+aliases = ["/garden/projects/password-roaster/password-roaster/"]
 template = "section.html"
 sort_by = "weight"
 weight = 100

@@ -2,6 +2,7 @@
 title = "Fighting the Borrow Checker"
 date = "2025-12-06"
 description = "Common patterns where the borrow checker yells at me, and how to satisfy it."
+aliases = ["/garden/rust/borrow-checker/"]
 
 [taxonomies]
 tags = ["rust", "memory-safety"]

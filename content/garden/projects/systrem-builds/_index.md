@@ -1,6 +1,7 @@
 +++
 title = "System Builds"
 description = "Reinventing the wheel to see how it rolls. Deep dives into low-level infrastructure."
+aliases = ["/garden/systems/"]
 
 template = "section.html"
 sort_by = "weight"

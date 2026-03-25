@@ -2,6 +2,7 @@
 title = "From Monolithic Match to Modular Dispatch"
 date = "2026-01-08T22:34:21.000Z"
 description = "Refactoring the 6502 CPU to use a dispatch table instead of a monolithic match statement."
+aliases = ["/garden/6502_emulator/cpu/"]
 
 [taxonomies]
 tags = [ "6502", "emulator", "rust" ]
