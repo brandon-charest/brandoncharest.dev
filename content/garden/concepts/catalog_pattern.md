@@ -353,3 +353,19 @@ ALTER TABLE playables ADD CONSTRAINT valid_asset_type
 - **Caching**: Cache localized metadata at the CDN level (rarely changes)
 - **Partitioning**: Partition `playables` by `created_at` if ingesting massive libraries
 - **Denormalization**: Consider materializing common queries (e.g., "episodes per season count") for homepage displays
+
+---
+
+## In Practice: CigarEdge Catalog
+
+I didn't expect to actually use these patterns until I started building [CigarEdge](@/garden/projects/cigar-edge/_index.md) — a cigar price comparison site. Turns out the Show > Season > Episode hierarchy maps almost perfectly to the cigar world. Brand > Product Line > Variant > Purchasable Size. Same nesting, different nouns.
+
+### Where the Patterns Show Up
+
+**Concept-Asset Separation** — A cigar variant is the concept — it exists as an idea. But you don't *buy* a concept, you buy a box of 20, a 5-pack, or a single. Those are the assets. Pricing attaches to the purchasable unit, not the variant, because a single stick and a box of 20 are very different purchases.
+
+**Sidecar-Style Enrichment** — Some data shows up immediately when the catalog is built — the stuff that makes a product unique. Other data (origin, strength, leaf details) trickles in later from different sources. Sound familiar? 
+
+It's the same idea as localized metadata arriving separately from the show/episode structure. Core identity lives in the main table, supplementary details ride along in sidecar-style fields.
+
+**Denormalization for Reads** — I also have a denormalized "current price" table because I got tired of aggregating the full price history every time someone loads a page. Every price write updates both tables. You pay on writes to avoid the aggregation on reads — same trade-off as materializing "episodes per season count" for a homepage.
