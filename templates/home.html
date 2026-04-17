@@ -4,100 +4,116 @@
 {% block main_content %}
 <div class="body full-width-layout">
 
-            {% include "partials/neofetch.html" %}
+    {% include "partials/neofetch.html" %}
 
-            {% set garden = get_section(path="garden/_index.md") %}
-            {% set blog = get_section(path="blog/_index.md") %}
+    {% set garden = get_section(path="garden/_index.md") %}
+    {% set blog   = get_section(path="blog/_index.md") %}
 
-            <!-- STATS BAR -->
-            <div class="home-stats">
-                <span class="stat"><span class="stat-label">NOTES</span> <span class="stat-value">{{ garden.pages | length }}</span></span>
-                <span class="stat-sep">&middot;</span>
-                <span class="stat"><span class="stat-label">POSTS</span> <span class="stat-value">{{ blog.pages | length }}</span></span>
-                <span class="stat-sep">&middot;</span>
-                <span class="stat"><span class="stat-label">STATUS</span> <span class="stat-value online">ONLINE</span></span>
-            </div>
+    {# Walk every garden subsection so deeply-nested notes are included.
+       Zola's transparent flag bubbles pages up one level — so we walk two
+       levels of nesting and dedupe by permalink to handle the overlap. #}
+    {% set_global all_garden = garden.pages %}
+    {% for sub_path in garden.subsections %}
+        {% set sub = get_section(path=sub_path) %}
+        {% set_global all_garden = all_garden | concat(with=sub.pages) %}
+        {% for nested_path in sub.subsections %}
+            {% set nested = get_section(path=nested_path) %}
+            {% set_global all_garden = all_garden | concat(with=nested.pages) %}
+            {% for deeper_path in nested.subsections %}
+                {% set deeper = get_section(path=deeper_path) %}
+                {% set_global all_garden = all_garden | concat(with=deeper.pages) %}
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+    {% set all_garden = all_garden | unique(attribute="permalink") %}
 
-            <!-- HIGHLIGHTS SECTION -->
-                <div class="highlights-grid">
+    {% set garden_recent = all_garden | sort(attribute="date") | reverse | slice(end=6) %}
+    {% set blog_recent   = blog.pages   | slice(end=5) %}
+    {% set growing_now   = all_garden
+                            | filter(attribute="extra.growth", value="growing")
+                            | sort(attribute="date") | reverse | slice(end=5) %}
 
-                    <!-- PINNED SECTION -->
-{% set blog_pinned = blog.pages | filter(attribute="extra.pinned", value=true) %}
-                    {% set garden_pinned = garden.pages | filter(attribute="extra.pinned", value=true) %}
-                    {% set pinned_pages = blog_pinned | concat(with=garden_pinned) %}
-                    
-                    {% if pinned_pages %}
-                    <div class="highlight-section pinned-section">
-                        <h2 class="section-label">
-                            <span class="label-text">[PINNED] Featured</span>
-                        </h2>
-                        
-                        {% set pinned = pinned_pages | first %}
-                        {% set growth = pinned.extra.growth | default(value="seedling") %}
-                        {% set type = pinned.extra.type | default(value="note") %}
+    <div class="home-stats">
+        <span class="stat"><span class="stat-label">NOTES</span> <span class="stat-value">{{ all_garden | length }}</span></span>
+        <span class="stat-sep">&middot;</span>
+        <span class="stat"><span class="stat-label">POSTS</span> <span class="stat-value">{{ blog.pages | length }}</span></span>
+        <span class="stat-sep">&middot;</span>
+        <span class="stat"><span class="stat-label">GROWING</span> <span class="stat-value">{{ all_garden | filter(attribute="extra.growth", value="growing") | length }}</span></span>
+        <span class="stat-sep">&middot;</span>
+        <span class="stat"><span class="stat-label">STATUS</span> <span class="stat-value online">ONLINE</span></span>
+    </div>
 
-                        <div class="card-link file-card featured-card" data-growth="{{ growth }}">
-                            <a href="{{ pinned.permalink }}" class="card-overlay" aria-label="Read {{ pinned.title }}"></a>
+    {# ====================================================================
+       Activity panes — replace the old "highlights-grid" cards with three
+       terminal-styled panels showing recent blog, recent garden, and the
+       notes currently in `growing` state. Reads like split-pane tmux output.
+       ==================================================================== #}
 
-                            <div class="hero-content">
-                                
-                                <div class="hero-inner">
-                                    <div class="hero-eyebrow">
-                                        <span class="eyebrow-tag">FEATURED</span>
-                                        <span class="eyebrow-date">{{ pinned.date | date(format="%B %d, %Y") }}</span>
-                                    </div>
+    {% set blog_count   = blog.pages | length %}
+    {% set garden_count = all_garden | length %}
+    {% set growing_count = growing_now | length %}
+    {% set blog_meta    = blog_count   ~ " posts" %}
+    {% set garden_meta  = garden_count ~ " notes" %}
+    {% set growing_meta = growing_count ~ " active" %}
 
-                                    {{ ui::card_header(title=pinned.title, growth_stage=growth, content_type=type, show_type=false) }}
-                                    
-                                    <div class="card-meta">
-                                        {{ pinned.description | default(value="No description provided.") | truncate(length=160) }}
-                                    </div>
+    <div class="pane-grid cols-2">
 
-                                    {{ ui::card_tags(tags=pinned.taxonomies.tags, max_tags=3) }}
-                                </div>
+        {# Pane 1: tail -f ./blog #}
+        {{ ui::pane_open(cmd="tail -f", args="./blog", meta=blog_meta) }}
+            {% if blog_recent | length > 0 %}
+                {% for page in blog_recent %}
+                    {% set is_pinned = page.extra.pinned | default(value=false) %}
+                <a href="{{ page.permalink }}" class="pane-row"{% if is_pinned %} data-pinned="true"{% endif %}>
+                    <span class="pane-row-date">{{ page.date | date(format="%Y-%m-%d") }}</span>
+                    <span class="pane-row-badge">{% if is_pinned %}★ pinned{% else %}post{% endif %}</span>
+                    <span class="pane-row-title">{{ page.title }}</span>
+                    <span class="pane-row-aside">{% if page.reading_time %}~{{ page.reading_time }}m{% endif %}</span>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="pane-empty">No posts yet — the log is silent.</div>
+            {% endif %}
+        {{ ui::pane_close(footer_label="git log --all", footer_href="/blog/", footer_meta="streaming · live") }}
 
-                                <div class="hero-footer">
-                                    <span class="read-btn-premium">
-                                        <span class="btn-text">Read Story</span>
-                                        <span class="arrow">→</span>
-                                    </span>
-                                </div>
-                            </div>
+        {# Pane 2: tail -f ./garden #}
+        {{ ui::pane_open(cmd="tail -f", args="./garden", meta=garden_meta) }}
+            {% if garden_recent | length > 0 %}
+                {% for page in garden_recent %}
+                    {% set growth = page.extra.growth | default(value="seedling") %}
+                    {% set badge = "[note]" %}
+                    {% if growth == "seedling" %}{% set badge = "[seed]" %}
+                    {% elif growth == "growing" %}{% set badge = "[grow]" %}
+                    {% elif growth == "evergreen" %}{% set badge = "[ever]" %}{% endif %}
+                <a href="{{ page.permalink }}" class="pane-row" data-growth="{{ growth }}">
+                    <span class="pane-row-date">{{ page.date | date(format="%Y-%m-%d") }}</span>
+                    <span class="pane-row-badge">{{ badge }}</span>
+                    <span class="pane-row-title">{{ page.title }}</span>
+                    <span class="pane-row-aside">{{ page.components | first | default(value="") }}</span>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="pane-empty">No notes yet.</div>
+            {% endif %}
+        {{ ui::pane_close(footer_label="ls -lah ./garden", footer_href="/garden/", footer_meta="streaming · live") }}
+    </div>
 
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    <!-- RECENT SECTION -->
-                    <div class="highlight-section recent-section">
-                        <h2 class="section-label">
-                            <span class="label-text">[RECENT] Recent</span>
-                        </h2>
-                        {% set recent_pages = garden.pages | slice(end=3) %}
-                        {% for page in recent_pages %}
-                        {% set growth_stage = page.extra.growth | default(value="seedling") %}
-                        {% set content_type = page.extra.type | default(value="note") %}
-                        <div class="card-link file-card" data-growth="{{ growth_stage }}">
-                            <a href="{{ page.permalink }}" class="card-overlay" aria-label="Read {{ page.title }}"></a>
-
-                            {{ ui::card_header(title=page.title, growth_stage=growth_stage, content_type=content_type)
-                            }}
-
-                            <div class="card-meta">
-                                {{ page.description | default(value="No description provided.") | truncate(length=120) }}
-                            </div>
-
-                            <div class="card-footer-bar">
-                                {{ ui::card_tags(tags=page.taxonomies.tags, max_tags=3) }}
-                                <a href="{{ page.permalink }}" class="read-link">
-                                    READ <span class="arrow">→</span>
-                                </a>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-
-                </div>
+    {# Pane 3: ps aux | grep growing — full width #}
+    <div class="pane-grid full">
+        {{ ui::pane_open(cmd="ps", args="-eo growth,name --sort=last_touched | grep growing", meta=growing_meta) }}
+            {% if growing_now | length > 0 %}
+                {% for page in growing_now %}
+                <a href="{{ page.permalink }}" class="pane-row" data-growth="growing">
+                    <span class="pane-row-date">{{ page.date | date(format="%Y-%m-%d") }}</span>
+                    <span class="pane-row-badge">[grow]</span>
+                    <span class="pane-row-title">{{ page.title }}</span>
+                    <span class="pane-row-aside">{% if page.description %}{{ page.description | truncate(length=60) }}{% endif %}</span>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="pane-empty">Nothing is currently growing — everything is settled.</div>
+            {% endif %}
+        {{ ui::pane_close(footer_label="see all garden notes", footer_href="/garden/?growth=growing", footer_meta="actively tended") }}
+    </div>
 
 </div>
 {% endblock main_content %}

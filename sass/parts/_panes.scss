@@ -1,0 +1,193 @@
+/* sass/parts/_panes.scss
+   Split-pane terminal panels used on the homepage.
+   Each pane: window-bar header (cmd) + monospace body of streaming rows. */
+
+.pane-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.25rem;
+
+    &.cols-2 {
+        @media (min-width: 900px) {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    &.full {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pane {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-surface);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.pane-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 0.9rem;
+    background: var(--primary-a05);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+
+    .pane-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--primary);
+        opacity: 0.45;
+        box-shadow: 0 0 0 2px var(--primary-a10);
+    }
+
+    .pane-prompt {
+        color: var(--text-muted);
+        opacity: 0.7;
+        margin-right: 0.15rem;
+    }
+
+    .pane-cmd {
+        color: var(--primary);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+
+    .pane-args {
+        color: var(--text-secondary);
+        opacity: 0.85;
+    }
+
+    .pane-meta {
+        margin-left: auto;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        opacity: 0.55;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+}
+
+.pane-body {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    padding: 0.4rem 0;
+    flex: 1;
+    overflow: hidden;
+}
+
+.pane-row {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    align-items: baseline;
+    gap: 0.85rem;
+    padding: 0.4rem 1rem;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    line-height: 1.4;
+    border-left: 2px solid transparent;
+    transition: background 0.12s ease, border-color 0.12s ease;
+
+    &:hover {
+        background: var(--primary-a05);
+        border-left-color: var(--primary);
+
+        .pane-row-title { color: var(--primary); }
+    }
+
+    .pane-row-date {
+        color: var(--text-muted);
+        font-variant-numeric: tabular-nums;
+        font-size: 0.78rem;
+        opacity: 0.7;
+        white-space: nowrap;
+    }
+
+    .pane-row-badge {
+        color: var(--text-muted);
+        font-size: 0.72rem;
+        opacity: 0.7;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+    }
+
+    .pane-row-title {
+        color: var(--foreground);
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 0.85rem;
+    }
+
+    .pane-row-aside {
+        color: var(--text-muted);
+        font-size: 0.72rem;
+        opacity: 0.6;
+        font-style: italic;
+        white-space: nowrap;
+    }
+
+    &[data-pinned="true"] {
+        border-left-color: var(--accent-amber);
+
+        .pane-row-badge { color: var(--accent-amber); }
+    }
+
+    &[data-growth="growing"] .pane-row-badge,
+    &[data-growth="seedling"] .pane-row-badge {
+        color: var(--primary);
+        opacity: 0.7;
+    }
+}
+
+.pane-empty {
+    padding: 1rem;
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.pane-footer {
+    padding: 0.55rem 1rem;
+    border-top: 1px dashed var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    a {
+        color: var(--primary);
+        text-decoration: none;
+        opacity: 0.8;
+
+        &:hover { opacity: 1; text-decoration: underline; }
+    }
+}
+
+@media (max-width: 600px) {
+    .pane-row {
+        grid-template-columns: auto 1fr;
+        gap: 0.5rem;
+
+        .pane-row-badge,
+        .pane-row-aside {
+            display: none;
+        }
+    }
+
+    .pane-bar { font-size: 0.7rem; }
+    .pane-body { font-size: 0.78rem; }
+}

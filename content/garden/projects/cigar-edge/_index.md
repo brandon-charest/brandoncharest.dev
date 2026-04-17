@@ -6,7 +6,7 @@ template = "section.html"
 transparent = true
 +++
 
-I have been a fan of premium cigars for a few years now, and I kept falling into the same annoyance each time I wanted to restock, I would have multiple tabs open comparing prices against vendors. There are some solutions out there, but I felt they were dated and left a lot of room for improvement. This is what inspired me to start [CigarEdge.com](https://cigaredge.com).
+I have been a fan of preimum cigars for a few years now, and I kept falling into the same annoyance each time I wanted to restock, I would have multiple tabs open comparing prices against vendors. There are some solutions out there, but I felt they were dated and left a lot of room for improvement. This is what inspired to me to start [CigarEdge.com](https://cigaredge.com).
 
 **Stack:** Python 3.12 / FastAPI, Next.js 14 / PostgreSQL
 
@@ -17,7 +17,7 @@ I have been a fan of premium cigars for a few years now, and I kept falling into
 ### Core Systems
 - [Fuzzy Product Matching](@/garden/algorithms/fuzzy-matching.md) - Three-stage matching engine with confidence scoring
 - Deal Scoring - Percentile-based algorithm for surfacing price drops
-- Data Pipeline - Multi-source ingestion (affiliate feeds, HTML crawlers, catalog builder)
+- Data Pipeline - Multi-source ingestion (CJ feed, HTML crawlers, catalog builder)
 
 ### Architecture
 - [Catalog Pattern in Practice](@/garden/concepts/catalog_pattern.md) - Brand > Line > Vitola > PackSize hierarchy
@@ -27,6 +27,7 @@ I have been a fan of premium cigars for a few years now, and I kept falling into
 - [x] Matching engine
 - [x] Data pipeline
 - [x] Backend
+- [x] Deal scoring
 - [x] MVP UI
 
 ### Future Items

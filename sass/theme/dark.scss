@@ -50,4 +50,11 @@
   --primary-a20: rgba(78, 201, 176, 0.20);
   --primary-a25: rgba(78, 201, 176, 0.25);
   --primary-a30: rgba(78, 201, 176, 0.30);
+
+  /* Signal accent — pinned posts, series indicators, "growing now" rows.
+     Used sparingly; do not promote to a general-purpose color. */
+  --accent-amber:    #d4a25a;
+  --accent-amber-a10: rgba(212, 162, 90, 0.10);
+  --accent-amber-a20: rgba(212, 162, 90, 0.20);
+  --accent-amber-a40: rgba(212, 162, 90, 0.40);
 }

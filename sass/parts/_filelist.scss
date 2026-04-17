@@ -152,6 +152,34 @@
     .file-row[data-type="project"] {
         border-left: 2px solid var(--primary-a30);
     }
+
+    /* Pinned rows get an amber side-rail */
+    .file-row[data-pinned="true"] {
+        border-left: 2px solid var(--accent-amber);
+    }
+
+    /* New growth/type columns */
+    .growth-col,
+    .type-col {
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        white-space: nowrap;
+        width: 1%;
+        letter-spacing: 0.04em;
+    }
+
+    /* Pinned star */
+    .badge-pinned {
+        color: var(--accent-amber);
+        margin-right: 0.4rem;
+        font-size: 0.85em;
+    }
+}
+
+/* Hide GROWTH and TYPE columns on narrow screens; the badges stay accessible
+   via the hover tooltip on the title cell (and through the data-* attrs). */
+@media (max-width: 768px) {
+    .file-list .hide-sm { display: none; }
 }
 
 .hub-readme {

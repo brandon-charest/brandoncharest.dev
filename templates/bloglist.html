@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
+
+{% block main_content %}
+<div class="body full-width-layout">
+
+    {# Pinned posts surface in their own block above the full log. The full
+       log still includes them so the page works as a complete archive. #}
+    {% set pinned = section.pages | filter(attribute="extra.pinned", value=true) %}
+
+    <div class="terminal-window">
+        {{ ui::window_bar(resource=section) }}
+
+        <div class="window-content">
+
+            {# 1. git log style intro #}
+            <div class="cmd-line" style="opacity: 0.55;">
+                <span class="cmd-prompt">$</span>
+                <span class="cmd">git</span>
+                <span class="args">log --oneline --all ./blog</span>
+            </div>
+
+            {% if section.content %}
+            <div class="cmd-line" style="opacity: 0.55; margin-top: 1.25rem;">
+                <span class="cmd-prompt">$</span>
+                <span class="cmd">cat</span>
+                <span class="args">README.md</span>
+            </div>
+            <div class="hub-stdout">{{ section.content | safe }}</div>
+            {% endif %}
+
+            {# 2. Tag flag bar — current taxonomy values
+                 (active filter is read from URL by the script below) #}
+            {% set tags_taxonomy = get_taxonomy(kind="tags") %}
+            {% if tags_taxonomy and tags_taxonomy.items %}
+                {% set blog_tag_set = [] %}
+                {% for page in section.pages %}
+                    {% if page.taxonomies.tags %}
+                        {% for t in page.taxonomies.tags %}
+                            {% if t not in blog_tag_set %}
+                                {% set_global blog_tag_set = blog_tag_set | concat(with=t) %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if blog_tag_set | length > 0 %}
+                    <div class="flag-bar" style="margin-top: 1rem;">
+                        {{ ui::flag_row_open(flag="--tag") }}
+                            {{ ui::flag_opt(value="all", label="all", count=section.pages | length, href="?", active="all") }}
+                            {% for t in blog_tag_set %}
+                                {# Tera's filter() can't match against list-typed attrs,
+                                   so count tag membership manually. #}
+                                {% set_global tag_count = 0 %}
+                                {% for page in section.pages %}
+                                    {% if page.taxonomies.tags and t in page.taxonomies.tags %}
+                                        {% set_global tag_count = tag_count + 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                {{ ui::flag_opt(value=t, label=t, count=tag_count, href="?tag=" ~ t, active="all") }}
+                            {% endfor %}
+                        {{ ui::flag_row_close(hint="filters by tag") }}
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            {# 3. Pinned posts (★) #}
+            {% if pinned | length > 0 %}
+            <h2 class="hub-heading">
+                pinned
+                <span class="hub-heading-count">// {{ pinned | length }} {% if pinned | length == 1 %}post{% else %}posts{% endif %}</span>
+            </h2>
+
+            <div class="hub-table-wrap">
+                <table class="hub-table">
+                    <thead>
+                        <tr>
+                            <th class="col-hash">HASH</th>
+                            <th class="col-date">DATE</th>
+                            <th>TITLE</th>
+                            <th class="col-tags">TAGS</th>
+                            <th class="col-time">READ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for page in pinned %}
+                            {% set hash = page.permalink | trim_end_matches(pat="/") | split(pat="/") | last | truncate(length=7, end="") %}
+                        <tr class="hub-row" data-pinned="true"
+                            {% if page.taxonomies.tags %}data-tags="{{ page.taxonomies.tags | join(sep=' ') }}"{% endif %}>
+                            <td class="col-hash">{{ hash }}</td>
+                            <td class="col-date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
+                            <td class="col-name">
+                                <span class="badge-pinned" title="Pinned">★</span>
+                                <a href="{{ page.permalink }}">{{ page.title }}</a>
+                                {% if page.extra.series %}<span class="badge-status" style="color: var(--accent-amber);">[series · pt {{ page.extra.series_index | default(value=1) }}]</span>{% endif %}
+                            </td>
+                            <td class="col-tags">
+                                {% if page.taxonomies.tags %}
+                                    {% for tag in page.taxonomies.tags | slice(end=3) %}<a href="?tag={{ tag }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+                                {% else %}—{% endif %}
+                            </td>
+                            <td class="col-time">{% if page.reading_time %}~{{ page.reading_time }}m{% else %}—{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {# 4. Full log (all posts) — pinned still appear here for completeness #}
+            <h2 class="hub-heading">
+                log
+                <span class="hub-heading-count">// {{ section.pages | length }} {% if section.pages | length == 1 %}commit{% else %}commits{% endif %}</span>
+            </h2>
+
+            <div class="hub-table-wrap">
+                <table class="hub-table">
+                    <thead>
+                        <tr>
+                            <th class="col-hash">HASH</th>
+                            <th class="col-date">DATE</th>
+                            <th>TITLE</th>
+                            <th class="col-tags">TAGS</th>
+                            <th class="col-time">READ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for page in section.pages %}
+                            {% set hash = page.permalink | trim_end_matches(pat="/") | split(pat="/") | last | truncate(length=7, end="") %}
+                            {% set is_pinned = page.extra.pinned | default(value=false) %}
+                        <tr class="hub-row"
+                            data-pinned="{{ is_pinned }}"
+                            {% if page.taxonomies.tags %}data-tags="{{ page.taxonomies.tags | join(sep=' ') }}"{% endif %}>
+                            <td class="col-hash">{{ hash }}</td>
+                            <td class="col-date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
+                            <td class="col-name">
+                                {% if is_pinned %}<span class="badge-pinned" title="Pinned">★</span>{% endif %}
+                                <a href="{{ page.permalink }}">{{ page.title }}</a>
+                                {% if page.extra.series %}<span class="badge-status" style="color: var(--accent-amber);">[series · pt {{ page.extra.series_index | default(value=1) }}]</span>{% endif %}
+                            </td>
+                            <td class="col-tags">
+                                {% if page.taxonomies.tags %}
+                                    {% for tag in page.taxonomies.tags | slice(end=3) %}<a href="?tag={{ tag }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+                                {% else %}—{% endif %}
+                            </td>
+                            <td class="col-time">{% if page.reading_time %}~{{ page.reading_time }}m{% else %}—{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="2rem", opacity=0.5) }}
+
+        </div>
+    </div>
+</div>
+
+<script>
+// URL-param tag filter
+(function() {
+    const params = new URLSearchParams(window.location.search);
+    const tag = (params.get('tag') || '').toLowerCase();
+
+    if (tag) {
+        document.querySelectorAll('.hub-row[data-tags]').forEach(row => {
+            const tags = row.dataset.tags.toLowerCase().split(' ');
+            if (!tags.includes(tag)) row.style.display = 'none';
+        });
+    }
+
+    document.querySelectorAll('.flag-opt').forEach(a => {
+        const url = new URL(a.href, window.location.origin);
+        const v = (url.searchParams.get('tag') || 'all').toLowerCase();
+        const isActive = (tag === '' && v === 'all') || (v === tag);
+        a.classList.toggle('active', isActive);
+        const bullet = a.querySelector('.flag-bullet');
+        if (bullet) bullet.textContent = isActive ? '●' : '○';
+    });
+})();
+</script>
+{% endblock main_content %}

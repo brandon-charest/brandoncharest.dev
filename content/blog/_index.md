@@ -2,7 +2,7 @@
 title = "Blog"
 description = "Polished articles and project retrospectives"
 sort_by = "date"
-template = "section.html"
+template = "bloglist.html"
 page_template = "blog.html"
 +++
 

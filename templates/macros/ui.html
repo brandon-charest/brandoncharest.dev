@@ -92,3 +92,79 @@ Static Title: {{ ui::window_bar(title="My Title") }}
 </div>
 {% endif %}
 {% endmacro card_tags %}
+
+
+{# 6. FLAG BAR — CLI-style filter row used on hub pages.
+   Tera doesn't support inline object literals, so we render the row as
+   open + n×opt + close. Parent template emits the options inline.
+
+   Pattern:
+     {{ ui::flag_row_open(flag="--growth") }}
+       {{ ui::flag_opt(value="all",       label="all",       count=40, href="?",                active="all") }}
+       {{ ui::flag_opt(value="seedling",  label="seedling",  count=12, href="?growth=seedling", active="all") }}
+     {{ ui::flag_row_close(hint="filters by growth stage") }}
+#}
+{% macro flag_row_open(flag) %}
+<div class="flag-row">
+    <span class="flag-key">{{ flag }}</span>
+    <span class="flag-options">
+{% endmacro flag_row_open %}
+
+{% macro flag_opt(value, label, count=false, href="#", active="all") %}
+<a href="{{ href }}" class="flag-opt{% if value == active %} active{% endif %}" data-flag-value="{{ value }}"><span class="flag-bullet">{% if value == active %}●{% else %}○{% endif %}</span>{{ label }}{% if count is string or count is number %}<span class="flag-count">{{ count }}</span>{% endif %}</a>
+{% endmacro flag_opt %}
+
+{% macro flag_row_close(hint=false) %}
+    </span>
+    {% if hint %}<span class="flag-hint">{{ hint }}</span>{% endif %}
+</div>
+{% endmacro flag_row_close %}
+
+
+{# 7. PANE — terminal-styled bordered panel for streaming content lists.
+   Tera doesn't support {% call %} blocks, so the pane is split into
+   open/close macros. Place pane_row entries between them.
+
+   Pattern:
+     {{ ui::pane_open(cmd="tail -f", args="./blog", meta="recent") }}
+       {{ ui::pane_row(...) }}
+     {{ ui::pane_close(footer_label="View all posts", footer_href="/blog/") }}
+#}
+{% macro pane_open(cmd, args="", prompt="$", meta=false) %}
+<div class="pane">
+    <div class="pane-bar">
+        <span class="pane-dot" aria-hidden="true"></span>
+        <span class="pane-prompt">{{ prompt | safe }}</span>
+        <span class="pane-cmd">{{ cmd }}</span>
+        {% if args %}<span class="pane-args">{{ args }}</span>{% endif %}
+        {% if meta %}<span class="pane-meta">{{ meta }}</span>{% endif %}
+    </div>
+    <div class="pane-body">
+{% endmacro pane_open %}
+
+{% macro pane_close(footer_label=false, footer_href=false, footer_meta=false) %}
+    </div>
+    {% if footer_label or footer_meta %}
+    <div class="pane-footer">
+        {% if footer_meta %}<span>{{ footer_meta }}</span>{% else %}<span></span>{% endif %}
+        {% if footer_label %}
+            {% if footer_href %}<a href="{{ footer_href }}">{{ footer_label }} →</a>
+            {% else %}<span>{{ footer_label }}</span>{% endif %}
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endmacro pane_close %}
+
+
+{# 8. PANE ROW — single line inside a pane.
+   Renders: [date]  [badge]  [title......]  [aside]
+#}
+{% macro pane_row(href, date="", badge="", title="", aside="", pinned=false, growth=false) %}
+<a href="{{ href }}" class="pane-row"{% if pinned %} data-pinned="true"{% endif %}{% if growth %} data-growth="{{ growth }}"{% endif %}>
+    {% if date %}<span class="pane-row-date">{{ date }}</span>{% else %}<span class="pane-row-date"></span>{% endif %}
+    {% if badge %}<span class="pane-row-badge">{{ badge }}</span>{% else %}<span class="pane-row-badge"></span>{% endif %}
+    <span class="pane-row-title">{{ title }}</span>
+    {% if aside %}<span class="pane-row-aside">{{ aside }}</span>{% else %}<span class="pane-row-aside"></span>{% endif %}
+</a>
+{% endmacro pane_row %}
