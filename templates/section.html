@@ -121,7 +121,7 @@
                         {% set growth_stage = page.extra.growth | default(value="seedling") %}
                         {% set content_type = page.extra.type | default(value="note") %}
                         {% set is_pinned = page.extra.pinned | default(value=false) %}
-                        <tr class="file-row" data-growth="{{ growth_stage }}" data-type="{{ content_type }}" data-pinned="{{ is_pinned }}">
+                        <tr class="file-row" data-growth="{{ growth_stage }}" data-type="{{ content_type }}"{% if is_pinned %} data-pinned="true"{% endif %}>
                             <td class="perms">-rw-r--r--</td>
                             {% if has_growth %}
                             <td class="hide-sm growth-col">{% if growth_stage == "seedling" %}[seed]{% elif growth_stage == "growing" %}[grow]{% elif growth_stage == "evergreen" %}[ever]{% else %}[seed]{% endif %}</td>
