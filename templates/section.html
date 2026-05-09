@@ -78,40 +78,40 @@
             {% endif %}
 
             {# 5. FILE LIST CONTAINER #}
-            <div class="file-list-container">
-                <table class="file-list">
+            <div class="hub-table-wrap">
+                <table class="hub-table">
                     <thead>
                         <tr>
-                            <th>PERMS</th>
-                            {% if has_growth %}<th class="hide-sm">GROWTH</th>{% endif %}
-                            <th class="hide-sm">TYPE</th>
-                            <th>SIZE</th>
-                            <th>DATE</th>
+                            <th class="col-perms">PERMS</th>
+                            {% if has_growth %}<th class="col-growth hide-sm">GROWTH</th>{% endif %}
+                            <th class="col-type hide-sm">TYPE</th>
+                            <th class="col-size">SIZE</th>
+                            <th class="col-updated">DATE</th>
                             <th>NAME</th>
                         </tr>
                     </thead>
                     <tbody>
                         {# PARENT DIRECTORY LINK #}
-                        <tr class="parent-dir">
-                            <td class="perms">drwxr-xr-x</td>
-                            {% if has_growth %}<td class="hide-sm">—</td>{% endif %}
-                            <td class="hide-sm">—</td>
-                            <td class="size">-</td>
-                            <td class="date">-</td>
-                            <td class="name"><a href="../">.. (Parent Directory)</a></td>
+                        <tr class="hub-row hub-parent-row">
+                            <td class="col-perms">drwxr-xr-x</td>
+                            {% if has_growth %}<td class="col-growth hide-sm">—</td>{% endif %}
+                            <td class="col-type hide-sm">—</td>
+                            <td class="col-size">-</td>
+                            <td class="col-updated">-</td>
+                            <td class="col-name"><a href="../">.. (Parent Directory)</a></td>
                         </tr>
 
                         {# LOOP THROUGH SUBSECTIONS (FOLDERS) #}
                         {% for sub_path in section.subsections %}
                         {% set subsection = get_section(path=sub_path) %}
-                        <tr class="file-row dir-row">
-                            <td class="perms">drwxr-xr-x</td>
-                            {% if has_growth %}<td class="hide-sm">—</td>{% endif %}
-                            <td class="hide-sm">[dir]</td>
-                            <td class="size">{{ subsection.pages | length }}</td>
-                            <td class="date">-</td>
-                            <td class="name">
-                                <a href="{{ subsection.permalink }}" class="dir-link">{{ subsection.title }}/</a>
+                        <tr class="hub-row">
+                            <td class="col-perms">drwxr-xr-x</td>
+                            {% if has_growth %}<td class="col-growth hide-sm">—</td>{% endif %}
+                            <td class="col-type hide-sm">[dir]</td>
+                            <td class="col-size">{{ subsection.pages | length }}</td>
+                            <td class="col-updated">-</td>
+                            <td class="col-name">
+                                <a href="{{ subsection.permalink }}">{{ subsection.title }}/</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -121,22 +121,20 @@
                         {% set growth_stage = page.extra.growth | default(value="seedling") %}
                         {% set content_type = page.extra.type | default(value="note") %}
                         {% set is_pinned = page.extra.pinned | default(value=false) %}
-                        <tr class="file-row" data-growth="{{ growth_stage }}" data-type="{{ content_type }}"{% if is_pinned %} data-pinned="true"{% endif %}>
-                            <td class="perms">-rw-r--r--</td>
+                        <tr class="hub-row" data-growth="{{ growth_stage }}" data-type="{{ content_type }}"{% if is_pinned %} data-pinned="true"{% endif %}>
+                            <td class="col-perms">-rw-r--r--</td>
                             {% if has_growth %}
-                            <td class="hide-sm growth-col">{% if growth_stage == "seedling" %}[seed]{% elif growth_stage == "growing" %}[grow]{% elif growth_stage == "evergreen" %}[ever]{% else %}[seed]{% endif %}</td>
+                            <td class="col-growth hide-sm">{% if growth_stage == "seedling" %}[seed]{% elif growth_stage == "growing" %}[grow]{% elif growth_stage == "evergreen" %}[ever]{% else %}[seed]{% endif %}</td>
                             {% endif %}
-                            <td class="hide-sm type-col">{% if content_type == "blog" %}[blog]{% elif content_type == "project" %}[proj]{% elif content_type == "reference" %}[ref]{% elif content_type == "tutorial" %}[tut]{% elif content_type == "snippet" %}[snip]{% elif content_type == "log" %}[log]{% else %}[note]{% endif %}</td>
-                            <td class="size">{{ page.content | length }}b</td>
-                            <td class="date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
-                            <td class="name">
+                            <td class="col-type hide-sm">{% if content_type == "blog" %}[blog]{% elif content_type == "project" %}[proj]{% elif content_type == "reference" %}[ref]{% elif content_type == "tutorial" %}[tut]{% elif content_type == "snippet" %}[snip]{% elif content_type == "log" %}[log]{% else %}[note]{% endif %}</td>
+                            <td class="col-size">{{ page.content | length }}b</td>
+                            <td class="col-updated"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
+                            <td class="col-name">
                                 {% if is_pinned %}<span class="badge-pinned" title="Pinned">★</span>{% endif %}
                                 <a href="{{ page.permalink }}">{{ page.title }}</a>
 
                                 {% if page.extra and page.extra.status %}
-                                <span class="status-badge {{ page.extra.status }}">
-                                    [{{ page.extra.status | upper }}]
-                                </span>
+                                <span class="badge-status {{ page.extra.status }}">[{{ page.extra.status }}]</span>
                                 {% endif %}
                             </td>
                         </tr>
@@ -160,7 +158,7 @@
     const growth = (params.get('growth') || 'all').toLowerCase();
 
     if (growth !== 'all') {
-        document.querySelectorAll('.file-row[data-growth]').forEach(row => {
+        document.querySelectorAll('.hub-row[data-growth]').forEach(row => {
             if (row.dataset.growth !== growth) row.style.display = 'none';
         });
     }
