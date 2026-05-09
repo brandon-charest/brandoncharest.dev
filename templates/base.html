@@ -39,16 +39,8 @@
 
     <footer class="system-status">
         <div class="status-item">
-            <span class="status-label">MODE:</span>
-            <span class="status-value">READ_ONLY</span>
-        </div>
-        <div class="status-item">
             <span class="status-label">LOC:</span>
             <span class="status-value">{{ config.extra.location }}</span>
-        </div>
-        <div class="status-item">
-            <span class="status-label">UPTIME:</span>
-            <span class="status-value" id="uptime">00:00:00</span>
         </div>
         <div class="status-item right">
             <span class="status-label">GIT:</span>
@@ -56,33 +48,5 @@
         </div>
     </footer>
 </body>
-
-
-<script>
-    // Persistent Uptime Counter
-    // Get or set the initial start time in localStorage
-    if (!localStorage.getItem('siteStartTime')) {
-        localStorage.setItem('siteStartTime', Date.now());
-    }
-
-    const startTime = parseInt(localStorage.getItem('siteStartTime'));
-
-    function updateUptime() {
-        const now = Date.now();
-        const uptimeMs = now - startTime;
-        const uptimeSeconds = Math.floor(uptimeMs / 1000);
-
-        const hours = Math.floor(uptimeSeconds / 3600);
-        const minutes = Math.floor((uptimeSeconds % 3600) / 60);
-        const seconds = uptimeSeconds % 60;
-
-        const formatted = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        document.getElementById('uptime').innerText = formatted;
-    }
-
-    // Update immediately and then every second
-    updateUptime();
-    setInterval(updateUptime, 1000);
-</script>
 
 </html>
