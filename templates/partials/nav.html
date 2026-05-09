@@ -73,26 +73,5 @@
             </div>
         {% endif %}
 
-        {% if config.extra.theme == "toggle" %}
-            <button id="dark-mode-toggle"
-                    onclick="toggleTheme()"
-                    type="button"
-                    aria-label="Toggle dark mode">
-                <img src="{{ get_url(path='icons/sun.svg') }}" id="sun-icon" alt="Light" />
-                <img src="{{ get_url(path='icons/moon.svg') }}"
-                     id="moon-icon"
-                     style="filter: invert(1)"
-                     alt="Dark" />
-                <img src="{{ get_url(path='icons/auto.svg') }}"
-                     id="auto-icon"
-                     style="filter: invert(1)"
-                     alt="Auto" />
-            </button>
-
-            <!-- Initialize the theme toggle icons -->
-            <script>
-                updateItemToggleTheme()
-            </script>
-        {% endif %}
     </div>
 </nav>
