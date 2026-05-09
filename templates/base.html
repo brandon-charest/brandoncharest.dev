@@ -14,9 +14,11 @@
     <div class="content" id="main-content">
         {% include "partials/nav.html" %}
 
+        {% block terminal_header %}
         <div class="terminal-container">
             {% include "partials/terminal_header.html" %}
         </div>
+        {% endblock terminal_header %}
         {# Post page is the default #}
         {% block main_content %}
         Nothing here?!
