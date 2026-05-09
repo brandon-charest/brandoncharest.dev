@@ -42,12 +42,12 @@
             {% set path_display = "~" ~ my_path | split(pat="/") | slice(start=0, end=-2) | join(sep="/") %}
         {% endif %}
 {# 3. BLOG POSTS #}
-    {% elif my_path is starting_with("/posts") %}
+    {% elif my_path is starting_with("/blog") %}
         {% if page %}
             {% set cmd = "cat ." ~ my_path %}
-            {% set path_display = "~/posts" %}
+            {% set path_display = "~/blog" %}
         {% else %}
-            {% set cmd = "tail -f /var/log/posts.log" %}
+            {% set cmd = "tail -f /var/log/blog.log" %}
             {% set path_display = "~/var/log" %}
         {% endif %}
         
