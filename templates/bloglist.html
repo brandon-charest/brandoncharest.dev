@@ -129,7 +129,7 @@
                             {% set hash = page.permalink | trim_end_matches(pat="/") | split(pat="/") | last | truncate(length=7, end="") %}
                             {% set is_pinned = page.extra.pinned | default(value=false) %}
                         <tr class="hub-row"
-                            data-pinned="{{ is_pinned }}"
+                            {% if is_pinned %}data-pinned="true"{% endif %}
                             {% if page.taxonomies.tags %}data-tags="{{ page.taxonomies.tags | join(sep=' ') }}"{% endif %}>
                             <td class="col-hash">{{ hash }}</td>
                             <td class="col-date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
