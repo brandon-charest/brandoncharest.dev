@@ -27,7 +27,7 @@
     {% endfor %}
     {% set all_garden = all_garden | unique(attribute="permalink") %}
 
-    {% set garden_recent = all_garden | sort(attribute="date") | reverse | slice(end=6) %}
+    {% set garden_recent = all_garden | sort(attribute="date") | reverse | slice(end=5) %}
     {% set blog_recent   = blog.pages   | slice(end=5) %}
     {% set growing_now   = all_garden
                             | filter(attribute="extra.growth", value="growing")
