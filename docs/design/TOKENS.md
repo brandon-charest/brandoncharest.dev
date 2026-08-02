@@ -12,9 +12,19 @@ Four families, loaded from Google Fonts in one request.
 | Family | Weights | Used for |
 |---|---|---|
 | Space Mono | 400, 700 | Display voice — page `h1`, post `h2`/`h3`, section labels, brand logo, status-bar mode, kind badges, `DIR` badge |
-| IBM Plex Mono | 400, 500, 600, 700 | Terminal chrome — nav, prompts, file tree, breadcrumbs, meta, status bar, palette |
-| IBM Plex Sans | 400, 500, 600, 700 | Running prose — article body, intro blurbs, descriptions |
+| IBM Plex Mono | 400, 500, 600, 700 | Terminal chrome — prompts, file tree, breadcrumbs, meta, status bar, palette, nav index numbers |
+| IBM Plex Sans | 400, 500, 600, 700 | Running prose — article body, intro blurbs, descriptions — **and nav labels** (see below) |
 | JetBrains Mono | 400–700 | Code only — code blocks, inline `<code>`, the `// currently` aside, the ASCII coffee cup. Ligatures on. |
+
+**Deviation — nav labels are sans, not mono.** The handoff assigns nav to IBM
+Plex Mono as terminal chrome. Monospace forces every glyph to one advance width,
+which at 13px flattens the shapes that separate letters (n/h, a/o) and opens
+gaps inside words. The nav is five short words read at a glance, so legibility
+wins over texture: labels are IBM Plex Sans 14px/500. The index numbers stay
+IBM Plex Mono with tabular figures — they are a terminal affordance tied to the
+1–5 shortcuts, and fixed-width digits keep the pills from shifting. Same
+superfamily and already loaded, so no extra font request. Net effect on layout:
+the nav got *narrower* (331px, from ~360px).
 
 ```
 --font-display: 'Space Mono', ui-monospace, monospace;

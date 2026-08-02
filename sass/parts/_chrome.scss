@@ -150,8 +150,8 @@ pre::-webkit-scrollbar-thumb {
   border: 1px solid var(--bg2);
   border-radius: var(--radius-row);
   color: var(--fg2);
-  font-family: var(--font-ui);
-  font-size: 12px;
+  font-family: var(--font-sans);
+  font-size: 13px;
   cursor: pointer;
   transition: border-color var(--t-mid), color var(--t-mid);
 
@@ -160,13 +160,18 @@ pre::-webkit-scrollbar-thumb {
     color: var(--fg1);
   }
 
-  .search-trigger__slash { color: var(--fg2); }
+  /* The prompt glyph stays monospaced — it is a terminal cue, not a word. */
+  .search-trigger__slash {
+    font-family: var(--font-ui);
+    color: var(--fg2);
+  }
 }
 
 .kbd {
   padding: 0 5px;
   border: 1px solid var(--bg3);
   border-radius: var(--radius-badge);
+  font-family: var(--font-ui);
   font-size: 12px;
   line-height: 1.6;
   color: var(--fg2);
@@ -176,21 +181,33 @@ pre::-webkit-scrollbar-thumb {
   display: flex;
   align-items: center;
   gap: 3px;
-  font-size: 13px;
   flex-wrap: wrap;
 }
 
+/* Nav labels are IBM Plex Sans, not the IBM Plex Mono the handoff assigns to
+   terminal chrome. Monospace forces every glyph into the same advance width,
+   which at 13px flattens the shapes that distinguish letters (n/h, a/o) and
+   opens gaps inside words. These are five short words that get read at a
+   glance, so legibility beats terminal texture. Same superfamily, and it is
+   already loaded for prose, so no extra font request.
+
+   The index numbers stay monospaced: they are a terminal affordance tied to
+   the 1-5 keyboard shortcuts, and tabular figures keep the pills aligned. */
 .site-nav__item {
-  padding: 4px 8px;
+  padding: 4px 9px;
   border-radius: var(--radius-pill);
-  font-family: var(--font-ui);
-  font-size: 13px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
   white-space: nowrap;
   text-decoration: none;
   color: var(--fg2);
   transition: color var(--t-fast);
 
   .site-nav__num {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
     color: var(--fg4);
     font-weight: 600;
   }
