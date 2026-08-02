@@ -87,7 +87,7 @@
     a {
         color: var(--primary);
         text-decoration: none;
-        border-bottom: 1px dashed var(--primary-a30);
+        border-bottom: 1px dashed var(--bg2);
         transition: border-color 0.15s ease;
 
         &:hover { border-bottom-color: var(--primary); }

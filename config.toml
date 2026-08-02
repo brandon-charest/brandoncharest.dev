@@ -37,12 +37,24 @@ location = "Boston, MA"
 branch = "main"
 
 # `short` is the status-bar label; the header has no socials slot in the
-# redesign, so these render as `gh:` / `in:` text links down there instead.
+# redesign, so these render as `gh` / `in` text links down there instead.
 socials = [
     { name = "GitHub", url = "https://github.com/brandon-charest", icon = "github", short = "gh" },
     { name = "LinkedIn", url = "https://www.linkedin.com/in/brandon-charest/", icon = "linkedin", short = "in" },
 ]
 
+
+# Home neofetch card. Editorial copy only — the Garden line is derived from
+# real content in templates/home.html.
+# NOTE: sub-tables must stay below every bare key in [extra], or TOML folds the
+# following keys into them.
+[extra.neofetch]
+role = "Senior Backend Engineer"
+focus = "Distributed systems & perf"
+editor = "neovim btw"
+day = "Java · Python · AWS"
+night = "Rust · Go"
+currently = "building a redis clone, for fun"
 
 [extra.analytics]
 enabled = true

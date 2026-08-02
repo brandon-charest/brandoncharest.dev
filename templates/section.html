@@ -124,9 +124,9 @@
                         <tr class="hub-row" data-growth="{{ growth_stage }}" data-type="{{ content_type }}"{% if is_pinned %} data-pinned="true"{% endif %}>
                             <td class="col-perms">-rw-r--r--</td>
                             {% if has_growth %}
-                            <td class="col-growth hide-sm">{% if growth_stage == "seedling" %}[seed]{% elif growth_stage == "growing" %}[grow]{% elif growth_stage == "evergreen" %}[ever]{% else %}[seed]{% endif %}</td>
+                            <td class="col-growth hide-sm">{{ ui::growth_badge(growth=growth_stage) }}</td>
                             {% endif %}
-                            <td class="col-type hide-sm">{% if content_type == "blog" %}[blog]{% elif content_type == "project" %}[proj]{% elif content_type == "reference" %}[ref]{% elif content_type == "tutorial" %}[tut]{% elif content_type == "snippet" %}[snip]{% elif content_type == "log" %}[log]{% else %}[note]{% endif %}</td>
+                            <td class="col-type hide-sm">{{ ui::kind_badge(type=content_type) }}</td>
                             <td class="col-size">{{ page.content | length }}b</td>
                             <td class="col-updated"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
                             <td class="col-name">

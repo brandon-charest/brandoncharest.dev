@@ -1,3 +1,45 @@
+{# =============================================================================
+   SHARED PRIMITIVES — maturity, kind, tags, prompt
+
+   Maturity colour is decided in exactly one place (parts/_badges.scss) and
+   reached only through these macros. Rendering `[seed]`/`[grow]`/`[ever]` by
+   hand is how seedling and growing ended up sharing a colour on the homepage;
+   call the macro instead so a fix lands everywhere at once.
+   ============================================================================= #}
+
+{# The label maps are inlined in each macro rather than factored into a shared
+   one. Tera resolves `self::` against the *importing* template, so a macro
+   calling a sibling breaks for every caller, and importing this file into
+   itself sends Zola 0.17 into infinite recursion. Two short duplicated
+   conditionals are the cheap, working option — the colours, which are the part
+   that actually drifts, still live in exactly one place (parts/_badges.scss). #}
+
+{# Text badge: [seed] / [grow] / [ever] in gray / yellow / green. #}
+{% macro growth_badge(growth="seedling", brackets=true) %}
+<span class="badge-growth" data-growth="{{ growth }}" title="{{ growth | capitalize }}">{% if brackets %}[{% endif %}{% if growth == "growing" %}grow{% elif growth == "evergreen" %}ever{% else %}seed{% endif %}{% if brackets %}]{% endif %}</span>
+{% endmacro growth_badge %}
+
+{# Dot form used in tree rows, meta rows and filter chips. #}
+{% macro growth_dot(growth="seedling", large=false) %}
+<span class="dot-growth{% if large %} dot-growth--lg{% endif %}" data-growth="{{ growth }}" title="{{ growth | capitalize }}"></span>
+{% endmacro growth_dot %}
+
+{# Kind badge: uniform fg2, never per-kind hues. #}
+{% macro kind_badge(type="note", boxed=false, brackets=true) %}
+<span class="badge-kind{% if boxed %} badge-kind--boxed{% endif %}" title="{{ type | capitalize }}">{% if brackets and not boxed %}[{% endif %}{% if type == "blog" %}blog{% elif type == "project" %}proj{% elif type == "reference" %}ref{% elif type == "tutorial" %}tut{% elif type == "snippet" %}snip{% elif type == "log" %}log{% else %}note{% endif %}{% if brackets and not boxed %}]{% endif %}</span>
+{% endmacro kind_badge %}
+
+{# Uniform tag pill. Identical on every tag, regardless of topic. #}
+{% macro tag_pill(tag) %}
+<a href="{{ get_taxonomy_url(kind='tags', name=tag) }}" class="tag-pill">#{{ tag }}</a>
+{% endmacro tag_pill %}
+
+{# Shell prompt line: `visitor@dev:~$ <cmd> <path>`, with an optional cursor. #}
+{% macro prompt(cmd="", path="", dim="", cursor=false, class="") %}
+<div class="prompt {{ class }}"><span class="prompt__user">visitor@dev</span><span class="prompt__punct">:~$</span>{% if cmd %} {{ cmd }}{% endif %}{% if path %} <span class="prompt__path">{{ path }}</span>{% endif %}{% if dim %} <span class="prompt__dim">{{ dim }}</span>{% endif %}{% if cursor %}<span class="prompt__cursor"></span>{% endif %}</div>
+{% endmacro prompt %}
+
+
 {# 1. THE MAIN WINDOW BAR COMPONENT #}
 {# Usage:
 For Pages: {{ ui::window_bar(resource=page) }}
@@ -119,52 +161,3 @@ Static Title: {{ ui::window_bar(title="My Title") }}
     {% if hint %}<span class="flag-hint">{{ hint }}</span>{% endif %}
 </div>
 {% endmacro flag_row_close %}
-
-
-{# 7. PANE — terminal-styled bordered panel for streaming content lists.
-   Tera doesn't support {% call %} blocks, so the pane is split into
-   open/close macros. Place pane_row entries between them.
-
-   Pattern:
-     {{ ui::pane_open(cmd="tail -f", args="./blog", meta="recent") }}
-       {{ ui::pane_row(...) }}
-     {{ ui::pane_close(footer_label="View all posts", footer_href="/blog/") }}
-#}
-{% macro pane_open(cmd, args="", prompt="$", meta=false) %}
-<div class="pane">
-    <div class="pane-bar">
-        <span class="pane-dot" aria-hidden="true"></span>
-        <span class="pane-prompt">{{ prompt | safe }}</span>
-        <span class="pane-cmd">{{ cmd }}</span>
-        {% if args %}<span class="pane-args">{{ args }}</span>{% endif %}
-        {% if meta %}<span class="pane-meta">{{ meta }}</span>{% endif %}
-    </div>
-    <div class="pane-body">
-{% endmacro pane_open %}
-
-{% macro pane_close(footer_label=false, footer_href=false, footer_meta=false) %}
-    </div>
-    {% if footer_label or footer_meta %}
-    <div class="pane-footer">
-        {% if footer_meta %}<span>{{ footer_meta }}</span>{% else %}<span></span>{% endif %}
-        {% if footer_label %}
-            {% if footer_href %}<a href="{{ footer_href }}">{{ footer_label }} →</a>
-            {% else %}<span>{{ footer_label }}</span>{% endif %}
-        {% endif %}
-    </div>
-    {% endif %}
-</div>
-{% endmacro pane_close %}
-
-
-{# 8. PANE ROW — single line inside a pane.
-   Renders: [date]  [badge]  [title......]  [aside]
-#}
-{% macro pane_row(href, date="", badge="", title="", aside="", pinned=false, growth=false) %}
-<a href="{{ href }}" class="pane-row"{% if pinned %} data-pinned="true"{% endif %}{% if growth %} data-growth="{{ growth }}"{% endif %}>
-    {% if date %}<span class="pane-row-date">{{ date }}</span>{% else %}<span class="pane-row-date"></span>{% endif %}
-    {% if badge %}<span class="pane-row-badge">{{ badge }}</span>{% else %}<span class="pane-row-badge"></span>{% endif %}
-    <span class="pane-row-title">{{ title }}</span>
-    {% if aside %}<span class="pane-row-aside">{{ aside }}</span>{% else %}<span class="pane-row-aside"></span>{% endif %}
-</a>
-{% endmacro pane_row %}

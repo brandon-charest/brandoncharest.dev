@@ -24,7 +24,7 @@
             <span><span class="statusbar__label">git:</span>{{ config.extra.branch }}</span>
             <span>UTF-8</span>
             {# Session uptime, ticked by js/statusbar.js. Static fallback if JS is off. #}
-            <span id="uptime">00:00:00</span>
+            <span id="uptime" class="statusbar__uptime">00:00:00</span>
             {% for social in config.extra.socials %}
                 <a class="statusbar__social"
                    href="{{ social.url }}"

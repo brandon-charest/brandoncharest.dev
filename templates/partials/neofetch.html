@@ -1,41 +1,70 @@
-<div class="neofetch-container">
+{# neofetch-style intro card.
 
-    {# COLUMN 1: ART #}
-    <div class="neofetch-art">
-<pre class="ascii-art">
-      <span class="dim">)  (</span>
-     <span class="dim">(   ) )</span>
-      <span class="dim">) ( (</span>
-    <span class="primary">_______</span><span class="dim">)</span><span class="primary">_</span>
- <span class="primary">.-'---------|</span>
-<span class="primary">( C|</span><span class="highlight">/\/\/\/\/</span><span class="primary">|</span>
- <span class="primary">'-.</span><span class="highlight">/\/\/\/\/</span><span class="primary">|</span>
-   <span class="primary">'_________'</span>
-    <span class="primary">'-------'</span>
-</pre>
+   Expects `nf_notes` and `nf_posts` from the including template — the Garden
+   line is derived from real content, not the handoff's hardcoded string.
+
+   The coffee cup stays inline ASCII rather than an image so it recolours with
+   the palette and stays crisp at any zoom. #}
+
+{% import "macros/ui.html" as ui %}
+
+<div class="term-card">
+    <div class="term-card__bar">
+        <span class="term-card__dots" aria-hidden="true">
+            <span class="term-card__dot"></span>
+            <span class="term-card__dot"></span>
+            <span class="term-card__dot"></span>
+        </span>
+        <span class="term-card__title">Welcome</span>
+        <span class="term-card__balance" aria-hidden="true"></span>
     </div>
 
-    {# COLUMN 2: THE NEOFETCH-STYLE INTRO #}
-    <div class="neo-intro">
-        <div class="intro-header">
-            <span class="highlight">brandon</span>@dev
-        </div>
-        <div class="intro-divider">-----------</div>
-        <div class="intro-body">
-            <div class="intro-welcome">
-                Welcome! I'm a <strong class="highlight">Senior Backend Engineer</strong> specializing in high-performance architecture. I built this site to capture my notes on distributed systems, performance engineering, and other things I refused to learn the easy way.
+    <div class="term-card__screen">
+        <div class="neofetch">
+            <pre class="neofetch__art" aria-hidden="true">      )  (
+     (   ) )
+      ) ( (
+    _______)_
+ .-'---------|
+( C|/\/\/\/\/|
+ '-./\/\/\/\/|
+   '_________'
+    '-------'</pre>
+
+            {% set nf = config.extra.neofetch %}
+            <div class="neofetch__stats">
+                <div class="neofetch__id">brandon<span class="neofetch__at">@</span>dev</div>
+                <div class="neofetch__rule"></div>
+
+                <div class="neofetch__row"><span class="neofetch__key">Role</span><span class="neofetch__val">{{ nf.role }}</span></div>
+                <div class="neofetch__row"><span class="neofetch__key">Focus</span><span class="neofetch__val">{{ nf.focus }}</span></div>
+                <div class="neofetch__row"><span class="neofetch__key">Garden</span><span class="neofetch__val">{{ nf_notes }} notes &middot; {{ nf_posts }} post{% if nf_posts != 1 %}s{% endif %}</span></div>
+                <div class="neofetch__row"><span class="neofetch__key">Editor</span><span class="neofetch__val">{{ nf.editor }}</span></div>
+                <div class="neofetch__row"><span class="neofetch__key">9&ndash;5</span><span class="neofetch__val">{{ nf.day }}</span></div>
+                <div class="neofetch__row"><span class="neofetch__key">After-hrs</span><span class="neofetch__val">{{ nf.night }}</span></div>
+                <div class="neofetch__row"><span class="neofetch__key">Location</span><span class="neofetch__val">{{ config.extra.location }}</span></div>
+                <div class="neofetch__row"><span class="neofetch__key">Status</span><span class="neofetch__val"><span class="neofetch__online">&#9679;</span> online</span></div>
+
+                {# Literal palette display — the sanctioned decorative use of accents. #}
+                <div class="neofetch__swatches" aria-hidden="true">
+                    <span class="neofetch__swatch" style="background: var(--red)"></span>
+                    <span class="neofetch__swatch" style="background: var(--orange)"></span>
+                    <span class="neofetch__swatch" style="background: var(--yellow)"></span>
+                    <span class="neofetch__swatch" style="background: var(--green)"></span>
+                    <span class="neofetch__swatch" style="background: var(--aqua)"></span>
+                    <span class="neofetch__swatch" style="background: var(--blue)"></span>
+                    <span class="neofetch__swatch" style="background: var(--purple)"></span>
+                </div>
             </div>
-            <div class="neo-lines">
-                <div class="neo-line"><span class="neo-key">Focus</span> Distributed Systems & Performance</div>
-                <div class="neo-line"><span class="neo-key">Garden</span> Notes on systems, languages, and tools</div>
-                <div class="neo-line"><span class="neo-key">Blog</span> Polished write-ups and project logs</div>
+
+            <div class="neofetch__divider" aria-hidden="true"></div>
+
+            <div class="neofetch__blurb">
+                {{ section.content | safe }}
+                <div class="neofetch__aside"><span class="neofetch__comment">//</span> currently: {{ nf.currently }}</div>
             </div>
         </div>
 
-        <div class="intro-meta">
-            <span class="meta-tag">[ 9-to-5: Java / Python / AWS ]</span>
-            <span class="meta-tag">[ After Hours: Rust & Go ]</span>
-        </div>
+        {{ ui::prompt(cursor=true, class="term-card__prompt") }}
     </div>
-
 </div>

@@ -258,6 +258,11 @@ pre::-webkit-scrollbar-thumb {
   .statusbar__label { color: var(--fg4); }
 }
 
+/* Green is the "live" signal — the same meaning it carries on the neofetch
+   card's online dot, which is why the counter matches it rather than reading
+   as an interactive control. */
+.statusbar__uptime { color: var(--green); }
+
 .statusbar__social {
   color: var(--fg2);
   text-decoration: none;

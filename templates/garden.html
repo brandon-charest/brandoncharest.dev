@@ -165,8 +165,8 @@
                                 data-growth="{{ growth }}"
                                 data-type="{{ ctype }}"
                                 {% if pinned %}data-pinned="true"{% endif %}>
-                                <td class="col-growth">{% if growth == "seedling" %}[seed]{% elif growth == "growing" %}[grow]{% elif growth == "evergreen" %}[ever]{% else %}[seed]{% endif %}</td>
-                                <td class="col-type">{% if ctype == "blog" %}[blog]{% elif ctype == "project" %}[proj]{% elif ctype == "reference" %}[ref]{% elif ctype == "tutorial" %}[tut]{% elif ctype == "snippet" %}[snip]{% elif ctype == "log" %}[log]{% else %}[note]{% endif %}</td>
+                                <td class="col-growth">{{ ui::growth_badge(growth=growth) }}</td>
+                                <td class="col-type">{{ ui::kind_badge(type=ctype) }}</td>
                                 <td class="col-updated"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
                                 <td class="col-tags">
                                     {% if page.taxonomies.tags %}

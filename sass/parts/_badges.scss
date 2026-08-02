@@ -1,0 +1,132 @@
+/* =============================================================================
+   Badges, pills and maturity dots — the single place maturity colour is decided.
+
+   The palette reference calls this out as the highest-risk bug in the system:
+   "growing and evergreen have previously both rendered as orange, collapsing
+   the distinction the whole system exists to convey." The old pane component
+   did exactly that with seedling and growing. Every surface now renders these
+   through the macros in templates/macros/ui.html, which resolve to the rules
+   below, so the three stages cannot drift apart again.
+   ============================================================================= */
+
+/* --- Maturity ---------------------------------------------------------------
+   seedling = gray, growing = yellow, evergreen = green. Three distinct hues,
+   always. Defaults land on seedling so missing frontmatter degrades quietly.
+   -------------------------------------------------------------------------- */
+
+.badge-growth {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--gray);
+  white-space: nowrap;
+
+  &[data-growth="growing"]   { color: var(--yellow); }
+  &[data-growth="evergreen"] { color: var(--green); }
+}
+
+.dot-growth {
+  display: inline-block;
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gray);
+
+  &[data-growth="growing"]   { background: var(--yellow); }
+  &[data-growth="evergreen"] { background: var(--green); }
+
+  /* Meta rows, filter chips and the note-info card use the larger dot. */
+  &.dot-growth--lg { width: 8px; height: 8px; }
+}
+
+/* --- Content kind -----------------------------------------------------------
+   Uniform fg2, exactly like tags: `[note]` and `[proj]` differ in text, never
+   in hue. Giving each kind its own colour recreates the "every element has its
+   own accent" problem the palette exists to prevent.
+   -------------------------------------------------------------------------- */
+
+.badge-kind {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--fg2);
+  white-space: nowrap;
+}
+
+/* Outlined variant used by folder/tag child listings and palette results. */
+.badge-kind--boxed {
+  display: inline-block;
+  width: 46px;
+  padding: 3px 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-badge);
+  opacity: 0.85;
+}
+
+/* --- Tags -------------------------------------------------------------------
+   Every tag on every page looks identical regardless of topic. No per-tag hue.
+   .tech-tag and .mini-tag are the pre-redesign class names, kept so existing
+   markup picks up the corrected treatment without a template sweep.
+   -------------------------------------------------------------------------- */
+
+.tag-pill,
+.tech-tag,
+.mini-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 9px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--fg2);
+  background: transparent;
+  border: 1px solid var(--bg3);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color var(--t-mid), color var(--t-mid);
+
+  &:hover {
+    border-color: var(--fg4);
+    color: var(--fg1);
+    background: transparent;
+  }
+}
+
+/* --- Prompt line ------------------------------------------------------------
+   `visitor@dev:~$ <command>` — the shell prompt that heads most screens.
+   -------------------------------------------------------------------------- */
+
+.prompt {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--fg2);
+
+  .prompt__user { color: var(--orange); }
+  .prompt__punct,
+  .prompt__dim   { color: var(--gray); }
+
+  .prompt__path { color: var(--aqua); }
+}
+
+.prompt__cursor {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  margin-left: 7px;
+  background: var(--orange);
+  transform: translateY(2px);
+  animation: bc-blink 1.1s steps(1) infinite;
+}
+
+@keyframes bc-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prompt__cursor { animation: none; }
+}

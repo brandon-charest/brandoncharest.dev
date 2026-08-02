@@ -19,29 +19,7 @@
     opacity: 0.8;
 }
 
-/* The actual tags (#rust, #k8s, etc.) */
-.tech-tag {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-decoration: none;
-    padding: 4px 12px;
-
-    /* Default: Subtle Border & Text */
-    color: var(--primary);
-    border: 1px solid var(--primary-a30);
-    background-color: var(--primary-a08);
-    border-radius: var(--radius-sm);
-
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    &:hover {
-        background-color: var(--primary);
-        color: var(--background);
-        border-color: var(--primary);
-        cursor: pointer;
-    }
-}
+/* The actual tags (#rust, #k8s, etc.) are styled in parts/_badges.scss, which
+   owns the one uniform pill treatment used across the whole site. They used to
+   be drawn in the accent colour with an accent-tinted fill, which made every
+   tag read as an active control. */

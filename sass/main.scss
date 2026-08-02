@@ -11,6 +11,11 @@
 @import "tokens";
 @import "parts/_chrome.scss";
 
+/* --- Redesigned components -------------------------------------------------- */
+
+@import "parts/_badges.scss";
+@import "parts/_home.scss";
+
 /* --- Components still on the pre-redesign vocabulary -------------------------
    These compile against the legacy aliases at the bottom of _tokens.scss and
    are replaced screen by screen. Each phase deletes the partials it retires.
@@ -34,10 +39,6 @@
 @import "parts/_page.scss";
 @import "parts/_hub-table.scss";
 @import "parts/_flags.scss";
-@import "parts/_panes.scss";
-@import "parts/_neofetch.scss";
-@import "parts/_highlights.scss";
-@import "parts/_growth-indicators.scss";
 @import "parts/_garden-meta.scss";
 @import "parts/_blog.scss";
 @import "parts/_garden.scss";
