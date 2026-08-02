@@ -61,10 +61,6 @@
         &:nth-child(odd of .hub-row) {
             background-color: rgba(255, 255, 255, 0.012);
         }
-
-        :root.light &:nth-child(odd of .hub-row) {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
     }
 
     tr:last-child td { border-bottom: none; }

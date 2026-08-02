@@ -1,0 +1,141 @@
+/* =============================================================================
+   Design tokens — Gruvbox TUI
+   Source of truth: docs/design/PALETTE.md and docs/design/TOKENS.md
+
+   Eighteen hex values, one job each. Nothing outside this file may write a raw
+   hex; components resolve every colour through these custom properties.
+
+   The site is dark-only (decision 4), so tokens live on :root with no theme
+   class gate — there is no light counterpart to switch to.
+   ============================================================================= */
+
+:root {
+  /* --- Surfaces ---------------------------------------------------------- */
+  --bg0-hard: #1d2021;  /* header + status bar only, never content           */
+  --bg0:      #282828;  /* default page surface                              */
+  --bg0-soft: #32302f;  /* article surface, card title bars, code chrome      */
+  --bg1:      #3c3836;  /* cards, panels, code body, status-bar segments      */
+  --bg2:      #504945;  /* borders, rules, row separators                     */
+  --bg3:      #665c54;  /* subtle dividers, pill borders, breadcrumb seps     */
+  --hover:    #221d18;  /* row hover — the sanctioned 18th value             */
+
+  /* --- Foreground -------------------------------------------------------- */
+  --fg1: #ebdbb2;  /* prose on index surfaces, headings, emphasis            */
+  --fg2: #d5c4a1;  /* article body prose; small or critical meta             */
+  --fg4: #a89984;  /* larger, non-critical decorative text                   */
+
+  /* --- Accents, one job each --------------------------------------------- */
+  --orange: #fe8019;  /* primary actionable signal                           */
+  --aqua:   #8ec07c;  /* headings, and directory names                       */
+  --yellow: #fabd2f;  /* "growing" maturity only                             */
+  --green:  #b8bb26;  /* "evergreen" maturity + "online" dot                 */
+  --gray:   #928374;  /* "seedling", disabled, de-emphasized chrome          */
+  --blue:   #83a598;  /* prose-embedded links only, always underlined        */
+  --purple: #d3869b;  /* "FEATURED" label only, bold and >= 14px             */
+  --red:    #fb4934;  /* errors and warnings                                 */
+
+  /* --- Alpha layers (exempt from the 18-hex rule) ------------------------- */
+  --selection-bg:  rgba(254, 128, 25, 0.30);
+  --shadow-card:   0 24px 60px -34px rgba(0, 0, 0, 0.85),
+                   inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  --shadow-panel:  0 30px 80px -20px rgba(0, 0, 0, 0.8);
+  --scrim:         rgba(12, 10, 8, 0.66);
+
+  /* --- Typography -------------------------------------------------------- */
+  --font-display: 'Space Mono', ui-monospace, monospace;      /* h1, h2, labels */
+  --font-ui:      'IBM Plex Mono', ui-monospace, monospace;   /* terminal chrome */
+  --font-sans:    'IBM Plex Sans', system-ui, sans-serif;     /* running prose */
+  --font-code:    'JetBrains Mono', ui-monospace, monospace;  /* code only */
+
+  --text-base:  13px;   /* mono body default */
+  --leading:    1.7;
+
+  /* --- Layout ------------------------------------------------------------ */
+  --content: 920px;
+  --gutter:  18px;
+  --header-h: 78px;     /* sticky offset for sidebars and scroll-margin */
+
+  /* --- Radii ------------------------------------------------------------- */
+  --radius-pill:  3px;   /* nav pill */
+  --radius-badge: 4px;   /* small badges, chips, inline code */
+  --radius-row:   6px;   /* rows, search field */
+  --radius-card:  8px;   /* cards, code blocks, panels */
+  --radius-lift:  10px;  /* featured card, palette panel */
+  --radius-full:  999px; /* tag pills, filter chips */
+
+  /* --- Motion ------------------------------------------------------------ */
+  --t-fast: 0.12s;   /* link + row colour */
+  --t-mid:  0.14s;   /* borders */
+  --t-slow: 0.18s;   /* card hover, arrow reveal */
+}
+
+/* =============================================================================
+   LEGACY ALIASES — temporary
+   The pre-redesign partials reference an older token vocabulary. These aliases
+   keep them compiling (in Gruvbox colours) while screens migrate one phase at a
+   time. Phase 8 deletes this block along with the last partial that needs it.
+   ============================================================================= */
+
+:root {
+  --accent:            var(--orange);
+  --accent-dim:        var(--bg3);
+  --accent-amber:      var(--yellow);
+  --primary:           var(--orange);
+  --primary-foreground: var(--bg0);
+  --highlight:         var(--orange);
+  --destructive:       var(--red);
+  --destructive-foreground: var(--bg0);
+
+  --foreground:        var(--fg1);
+  --background:        var(--bg0);
+  --text-primary:      var(--fg1);
+  --text-secondary:    var(--fg2);
+  --text-muted:        var(--fg4);
+  --text-2:            var(--fg4);
+  --muted-foreground:  var(--fg2);
+  --card-foreground:   var(--fg1);
+  --popover-foreground: var(--fg1);
+  --secondary-foreground: var(--fg1);
+  --sidebar-foreground: var(--fg2);
+
+  --bg-primary:        var(--bg0);
+  --bg-surface:        var(--bg1);
+  --bg-elevated:       var(--bg0-soft);
+  --bg-1:              var(--bg1);
+  --bg-2:              var(--bg0-soft);
+  --card:              var(--bg1);
+  --popover:           var(--bg1);
+  --secondary:         var(--bg1);
+  --muted:             var(--bg1);
+  --input:             var(--bg1);
+  --code-bg:           var(--bg1);
+
+  --border:            var(--bg2);
+  --border-subtle:     var(--bg2);
+  --border-muted:      var(--bg3);
+  --ring:              var(--orange);
+
+  --grid-color:        transparent;
+  --icon-filter:       none;
+
+  --primary-a05: rgba(254, 128, 25, 0.05);
+  --primary-a08: rgba(254, 128, 25, 0.08);
+  --primary-a10: rgba(254, 128, 25, 0.10);
+  --primary-a15: rgba(254, 128, 25, 0.15);
+  --primary-a20: rgba(254, 128, 25, 0.20);
+  --primary-a25: rgba(254, 128, 25, 0.25);
+  --primary-a30: rgba(254, 128, 25, 0.30);
+  --accent-amber-a10: rgba(250, 189, 47, 0.10);
+  --accent-amber-a20: rgba(250, 189, 47, 0.20);
+  --accent-amber-a40: rgba(250, 189, 47, 0.40);
+
+  --font-mono:      var(--font-code);
+  --font-size-base: var(--text-base);
+  --font-size:      var(--text-base);
+  --line-height:    var(--leading);
+  --page-width:     var(--content);
+
+  --radius-sm:   var(--radius-badge);
+  --radius:      var(--radius-card);
+  --radius-lg:   var(--radius-lift);
+}

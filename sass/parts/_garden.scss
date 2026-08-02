@@ -34,11 +34,6 @@
 
         img { max-width: 110px; }
     }
-
-    :root.light & img {
-        mix-blend-mode: multiply;
-        opacity: 0.5;
-    }
 }
 
 /* The number returned by the `find ... | wc -l` prompt. */

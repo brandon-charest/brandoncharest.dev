@@ -90,16 +90,13 @@
               href="{{ get_url(path=config.extra.favicon) }}" />
     {% endif %}
 
-    {# Font from cdn or disk #}
-    {% if config.extra.use_cdn | default(value=false) %}
-        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-        <link rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css" />
-        <link rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/@fontsource/space-grotesk@4.5.8/index.min.css" />
-    {% else %}
-        <link href={{ get_url(path="fonts.css") }} rel="stylesheet" />
-    {% endif %}
+    {# Fonts — the four families the design calls for, in one request.
+       Space Mono (display), IBM Plex Mono (chrome), IBM Plex Sans (prose),
+       JetBrains Mono (code). See docs/design/TOKENS.md § Typography. #}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" />
 
     {# Syntax theme #}
     {% if config.markdown.highlight_code and config.markdown.highlight_theme == "css" %}
@@ -212,58 +209,10 @@
     {% endif %}
 
 
-    {% set theme = config.extra.theme | default(value="toggle") %}
-    {% if theme == "dark" %}
-        <link rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/dark.css') }}" />
-    {% elif theme == "light" %}
-        <link rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/light.css') }}" />
-    {% elif theme == "auto" %}
-        <link rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/light.css') }}" />
-        <link rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/dark.css') }}"
-              media="(prefers-color-scheme: dark)" />
-    {% elif theme == "toggle" %}
-        <link rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/light.css') }}" />
-        <link id="darkModeStyle"
-              rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/dark.css') }}" />
-    {% endif %}
-
-    <!-- Set the correct theme in the script -->
-
-    {% if theme == "auto" or theme == "toggle" %}
-        <script src={{ get_url(path="js/themetoggle.js") }}></script>
-
-        {% if theme == "auto" %}
-            <script>
-                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    setTheme("dark");
-                } else {
-                    setTheme("light");
-                }
-            </script>
-        {% else %}
-            <script>
-                setTheme(getSavedTheme());
-            </script>
-        {% endif %}
-    {% endif %}
-
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-          rel="stylesheet">
+    {# No theme stylesheets and no toggle script: the site is dark-only and all
+       tokens live on :root in main.css. See docs/design/PALETTE.md decision 4. #}
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#1d2021" />
 
     <link rel="stylesheet"
           type="text/css"

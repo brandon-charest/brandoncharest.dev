@@ -1,0 +1,281 @@
+/* =============================================================================
+   Global chrome — page shell, sticky header, status bar
+   Spec: docs/design/TOKENS.md § Layout, Header, Status bar
+   ============================================================================= */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  background: var(--bg0);
+  color: var(--fg1);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  line-height: var(--leading);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; }
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--fg1);
+}
+
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+/* Terminal-flavoured scrollbars on anything that scrolls sideways. */
+.scroll-x { overflow-x: auto; }
+
+.scroll-x::-webkit-scrollbar,
+pre::-webkit-scrollbar { height: 9px; width: 9px; }
+
+.scroll-x::-webkit-scrollbar-track,
+pre::-webkit-scrollbar-track { background: var(--bg1); }
+
+.scroll-x::-webkit-scrollbar-thumb,
+pre::-webkit-scrollbar-thumb {
+  background: var(--bg3);
+  border: 2px solid var(--bg1);
+}
+
+/* -----------------------------------------------------------------------------
+   Content column — ONE width across every screen. Do not vary it: the site
+   previously ran five different widths and content lurched sideways between
+   pages.
+   -------------------------------------------------------------------------- */
+
+.site-main {
+  flex: 1;
+  width: 100%;
+}
+
+.wrap,
+.body {
+  width: 100%;
+  max-width: var(--content);
+  margin: 0 auto;
+  padding: 42px var(--gutter) 84px;
+}
+
+/* Legacy modifier from the old layout — the column is uniform now. */
+.body.full-width-layout { max-width: var(--content); }
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 60;
+  padding: 0.5rem 1rem;
+  background: var(--orange);
+  color: var(--bg0);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-badge) var(--radius-badge);
+  transition: top 0.2s ease-in-out;
+
+  &:focus { top: 0; }
+}
+
+/* -----------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--bg0-hard);
+  border-bottom: 1px solid var(--bg2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.site-header__inner {
+  max-width: var(--content);
+  margin: 0 auto;
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+
+  .brand__name,
+  .brand__host { color: var(--orange); }
+  .brand__at   { color: var(--fg2); }
+  .brand__cwd  { color: var(--gray); }
+}
+
+.site-header__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+/* Search trigger — the ⌘K palette binds to this in Phase 7. */
+.search-trigger {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 9px 5px 11px;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-row);
+  color: var(--fg2);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color var(--t-mid), color var(--t-mid);
+
+  &:hover {
+    border-color: var(--bg3);
+    color: var(--fg1);
+  }
+
+  .search-trigger__slash { color: var(--fg2); }
+}
+
+.kbd {
+  padding: 0 5px;
+  border: 1px solid var(--bg3);
+  border-radius: var(--radius-badge);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--fg2);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+
+.site-nav__item {
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--fg2);
+  transition: color var(--t-fast);
+
+  .site-nav__num {
+    color: var(--fg4);
+    font-weight: 600;
+  }
+
+  &:hover { color: var(--fg1); }
+
+  /* Active state is a separate rule, not a swapped custom property — the
+     handoff runtime stranded the pill by mutating a style hole, and a static
+     rule is simply less fragile. */
+  &.is-active {
+    background: var(--orange);
+    color: var(--bg0);
+    font-weight: 600;
+
+    .site-nav__num {
+      color: var(--bg0);
+      font-weight: 700;
+    }
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   Status bar — tmux-style, pinned to the bottom of the document flow
+   -------------------------------------------------------------------------- */
+
+.statusbar {
+  background: var(--bg0-hard);
+  border-top: 1px solid var(--bg2);
+  font-family: var(--font-ui);
+}
+
+.statusbar__inner {
+  max-width: var(--content);
+  margin: 0 auto;
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.statusbar__mode {
+  padding: 6px 14px;
+  background: var(--orange);
+  color: var(--bg0);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.statusbar__path,
+.statusbar__loc {
+  padding: 6px 14px;
+  background: var(--bg1);
+  color: var(--fg2);
+}
+
+.statusbar__spacer { flex: 1; }
+
+.statusbar__meta {
+  display: flex;
+  gap: 16px;
+  padding: 6px 14px;
+  color: var(--fg2);
+
+  .statusbar__label { color: var(--fg4); }
+}
+
+.statusbar__social {
+  color: var(--fg2);
+  text-decoration: none;
+  transition: color var(--t-fast);
+
+  &:hover { color: var(--orange); }
+}
+
+/* -----------------------------------------------------------------------------
+   Motion preferences
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

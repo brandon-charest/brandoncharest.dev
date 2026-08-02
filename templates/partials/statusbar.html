@@ -1,0 +1,38 @@
+{# tmux-style status bar. Sits in normal document flow at the end of <body>,
+   not fixed — the design shows it as the last line of the page, not an overlay.
+
+   The header has no socials slot in the redesign, so GitHub/LinkedIn live here
+   as `gh` / `in` text links (config.extra.socials[].short). #}
+
+{% set cp = current_path | default(value="/") %}
+{% set clean = cp | trim_start_matches(pat="/") | trim_end_matches(pat="/") %}
+
+{% if clean == "" %}
+    {% set_global sb_mode = "home" %}
+    {% set_global sb_path = "~" %}
+{% else %}
+    {% set_global sb_mode = clean | split(pat="/") | first %}
+    {% set_global sb_path = "~/" ~ clean %}
+{% endif %}
+
+<footer class="statusbar">
+    <div class="statusbar__inner">
+        <span class="statusbar__mode">&nbsp;{{ sb_mode | upper }}&nbsp;</span>
+        <span class="statusbar__path">{{ sb_path }}</span>
+        <span class="statusbar__spacer"></span>
+        <span class="statusbar__meta">
+            <span><span class="statusbar__label">git:</span>{{ config.extra.branch }}</span>
+            <span>UTF-8</span>
+            {# Session uptime, ticked by js/statusbar.js. Static fallback if JS is off. #}
+            <span id="uptime">00:00:00</span>
+            {% for social in config.extra.socials %}
+                <a class="statusbar__social"
+                   href="{{ social.url }}"
+                   rel="me noopener"
+                   target="_blank"
+                   title="{{ social.name }}">{{ social.short | default(value=social.name | lower) }}</a>
+            {% endfor %}
+        </span>
+        <span class="statusbar__loc">{{ config.extra.location }}</span>
+    </div>
+</footer>
