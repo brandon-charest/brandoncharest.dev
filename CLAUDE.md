@@ -8,11 +8,27 @@ Personal developer blog and digital garden built with [Zola](https://www.getzola
 
 ## Toolchain
 
-**Zola 0.20.0.** Production builds on Cloudflare Pages with `ZOLA_VERSION=0.20.0`
-(a Plaintext environment variable in the Pages project settings). Keep the local
-binary on the same version — they drifted once (local 0.17.2 vs prod 0.20.0) and
-the symptoms were silent: `generate_feeds`/`feed_filenames` are 0.19+ names, so
-the local build produced no Atom feed at all while production was fine.
+**Zola 0.20.0 locally.** Keep the local binary matched to whatever production
+builds with — they drifted once (local 0.17.2 vs prod) and the symptoms were
+silent: `generate_feeds`/`feed_filenames` are 0.19+ names, so the local build
+produced no Atom feed at all while production was fine.
+
+**Production build is not pinned** (as of 2026-08-03). The Pages project runs a
+pre-build script rather than using the native `ZOLA_VERSION`:
+
+```
+asdf plugin add zola https://github.com/salasrod/asdf-zola && asdf install zola latest && asdf global zola latest
+```
+
+Two problems. It currently *fails*: the v2 build image pre-registers the plugin,
+so `asdf plugin add` exits 2 and `&&` aborts the chain before Zola installs. And
+`latest` means the toolchain floats — the next green build would take 0.22.x,
+which moved every highlighting option into `[markdown.highlighting]` and would
+break `config.toml` as written.
+
+Fix is to clear the pre-build script and let `ZOLA_VERSION` (already set) do the
+job, or at minimum make it `... || true` and pin the version instead of `latest`.
+This lives in the Cloudflare dashboard, not in this repo.
 
 Local install lives at `~/.local/bin/zola`, which precedes `/usr/local/bin` on
 PATH. Check with `zola --version` before trusting a build.
