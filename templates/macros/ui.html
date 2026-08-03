@@ -28,9 +28,24 @@
 <span class="growth-state" data-growth="{{ growth }}"><span class="dot-growth{% if large %} dot-growth--lg{% endif %}"></span>{{ growth }}</span>
 {% endmacro growth_state %}
 
-{# Kind badge: uniform fg2, never per-kind hues. #}
+{# Kind badge. The short code is derived once and used for both the visible
+   label and data-kind, so the attribute the colour hangs off can never drift
+   from the word on screen.
+
+   Colour comes from parts/_badges.scss, which also paints the bg0 chip the
+   three coloured kinds need to clear AA. `set_global` rather than `set`:
+   plain `set` does not escape an {% if %} block in Tera. #}
 {% macro kind_badge(type="note", boxed=false, brackets=true) %}
-<span class="badge-kind{% if boxed %} badge-kind--boxed{% endif %}" title="{{ type | capitalize }}">{% if brackets and not boxed %}[{% endif %}{% if type == "dir" %}dir{% elif type == "blog" %}blog{% elif type == "project" %}proj{% elif type == "reference" %}ref{% elif type == "tutorial" %}tut{% elif type == "snippet" %}snip{% elif type == "log" %}log{% else %}note{% endif %}{% if brackets and not boxed %}]{% endif %}</span>
+{%- set_global k = "note" -%}
+{%- if type == "dir" %}{% set_global k = "dir" %}
+{%- elif type == "blog" %}{% set_global k = "blog" %}
+{%- elif type == "project" %}{% set_global k = "proj" %}
+{%- elif type == "reference" %}{% set_global k = "ref" %}
+{%- elif type == "tutorial" %}{% set_global k = "tut" %}
+{%- elif type == "snippet" %}{% set_global k = "snip" %}
+{%- elif type == "log" %}{% set_global k = "log" %}
+{%- endif -%}
+<span class="badge-kind{% if boxed %} badge-kind--boxed{% endif %}" data-kind="{{ k }}" title="{{ type | capitalize }}">{% if brackets and not boxed %}[{% endif %}{{ k }}{% if brackets and not boxed %}]{% endif %}</span>
 {% endmacro kind_badge %}
 
 {# Uniform tag pill. Identical on every tag, regardless of topic. #}

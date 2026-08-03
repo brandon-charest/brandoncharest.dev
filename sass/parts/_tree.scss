@@ -152,9 +152,9 @@
   min-width: 0;
 }
 
+/* No colour here — the .badge-kind inside sets its own per-kind hue. */
 .tree__kind {
   flex: none;
-  color: var(--fg2);
 }
 
 .tree__name {

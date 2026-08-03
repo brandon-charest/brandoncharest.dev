@@ -24,6 +24,18 @@
   var indexPromise = null;
   var lastFocus = null;
 
+  /* The index stores the frontmatter `type` verbatim; badges elsewhere are
+     abbreviated by ui::kind_badge. Mirror that here so a palette row and the
+     listing row it points at read identically and pick up the same colour.
+     Anything not listed (`note`, `blog`, `log`, `dir`, `tag`) is already its
+     own short form. */
+  var KIND_SHORT = {
+    project: 'proj',
+    reference: 'ref',
+    tutorial: 'tut',
+    snippet: 'snip'
+  };
+
   /* --- index -------------------------------------------------------------
      Memoise the promise, not a boolean. An earlier version returned an
      already-resolved promise while a fetch was still in flight, so opening the
@@ -97,9 +109,11 @@
       a.setAttribute('role', 'option');
       a.setAttribute('aria-selected', i === active ? 'true' : 'false');
 
+      var short = KIND_SHORT[e.t] || e.t;
       var type = document.createElement('span');
       type.className = 'palette__type';
-      type.textContent = e.t;
+      type.setAttribute('data-kind', short);
+      type.textContent = short;
 
       var text = document.createElement('span');
       text.className = 'palette__text';

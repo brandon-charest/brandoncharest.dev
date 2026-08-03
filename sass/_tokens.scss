@@ -34,6 +34,26 @@
   --purple: #d3869b;  /* "FEATURED" label only, bold and >= 14px             */
   --red:    #fb4934;  /* errors and warnings                                 */
 
+  /* --- Kind tags: a dimmed tier sitting below the accents ------------------
+     Deliberately NOT the accent hues. Each sits one tier below the accent
+     that owns its family, so a `[proj]` badge can never be read as a prose
+     link, nor `[snip]` as the FEATURED label. Two are non-canonical Gruvbox
+     on purpose: the canonical neutral_blue and neutral_purple both measure
+     2.74:1 on bg1 and fail outright. (Hexes omitted deliberately — the
+     palette gate greps comments too, and an exception list defeats it.)
+
+     These reach AA (4.63-4.67:1) only against the bg0 chip that .badge-kind
+     paints under itself. On a bare bg1 card they measure 3.65:1 — fine for
+     large text, short of the 4.5 these render at. Do not drop the chip.
+
+     Lightening them instead was measured and rejected: it lands [proj] at
+     dE 0.030 from --blue and [snip] at 0.026 from --purple, collapsing the
+     exact distinction this tier exists to hold open.
+     ---------------------------------------------------------------------- */
+  --kind-proj: #659a9c;  /* [proj] — dimmed blue                             */
+  --kind-log:  #689d6a;  /* [log]  — dimmed aqua, canonical neutral_aqua     */
+  --kind-snip: #be7d9b;  /* [snip] — dimmed purple                           */
+
   /* --- Alpha layers (exempt from the 18-hex rule) ------------------------- */
   --selection-bg:  rgba(254, 128, 25, 0.30);
   --shadow-card:   0 24px 60px -34px rgba(0, 0, 0, 0.85),

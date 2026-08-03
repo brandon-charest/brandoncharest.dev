@@ -31,8 +31,8 @@ generated syntax-highlighting CSS are the only exceptions.
 | Token | Hex | Job |
 |---|---|---|
 | `--fg1` | `#ebdbb2` | Prose on index/card surfaces; headings; filenames; primary values; `<strong>`/`<em>` inside article prose |
-| `--fg2` | `#d5c4a1` | **Article body prose** (decision 2); small or critical meta — timestamps, read time, descriptions, tag text, kind badges |
-| `--fg4` | `#a89984` | Larger or non-critical decorative text — breadcrumbs, TOC items, section labels, nav index numbers, commit hashes |
+| `--fg2` | `#d5c4a1` | **Article body prose** (decision 2); small or critical meta — timestamps, read time, descriptions, tag text |
+| `--fg4` | `#a89984` | Larger or non-critical decorative text — breadcrumbs, TOC items, section labels, nav index numbers, commit hashes, **un-hued kind badges** |
 
 ### Accents — one job each
 
@@ -67,6 +67,10 @@ generated syntax-highlighting CSS are the only exceptions.
    handoff README specifies it in three places; the prototype dropped it and substituted `bg1`,
    which is a no-op for rows that already sit on a `bg1` card (garden tree, folder listings,
    series lists). The rule is now "exactly 18 hex values", not 17.
+
+   **Amended 2026-08-03:** the three `--kind-*` tags below bring the total to **21**. They are
+   a deliberate closed set, not an opening — see *Kind tags*, which records why no further hue
+   is available. `docs/design/allowed-hexes.txt` is the enforced list; keep it in step.
 
 4. **No light theme.** The `theme` key, both theme stylesheets and the toggle script are gone
    entirely — tokens live on `:root` with no class gate, so nothing has to apply a theme for the
@@ -146,9 +150,40 @@ color: var(--fg2);
 border-radius: 999px;
 ```
 
-**Kind badges** (`[note]` `[proj]` `[log]` `[snip]`, and the outlined 46px variants) are
-uniformly `fg2`. **Palette result type badges** are uniformly `fg4`. **The tag cloud** varies
-size only — `15 + round(count / max * 17)` px — never hue.
+**Kind badges** carry a hue for exactly three kinds; see *Kind tags* below. **The tag cloud**
+varies size only — `15 + round(count / max * 17)` px — never hue.
+
+### Kind tags — supersedes the original "uniformly fg2" rule
+
+Reversed 2026-08-03 at Brandon's direction. Uniform `fg2` produced a badge column that read as
+undifferentiated grey against an otherwise orange-heavy page.
+
+| Token | Hex | Kind | Canonical Gruvbox? |
+|---|---|---|---|
+| `--kind-proj` | `#659a9c` | `[proj]` | No — see below |
+| `--kind-log` | `#689d6a` | `[log]` | Yes (`neutral_aqua`) |
+| `--kind-snip` | `#be7d9b` | `[snip]` | No — see below |
+
+These form a **dimmed tier below the accents**, one step down from the accent that owns each
+family, so `[proj]` cannot be read as a prose link nor `[snip]` as the FEATURED label.
+
+`dir` keeps `--aqua` per decision 1 — the same job, not a fourth kind hue. **Every other kind**
+(`note`, `blog`, `ref`, `tut`) renders `fg4`. Splitting the un-hued kinds across `fg2`/`fg4` was
+tried and rejected: at 8.6:1 the neutrals out-shouted the three hues at 4.6:1, inverting the
+hierarchy. One neutral, three hues.
+
+**No more hues are available.** Yellow is `growing` and green is `evergreen`, and a kind badge
+sits inches from a maturity dot on every listing row. A yellow `[tut]` beside a yellow growing
+dot is precisely the collapse this system exists to prevent.
+
+**The `bg0` chip under `.badge-kind` is load-bearing.** The three hues measure **3.65:1** on a
+bare `bg1` card and only reach AA (**4.63–4.67:1**) once they sit on `bg0`. Deleting the
+background silently drops them below WCAG AA. `.badge-kind--boxed` therefore carries no
+`opacity`: it composites chip and text together onto the card and gives the contrast back.
+
+Lightening the hues instead was measured and rejected — it lands `[proj]` at ΔE 0.030 from
+`--blue` and `[snip]` at 0.026 from `--purple`. Clearing both the contrast and the separation
+bars by hue alone requires pastels (`#b4e6e7`), which leave Gruvbox altogether.
 
 **Breadcrumbs** are `fg4` with `bg3` separators, no accent. **TOC** section label and inactive
 items are `fg4`; the active item and its rail segment turn orange.

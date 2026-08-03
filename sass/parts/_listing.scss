@@ -87,11 +87,6 @@
   margin-top: 2px;
 }
 
-/* Directory rows borrow the tree's aqua; note rows stay neutral fg2. The badge
-   sets its own colour, so the override has to reach the badge itself rather
-   than its wrapper. */
-.listing__row--dir .badge-kind { color: var(--aqua); }
-
 .listing__main {
   flex: 1;
   min-width: 0;

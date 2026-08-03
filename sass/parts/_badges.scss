@@ -56,15 +56,47 @@
 }
 
 /* --- Content kind -----------------------------------------------------------
-   Uniform fg2, exactly like tags: `[note]` and `[proj]` differ in text, never
-   in hue. Giving each kind its own colour recreates the "every element has its
-   own accent" problem the palette exists to prevent.
+   Three kinds carry a hue drawn from the dimmed --kind-* tier; the rest stay
+   neutral. This reverses the redesign's original "uniform fg2" rule, which
+   produced a badge column that was entirely fg2 and read as undifferentiated
+   grey next to an otherwise orange-heavy page.
+
+   Hues are rationed, not handed out per kind. Yellow is "growing" and green is
+   "evergreen", and a kind badge sits inches from a maturity dot on every
+   listing row — so those two are unavailable, and `blog` / `ref` / `tut` stay
+   neutral rather than borrow a colour that already means something else.
    -------------------------------------------------------------------------- */
 
+/* The chip is load-bearing, not decoration. The three --kind-* hues measure
+   3.65:1 against a bare bg1 card and only reach AA (4.63-4.67:1) once they sit
+   on bg0. Removing the background silently drops these below WCAG AA. */
+.badge-kind,
+.palette__type {
+  background: var(--bg0);
+  border-radius: var(--radius-badge);
+
+  &[data-kind="proj"] { color: var(--kind-proj); }
+  &[data-kind="log"]  { color: var(--kind-log);  }
+  &[data-kind="snip"] { color: var(--kind-snip); }
+
+  /* Directories keep the aqua they already carry in the tree and the folder
+     header, per decision 1 — this is that same job, not a fourth kind hue. */
+  &[data-kind="dir"]  { color: var(--aqua); }
+
+  /* `blog`, `ref`, `tut` and `note` deliberately share one neutral rather than
+     splitting fg2/fg4. Giving the un-hued kinds a brighter neutral was tried
+     and inverted the hierarchy: at 8.6:1 they out-shouted the three kinds
+     actually carrying meaning, which sit at 4.6:1. One neutral, three hues. */
+}
+
 .badge-kind {
+  padding: 1px 6px;
   font-family: var(--font-ui);
   font-size: 12px;
-  color: var(--fg2);
+  /* Every un-hued kind falls through to this, `note` most of all at ~70% of
+     pages. Keeping it recessive is what lets the three coloured kinds register
+     at all — fg4 on the bg0 chip still measures 5.3:1. */
+  color: var(--fg4);
   white-space: nowrap;
 }
 
@@ -80,7 +112,9 @@
   letter-spacing: 0.5px;
   border: 1px solid currentColor;
   border-radius: var(--radius-badge);
-  opacity: 0.85;
+  /* Deliberately no `opacity` here. It composites the chip and its text
+     together down onto the card beneath, handing back exactly the contrast the
+     chip was added to buy. */
 }
 
 /* --- Tags -------------------------------------------------------------------

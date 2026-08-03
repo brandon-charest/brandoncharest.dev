@@ -87,18 +87,19 @@
   &.is-selected { background: var(--hover); }
 }
 
-/* Uniform fg4 — a result's type is a label, not a category colour. */
+/* Same kind colours as the listings — a result should look like the row it
+   points at. The hue and the bg0 chip come from parts/_badges.scss; anything
+   without a data-kind match (notably `tag`) falls through to fg4 here. */
 .palette__type {
   flex: none;
   width: 46px;
   padding: 2px 0;
   text-align: center;
-  border: 1px solid var(--fg4);
+  border: 1px solid currentColor;
   border-radius: var(--radius-badge);
   color: var(--fg4);
   font-size: 9.5px;
   letter-spacing: 0.5px;
-  opacity: 0.85;
   text-transform: uppercase;
 }
 
