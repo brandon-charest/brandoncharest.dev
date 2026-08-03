@@ -3,7 +3,6 @@ title = "Game of Life"
 description = "Game of life implemented in Rust using WASM"
 sort_by = "date"
 template = "section.html"
-transparent = true     
 +++
 
 Building Conway's Game of Life in Rust with WebAssembly, exploring rendering techniques.

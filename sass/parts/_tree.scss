@@ -1,0 +1,206 @@
+/* =============================================================================
+   Garden — `tree ~/garden`
+   Spec: docs/design/TOKENS.md § Garden tree, Filter chips
+   ============================================================================= */
+
+.garden__title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  color: var(--fg1);
+}
+
+.garden__lede {
+  margin: 0 0 24px;
+  max-width: 64ch;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--fg1);
+}
+
+.garden__bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.garden__tags-link {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--fg2);
+  text-decoration: none;
+  transition: color var(--t-fast);
+
+  /* Standalone UI link: orange, not the blue reserved for prose links. */
+  .garden__hash { color: var(--orange); }
+
+  &:hover { color: var(--orange); }
+}
+
+/* --- Filter chips ----------------------------------------------------------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+
+.chips__total {
+  margin-right: 8px;
+  color: var(--fg2);
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px;
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--fg2);
+  font-family: inherit;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+
+  &:hover { color: var(--fg1); }
+
+  &.is-active {
+    background: var(--bg1);
+    border-color: var(--bg3);
+    color: var(--fg1);
+  }
+
+  .chip__count { opacity: 0.55; }
+
+  /* The "all" chip has no maturity, so its dot is neutral. */
+  .chip__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--fg4);
+    flex: none;
+  }
+}
+
+/* --- Active tag filter bar --------------------------------------------------- */
+
+.tagbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--fg2);
+}
+
+.tagbar__clear {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--fg2);
+  transition: color var(--t-fast);
+
+  &:hover { color: var(--orange); }
+}
+
+/* --- The tree ----------------------------------------------------------------
+   A wide tree scrolls sideways. That is correct terminal behaviour — wrapping
+   a tree destroys the alignment that makes it readable.
+   -------------------------------------------------------------------------- */
+
+.tree {
+  padding: 20px 22px;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+  font-size: 13px;
+  line-height: 1.95;
+  overflow-x: auto;
+}
+
+.tree__root {
+  color: var(--aqua);
+  font-weight: 600;
+}
+
+.tree__row {
+  display: flex;
+  align-items: baseline;
+  padding: 1px 6px;
+  margin: 0 -6px;
+  border-radius: 5px;
+  color: inherit;
+  text-decoration: none;
+  transition: background var(--t-fast);
+
+  &:hover { background: var(--hover); }
+
+  &[hidden] { display: none; }
+}
+
+/* Connectors are literal box-drawing characters, so the whitespace in them is
+   significant — without `pre` the browser collapses the indentation away. */
+.tree__pre {
+  flex: none;
+  white-space: pre;
+  color: var(--gray);
+}
+
+/* A directory is the heading of a tree. */
+.tree__dir {
+  color: var(--aqua);
+  font-weight: 600;
+}
+
+.tree__note {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tree__kind {
+  flex: none;
+  color: var(--fg2);
+}
+
+.tree__name {
+  flex: none;
+  color: var(--fg1);
+}
+
+.tree__desc {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--fg2);
+}
+
+.tree__row .dot-growth {
+  align-self: center;
+  margin-left: 4px;
+}
+
+.tree__empty {
+  padding: 6px 0;
+  color: var(--fg2);
+}

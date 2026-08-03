@@ -1,0 +1,141 @@
+/* =============================================================================
+   Folder listing — the shared index primitive
+   Spec: docs/design/TOKENS.md § Folder listing
+
+   Used by garden sections, and in Phase 6 by /blog and /tags/<tag>. One
+   vocabulary for every index screen: breadcrumbs, badge, title, overview,
+   `ls` prompt, then a card of child rows.
+   ============================================================================= */
+
+.folder__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+/* A directory is the heading of a tree — same aqua as the tree's dir rows. */
+.folder__badge {
+  padding: 2px 8px;
+  border: 1px solid var(--bg3);
+  border-radius: var(--radius-badge);
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--aqua);
+}
+
+.folder__count {
+  font-size: 12px;
+  color: var(--fg2);
+}
+
+.folder__title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  color: var(--fg1);
+  overflow-wrap: break-word;
+}
+
+.folder__overview {
+  margin: 0 0 20px;
+  max-width: 64ch;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--fg1);
+}
+
+.folder__prompt { margin-bottom: 14px; }
+
+/* Section bodies carry real markdown the design has no slot for, so it runs as
+   prose between the overview and the listing. */
+.folder__readme {
+  margin: 0 0 28px;
+  padding-bottom: 4px;
+}
+
+.listing {
+  overflow: hidden;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+}
+
+.listing__row {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--bg2);
+  color: inherit;
+  text-decoration: none;
+  transition: background var(--t-fast);
+
+  &:last-child { border-bottom: none; }
+
+  &:hover { background: var(--hover); }
+}
+
+.listing__badge {
+  flex: none;
+  margin-top: 2px;
+}
+
+/* Directory rows borrow the tree's aqua; note rows stay neutral fg2. The badge
+   sets its own colour, so the override has to reach the badge itself rather
+   than its wrapper. */
+.listing__row--dir .badge-kind { color: var(--aqua); }
+
+.listing__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.listing__line {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.listing__name {
+  font-size: 13px;
+  color: var(--fg2);
+}
+
+.listing__title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--fg1);
+}
+
+.listing__desc {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--fg2);
+}
+
+.listing__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--fg2);
+}
+
+.listing__empty {
+  padding: 16px 18px;
+  color: var(--fg2);
+  font-size: 13px;
+}

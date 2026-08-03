@@ -3,7 +3,6 @@ title = "Redis in Rust"
 description = "Re-implementing Redis from scratch in Rust"
 sort_by = "date"
 template = "section.html"
-transparent = true     
 +++
 Building Redis from the ground up in Rust.
 

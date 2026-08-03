@@ -35,7 +35,7 @@
 
 {# Kind badge: uniform fg2, never per-kind hues. #}
 {% macro kind_badge(type="note", boxed=false, brackets=true) %}
-<span class="badge-kind{% if boxed %} badge-kind--boxed{% endif %}" title="{{ type | capitalize }}">{% if brackets and not boxed %}[{% endif %}{% if type == "blog" %}blog{% elif type == "project" %}proj{% elif type == "reference" %}ref{% elif type == "tutorial" %}tut{% elif type == "snippet" %}snip{% elif type == "log" %}log{% else %}note{% endif %}{% if brackets and not boxed %}]{% endif %}</span>
+<span class="badge-kind{% if boxed %} badge-kind--boxed{% endif %}" title="{{ type | capitalize }}">{% if brackets and not boxed %}[{% endif %}{% if type == "dir" %}dir{% elif type == "blog" %}blog{% elif type == "project" %}proj{% elif type == "reference" %}ref{% elif type == "tutorial" %}tut{% elif type == "snippet" %}snip{% elif type == "log" %}log{% else %}note{% endif %}{% if brackets and not boxed %}]{% endif %}</span>
 {% endmacro kind_badge %}
 
 {# Uniform tag pill. Identical on every tag, regardless of topic. #}

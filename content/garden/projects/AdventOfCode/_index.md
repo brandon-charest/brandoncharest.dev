@@ -4,7 +4,6 @@ description = "Log of my attempts to solve AoC puzzles."
 aliases = ["/garden/AdventOfCode/"]
 sort_by = "date"
 template = "section.html"
-transparent = true
 +++
 
 # Advent of Code

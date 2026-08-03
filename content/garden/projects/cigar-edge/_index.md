@@ -3,7 +3,6 @@ title = "CigarEdge"
 description = "A cigar price comparison engine — scraping, matching, and scoring deals across vendors."
 sort_by = "date"
 template = "section.html"
-transparent = true
 +++
 
 I have been a fan of preimum cigars for a few years now, and I kept falling into the same annoyance each time I wanted to restock, I would have multiple tabs open comparing prices against vendors. There are some solutions out there, but I felt they were dated and left a lot of room for improvement. This is what inspired to me to start [CigarEdge.com](https://cigaredge.com).
