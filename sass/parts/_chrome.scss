@@ -458,3 +458,49 @@ pre::-webkit-scrollbar-thumb {
   font-family: var(--font-ui);
   font-size: 13px;
 }
+
+/* Brand marks in the status bar. Sized to the cap height of the text beside
+   them so the row still reads as one line of terminal output. */
+.statusbar__social .icon {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+
+.statusbar__social {
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (pointer: coarse) {
+  /* Comfortable target without changing the row height. */
+  .statusbar__social {
+    min-width: 32px;
+    min-height: 32px;
+    justify-content: center;
+    margin-block: -10px;
+  }
+}
+
+/* The status bar wrapped to three rows on a phone, with "Boston, MA" stranded
+   alone on the last one — which reads as a layout fault rather than a design.
+   The meta block was 314px of the 390 available.
+   
+   What goes is decoration: `git:main` and `UTF-8` carry no information at any
+   size, and the session uptime is atmosphere. What stays is the things a
+   reader can use — where they are, the profile links, and the location. */
+@media (max-width: 560px) {
+  .statusbar__git,
+  .statusbar__enc { display: none; }
+}
+
+@media (max-width: 430px) {
+  .statusbar__uptime { display: none; }
+
+  .statusbar__meta { gap: 12px; }
+
+  .statusbar__mode,
+  .statusbar__path,
+  .statusbar__loc,
+  .statusbar__meta { padding-inline: 10px; }
+}
