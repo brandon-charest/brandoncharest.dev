@@ -41,7 +41,10 @@ a { color: inherit; }
 }
 
 /* Terminal-flavoured scrollbars on anything that scrolls sideways. */
-.scroll-x { overflow-x: auto; }
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 .scroll-x::-webkit-scrollbar,
 pre::-webkit-scrollbar { height: 9px; width: 9px; }
@@ -291,6 +294,102 @@ pre::-webkit-scrollbar-thumb {
   transition: color var(--t-fast);
 
   &:hover { color: var(--orange); }
+}
+
+/* -----------------------------------------------------------------------------
+   Touch and small screens
+
+   Two separate concerns, so two separate queries:
+   - `pointer: coarse` is about *fingers*, and applies to a tablet as much as a
+     phone. It governs hit-area size.
+   - width queries are about *space*, and govern layout.
+   -------------------------------------------------------------------------- */
+
+/* WCAG 2.5.8 asks for 24px minimum and everything here already cleared that,
+   but 26px nav items are a miserable thing to hit with a thumb. */
+@media (pointer: coarse) {
+  /* `gap` is required, not cosmetic: the separator between the index number
+     and the label is a whitespace text node, and a flex container does not
+     generate boxes for whitespace-only text — turning these into flex items
+     rendered "2garden". */
+  .site-nav__item,
+  .search-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 44px;
+  }
+
+  .tag-pill,
+  .tech-tag,
+  .mini-tag {
+    min-height: 32px;
+    padding-inline: 12px;
+  }
+}
+
+/* The header wrapped to three rows on a phone — brand, search, nav — and being
+   sticky it then held ~20% of the viewport permanently. Below 600px the nav
+   becomes a single row that scrolls horizontally instead of wrapping. */
+@media (max-width: 760px) {
+  .site-header__inner {
+    padding: 8px 14px;
+    gap: 8px 12px;
+  }
+
+  /* `nowrap` matters as much as min-width:0 below. Flex wraps an item to the
+     next line *before* it shrinks it, so with wrapping on, the nav jumped to
+     its own row instead of scrolling and the header grew a third row. */
+  .site-header__right {
+    flex: 1 1 100%;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  /* `min-width: 0` is what makes this work: a flex item's default minimum is
+     its content width, so without it the nav refuses to shrink, wraps to its
+     own line, and the header grows instead of the nav scrolling. */
+  .site-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Start-aligned, not end-aligned: when the row overflows, `flex-end` pushes
+       the overflow off the *left* edge, which hid "1 home" behind the scroll
+       origin with no way to reach it. Aligning to the start puts the overflow
+       on the right, where scrolling actually goes. */
+    justify-content: flex-start;
+
+    /* Fade the trailing edge so a cut-off item reads as "there is more here"
+       rather than as the end of the nav. Safe unconditionally: with start
+       alignment, any spare room is on the right, so when everything fits the
+       fade falls over empty space. */
+    mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .brand { font-size: 12px; }
+}
+
+/* Page titles are set at 40px for a 1120px column; that is oversized on a
+   phone, where it costs several lines of vertical space before any content. */
+@media (max-width: 560px) {
+  .article__title,
+  .garden__title,
+  .folder__title {
+    font-size: clamp(26px, 8vw, 40px);
+    letter-spacing: -0.4px;
+  }
+
+  .featured-card__title { font-size: 22px; }
+
+  .wrap,
+  .body { padding-top: 28px; }
 }
 
 /* -----------------------------------------------------------------------------

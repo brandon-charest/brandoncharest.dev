@@ -106,9 +106,22 @@ ever retuned.
 - body — `flex: 1 1 380px; min-width: 0; max-width: 620px`
 - sidebar — `flex: 0 1 220px; min-width: 180px; position: sticky; top: 78px`
 
-**Breakpoint:** a single media query at **820px** hides the TOC and note-info sidebars. The
-prototype used a JS `resize` listener; use CSS. No other breakpoints — everything else wraps.
-Verified clean at 390px.
+**Breakpoints.** Two kinds, kept separate on purpose:
+
+| Query | Governs | Effect |
+|---|---|---|
+| `max-width: 820px` | space | Hides the TOC / note-info sidebar (the prototype used a JS resize listener; use CSS) |
+| `max-width: 760px` | space | Header drops to two rows: brand, then search + a horizontally scrolling nav |
+| `max-width: 640px` | space | Tree hides descriptions — brings it from 882px wide to ~402px |
+| `max-width: 560px` | space | Page `h1` scales via `clamp(26px, 8vw, 40px)`; reduced top padding |
+| `pointer: coarse` | fingers | Hit areas: nav 44px, tree rows 36px, pills 32px |
+
+`pointer: coarse` is deliberately not a width query — a tablet has fingers at 1024px, and a
+narrow desktop window does not. Sizing hit areas by viewport width gets both wrong.
+
+**Mobile results** (320-768px): no horizontal overflow at any width; sticky header 89px on
+phones, down from 141-165 when it wrapped to three rows; every nav item reachable with `1 home`
+anchored at the scroll origin.
 
 ---
 

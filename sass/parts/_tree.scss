@@ -204,3 +204,25 @@
   padding: 6px 0;
   color: var(--fg2);
 }
+
+/* The tree is the garden's primary navigation, so on a phone its rows are the
+   things being tapped. 25px is too tight for that. */
+@media (pointer: coarse) {
+  .tree {
+    line-height: 2.4;
+  }
+
+  .tree__row {
+    min-height: 36px;
+    align-items: center;
+  }
+}
+
+/* The tree deliberately scrolls sideways rather than wrapping — that is what a
+   terminal does and wrapping would destroy the connector alignment. But at
+   882px wide it means scrolling past the whole description column to read a
+   filename. Dropping descriptions on narrow screens brings it to roughly
+   420px, so the part that matters is reachable without scrolling. */
+@media (max-width: 640px) {
+  .tree__desc { display: none; }
+}
