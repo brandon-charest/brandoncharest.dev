@@ -270,6 +270,44 @@
 
 .recent__prompt { margin-bottom: 14px; }
 
+/* Same surface as .tree and .listing — bg1, 1px bg2, radius-card. These rows
+   were previously the only content on the site sitting straight on the page
+   background, which is why the section read as unanchored. */
+.recent__card {
+  padding: 10px 12px;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+}
+
+.recent__foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 6px;
+  padding: 10px 10px 4px;
+  border-top: 1px solid var(--bg2);
+  font-size: 12px;
+}
+
+/* fg2, not gray: gray is spec'd for decorative chrome — connectors, line
+   numbers, prompt punctuation — and measures 3.16:1 here. This is a count. */
+.recent__count { color: var(--fg2); }
+
+/* inline-flex + min-height so the hit box clears the 24px WCAG 2.5.8 floor;
+   the bare text box was 20px. */
+.recent__all {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  margin-left: auto;
+  color: var(--orange);
+  text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}
+
 /* Long titles must clip, not push the row wider than the column. */
 .recent-row {
   display: flex;

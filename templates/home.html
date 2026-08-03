@@ -77,17 +77,29 @@
     <section class="recent">
         {{ ui::prompt(cmd="git log", flag="--oneline", path="~/recent", class="recent__prompt") }}
 
-        {% for page in recent %}
-            {% set kind = page.extra.type | default(value="note") %}
-            {# Zola has no hash filter, so the short hash is the note's date in
-               yymmdd — deterministic, meaningful, and shaped like a git hash. #}
-            <a href="{{ page.permalink }}" class="recent-row">
-                <span class="recent-row__hash">{{ page.date | date(format="%y%m%d") }}</span>
-                <span class="recent-row__kind">{{ ui::kind_badge(type=kind, brackets=false) }}</span>
-                <span class="recent-row__title">{{ page.title }}</span>
-                <span class="recent-row__arrow" aria-hidden="true">&rarr;</span>
-            </a>
-        {% endfor %}
+        {# Command output belongs on a surface, the same way the garden tree and
+           the folder listings sit on one. Without it these rows were the only
+           thing on the site floating directly on the page background. #}
+        <div class="recent__card">
+            {% for page in recent %}
+                {% set kind = page.extra.type | default(value="note") %}
+                {# Zola has no hash filter, so the short hash is the note's date in
+                   yymmdd — deterministic, meaningful, and shaped like a git hash. #}
+                <a href="{{ page.permalink }}" class="recent-row">
+                    <span class="recent-row__hash">{{ page.date | date(format="%y%m%d") }}</span>
+                    <span class="recent-row__kind">{{ ui::kind_badge(type=kind, brackets=false) }}</span>
+                    <span class="recent-row__title">{{ page.title }}</span>
+                    <span class="recent-row__arrow" aria-hidden="true">&rarr;</span>
+                </a>
+            {% endfor %}
+
+            {# Closes the block the way `git log` output actually ends, and gives
+               the card a foot so the last row is not flush against the border. #}
+            <div class="recent__foot">
+                <span class="recent__count">{{ recent | length }} most recent</span>
+                <a class="recent__all" href="{{ get_url(path='garden', trailing_slash=true) }}">browse the garden &rarr;</a>
+            </div>
+        </div>
     </section>
     {% endif %}
 
