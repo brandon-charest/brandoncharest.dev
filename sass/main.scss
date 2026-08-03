@@ -15,30 +15,22 @@
 
 @import "parts/_badges.scss";
 @import "parts/_home.scss";
+@import "parts/_article.scss";
 
 /* --- Components still on the pre-redesign vocabulary -------------------------
    These compile against the legacy aliases at the bottom of _tokens.scss and
    are replaced screen by screen. Each phase deletes the partials it retires.
    -------------------------------------------------------------------------- */
 
-@import "parts/_cards.scss";
-@import "parts/_character.scss";
 @import "parts/_code.scss";
 @import "parts/_header.scss";
 @import "parts/_image.scss";
 @import "parts/_toc.scss";
 @import "parts/_note.scss";
 @import "parts/_misc.scss";
-@import "parts/_table.scss";
-@import "parts/_tags.scss";
 @import "parts/_mermaid.scss";
 @import "parts/_search.scss";
-@import "parts/_talks.scss";
-@import "parts/_components.scss";
 @import "parts/_terminal.scss";
-@import "parts/_page.scss";
 @import "parts/_hub-table.scss";
 @import "parts/_flags.scss";
-@import "parts/_garden-meta.scss";
-@import "parts/_blog.scss";
 @import "parts/_garden.scss";

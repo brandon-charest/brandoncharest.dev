@@ -1,78 +1,165 @@
 {% extends "base.html" %}
-{% import "macros/toc.html" as toc_macros %}
 {% import "macros/ui.html" as ui %}
-{% import "macros/meta.html" as meta %}
 
+{# Shared article layout for blog posts and garden notes. blog.html extends
+   this file rather than duplicating it — the two differ only in which sidebar
+   they get, and that is decided from the page's own path. #}
 
 {% block main_content %}
-<div class="body">
+{% set growth  = page.extra.growth | default(value="seedling") %}
+{% set comps   = page.components %}
+{% set root    = comps | first | default(value="") %}
+{# Three shapes, not two: blog posts get a TOC, garden notes get note info and
+   maturity, and standalone pages (now, about) get neither — they have no date,
+   no stage, and no tags to report. #}
+{% set is_blog = root == "blog" %}
+{% set is_note = root == "garden" %}
+{% set tended  = page.updated | default(value=page.date) %}
 
-    <div class="article-layout">
+<div class="{% if is_blog or is_note %}article-surface{% else %}plain-surface{% endif %}">
+    <div class="article-wrap">
 
-        {# --- LEFT SIDEBAR: TOC + BACKLINKS (desktop only) --- #}
-        {% if page.toc or page.backlinks | length > 0 %}
-        <aside class="article-sidebar">
-            {% if page.toc %}
-            <div class="sidebar-section">
-                <div class="toc-header">
-                    <span class="toc-icon">Ξ</span>
-                    <span class="toc-title">DOCUMENT_MAP</span>
+        <article class="article">
+
+            {# --- Breadcrumbs: every segment above the file is routable --- #}
+            <nav class="crumbs" aria-label="Breadcrumb">
+                <a href="{{ config.base_url }}">~</a>
+                {% for part in comps %}
+                    <span class="crumbs__sep" aria-hidden="true">/</span>
+                    {% if loop.last %}
+                        <span class="crumbs__current" aria-current="page">{{ part }}.md</span>
+                    {% else %}
+                        <a href="{{ get_url(path=comps | slice(end=loop.index) | join(sep='/')) }}">{{ part }}</a>
+                    {% endif %}
+                {% endfor %}
+            </nav>
+
+            <h1 class="article__title">{{ page.title }}</h1>
+
+            {% if is_blog or is_note %}
+            <div class="article__meta">
+                <span class="article__stage">
+                    {{ ui::growth_dot(growth=growth, large=true) }}{{ growth }}
+                </span>
+                {% if is_blog and page.reading_time %}<span>{{ page.reading_time }} min read</span>{% endif %}
+                {% if tended %}
+                    <span>{% if is_note %}last tended {% endif %}{{ tended | date(format="%b %-d, %Y") }}</span>
+                {% endif %}
+                {% if page.taxonomies.tags %}
+                <span class="article__tags">
+                    {% for tag in page.taxonomies.tags %}{{ ui::tag_pill(tag=tag) }}{% endfor %}
+                </span>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if page.description %}
+            <p class="article__lede">{{ page.description }}</p>
+            {% endif %}
+
+            {# --- Seedling notice ---------------------------------------------
+                 The design shows this *instead of* a body, for notes with no
+                 write-up yet. Every note here has content, so it runs as a
+                 heads-up above the body rather than in place of it. #}
+            {% if is_note and growth == "seedling" %}
+            <div class="growing-note">
+                {{ ui::growth_dot(growth=growth) }}
+                <div>
+                    <div class="growing-note__head">This note is still a seedling.</div>
+                    <div class="growing-note__body">
+                        I keep these in the open and tend them as I learn, so this page grows
+                        over time rather than arriving finished. Expect rough edges.
+                    </div>
                 </div>
-                <nav class="toc-tree">
-                    {{ toc_macros::tree(toc=page.toc) }}
+            </div>
+            {% endif %}
+
+            <div class="prose">
+                {{ page.content | safe }}
+            </div>
+
+            {# --- Related notes: anything sharing a tag ------------------------ #}
+            {% if is_note and page.taxonomies.tags %}
+                {% set tax = get_taxonomy(kind="tags") %}
+                {% set_global related = [] %}
+                {% for item in tax.items %}
+                    {% if item.name in page.taxonomies.tags %}
+                        {% for p in item.pages %}
+                            {% if p.permalink != page.permalink %}
+                                {% set_global related = related | concat(with=p) %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                {% set related = related | unique(attribute="permalink") | slice(end=4) %}
+
+                {% if related | length > 0 %}
+                <div class="term-panel">
+                    <div class="term-panel__log"><span class="term-panel__caret">&gt;</span> finding connected notes&hellip;</div>
+                    <div class="term-panel__log"><span class="term-panel__caret">&gt;</span> {{ related | length }} note{% if related | length != 1 %}s{% endif %} share a tag</div>
+                    {% for p in related %}
+                        {% set rslug = p.permalink | trim_end_matches(pat="/") | split(pat="/") | last %}
+                        <a href="{{ p.permalink }}" class="term-panel__row">
+                            <span class="term-panel__branch" aria-hidden="true">&#9492;&#9472;</span>
+                            <span class="term-panel__name">{{ rslug }}.md</span>
+                            <span class="term-panel__title">{{ p.title }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endif %}
+
+            {% include "partials/backlinks.html" %}
+        </article>
+
+        {# --- Sidebar (>= 820px, hidden by media query below that) ----------- #}
+        {% if page.toc | length > 1 or is_note %}
+        <aside class="article-side">
+
+            {% if is_note %}
+            <div class="side-block">
+                <div class="side-label">:: NOTE INFO</div>
+                <div class="note-info">
+                    <div>
+                        <div class="note-info__key">STAGE</div>
+                        <div class="note-info__val">{{ ui::growth_dot(growth=growth, large=true) }}{{ growth }}</div>
+                    </div>
+                    {% if tended %}
+                    <div>
+                        <div class="note-info__key">LAST TENDED</div>
+                        <div class="note-info__val">{{ tended | date(format="%b %-d, %Y") }}</div>
+                    </div>
+                    {% endif %}
+                    {% if page.taxonomies.tags %}
+                    <div>
+                        <div class="note-info__key">TAGS</div>
+                        <div class="note-info__tags">
+                            {% for tag in page.taxonomies.tags %}{{ ui::tag_pill(tag=tag) }}{% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if page.toc | length > 1 %}
+            <div class="side-block">
+                <div class="side-label">:: ON THIS PAGE</div>
+                <nav class="toc">
+                    {% for h in page.toc %}
+                    <a class="toc__item" href="#{{ h.id }}">
+                        <span class="toc__num">{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span>{{ h.title }}
+                    </a>
+                    {% endfor %}
                 </nav>
             </div>
             {% endif %}
 
-            {% if page.backlinks | length > 0 %}
-            <div class="sidebar-section sidebar-backlinks">
-                <div class="toc-header">
-                    <span class="toc-icon">←</span>
-                    <span class="toc-title">BACKLINKS</span>
-                </div>
-                <ul class="sidebar-backlinks-list">
-                    {% for link in page.backlinks %}
-                    <li>
-                        <a href="{{ link.permalink }}" class="sidebar-backlink">
-                            {{ link.title }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
         </aside>
         {% endif %}
 
-        {# --- MAIN ARTICLE CONTENT --- #}
-        <div class="article-main">
-            <div class="terminal-window">
-
-                {{ ui::window_bar(path=page.components) }}
-
-                <div class="window-content">
-                    <article class="terminal-article">
-                        {{ meta::header(page=page) }}
-
-                        <div class="article-body">
-                            {{ page.content | safe }}
-                        </div>
-                    </article>
-
-                    <div class="content-footer">
-                        {# Backlinks shown inline on mobile (sidebar hidden) #}
-                        <div class="mobile-backlinks">
-                            {% include "partials/backlinks.html" %}
-                        </div>
-                        {{ meta::tags(taxonomies=page.taxonomies) }}
-                    </div>
-
-                    {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="4rem", opacity=0.5) }}
-                </div>
-            </div>
-        </div>
-
     </div>
-
 </div>
+
+<script defer src="{{ get_url(path='js/article.js') }}"></script>
 {% endblock main_content %}

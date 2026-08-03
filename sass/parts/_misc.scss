@@ -48,25 +48,18 @@ a {
 }
 
 main {
-  /* Markdown prose links only. `:not([class])` is the discriminator: links the
-     templates build are always classed components (cards, rows, pills, nav),
-     while links Zola renders from Markdown never are. Without this the rule
-     painted an accent underline under every link on the site, including whole
-     cards and list rows. Blue + underline is the palette's prose-link rule. */
-  a:not([class]) {
+  /* Prose links are blue and underlined — but only inside a prose container.
+     This rule used to be `main a`, which painted an accent underline under
+     every link on the site including whole cards, list rows and breadcrumbs.
+     Scoping to the containers that actually hold Markdown output means new
+     components never have to opt out. `.prose` owns the article body; this
+     covers the section/garden hubs that still render `section.content`. */
+  .hub-stdout a {
     color: var(--blue);
-    border-bottom: 1px solid var(--blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 
-    &:hover {
-      color: var(--fg1);
-      border-bottom-color: var(--fg1);
-    }
-  }
-
-  /* Directory listings are navigation, not prose — no underline. */
-  .hub-table a:not([class]) {
-    color: inherit;
-    border-bottom: none;
+    &:hover { color: var(--fg1); }
   }
 
   .meta a,
