@@ -65,14 +65,36 @@ the nav got *narrower* (331px, from ~360px).
 
 ## Layout
 
-**One content width across every screen: `max-width: 920px`, centered, 18px side gutters.**
-This is deliberate — the site previously had five different widths and content visibly lurched
-sideways between pages. Do not vary it.
+**One content width across every screen: `max-width: 1120px`, centered, 18px side gutters.**
+Still exactly one width — the rule the handoff cares about is that content never shifts
+sideways between pages, and the site previously had five different widths that made it lurch.
+
+**Raised from the handoff's 920px.** At 920 the article body was 620px, and code blocks wanted
+up to 760px of content, so two of the three on a single Rust note scrolled horizontally — while
+500px sat empty on either side at 1920. The column is now 1120, which gives the article 824px
+and fits every code block with no scroll.
+
+Widening the column does **not** widen prose. Running text is capped at `--measure`
+independently, so line length is unchanged; the extra width goes to code, tables and images.
 
 ```
---content: 920px;
---gutter: 18px;
+--content: 1120px;
+--gutter:  18px;
+--measure: 62ch;   /* ~69 characters — see below */
 ```
+
+**On `ch`:** the unit is the width of "0", which in IBM Plex Sans is wider than the average
+lowercase letter, so `62ch` measures ~69 actual characters — not 62. That is the same line
+length the original 620px column produced. Check characters, not the `ch` number, if this is
+ever retuned.
+
+| Element | Width at 1440px |
+|---|---|
+| Column | 1120 (160px margin each side) |
+| Article body | 824 |
+| Prose paragraph | 620 (69 characters) |
+| Code card | 824 |
+| Sidebar | 220, 40px gap |
 
 | Screen | Vertical padding |
 |---|---|

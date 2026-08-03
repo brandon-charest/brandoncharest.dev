@@ -28,10 +28,12 @@
   padding: 38px var(--gutter) 84px;
 }
 
+/* Takes the column minus the sidebar. Prose inside is held to --measure, so a
+   wider article buys width for code, tables and images without lengthening a
+   line of text. */
 .article {
   flex: 1 1 380px;
   min-width: 0;
-  max-width: 620px;
 }
 
 /* --- Breadcrumbs ------------------------------------------------------------ */
@@ -95,6 +97,7 @@
 
 .article__lede {
   margin: 0 0 32px;
+  max-width: var(--measure);
   padding-left: 18px;
   border-left: 2px solid var(--bg3);
   font-family: var(--font-sans);
@@ -115,6 +118,22 @@
   color: var(--fg2);
 
   > :first-child { margin-top: 0; }
+
+  /* Running text is held to a readable line length regardless of how wide the
+     column is. Everything not listed here — code cards, tables, images — is
+     free to use the full article width, which is the whole point of widening
+     the column. */
+  > p,
+  > ul,
+  > ol,
+  > blockquote,
+  > h1,
+  > h2,
+  > h3,
+  > h4,
+  > .growing-note {
+    max-width: var(--measure);
+  }
 
   p { margin: 0 0 20px; }
 

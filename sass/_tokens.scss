@@ -51,8 +51,18 @@
   --leading:    1.7;
 
   /* --- Layout ------------------------------------------------------------ */
-  --content: 920px;
+  /* One width across every screen — the rule the handoff cares about is that
+     content never shifts sideways between pages, not the specific number.
+     Raised from 920 because code blocks wanted up to 760px of content and were
+     scrolling horizontally while 500px sat empty either side on a 1920 display.
+     Reading measure is protected separately by --measure, so prose does not
+     get wider with the column. */
+  --content: 1120px;
   --gutter:  18px;
+  /* Reading measure. `ch` is the width of "0", which in IBM Plex Sans is wider
+     than the average lowercase letter, so 62ch measures ~69 actual characters —
+     the same line length the 620px column gave before it was widened. */
+  --measure: 62ch;
   --header-h: 78px;     /* sticky offset for sidebars and scroll-margin */
 
   /* --- Radii ------------------------------------------------------------- */

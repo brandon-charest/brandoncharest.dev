@@ -152,6 +152,7 @@
 .neofetch__blurb {
   flex: 1 1 200px;
   min-width: 0;
+  max-width: 64ch;
   align-self: center;
 
   p {
