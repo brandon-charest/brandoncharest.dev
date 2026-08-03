@@ -102,6 +102,9 @@
 .listing__name {
   font-size: 13px;
   color: var(--fg2);
+  /* Dated post filenames run to ~36 characters. Let one break rather than
+     push the row wider than the card. */
+  overflow-wrap: anywhere;
 }
 
 .listing__title {
@@ -127,6 +130,45 @@
   margin-top: 3px;
   font-size: 12px;
   color: var(--fg2);
+}
+
+/* Narrow rows: give the meta its own line rather than a column.
+
+   `.listing__row` already wraps, but wrapping never triggered — `.listing__main`
+   carries `min-width: 0` so it can ellipsise, which also means it absorbs the
+   entire squeeze instead of pushing a sibling onto the next line. At 412px the
+   fixed badge (46px) and the meta (~140px) left it roughly 160px, so every post
+   title broke one word per line and a single row ran most of a screen tall.
+
+   Reordering puts badge and meta together on the first line and hands the whole
+   width to the content beneath them.
+
+   760px, not a phone breakpoint: the badge, gaps and meta cost a fixed ~250px,
+   so the three-column form only gives the content a workable column once the
+   viewport clears roughly 760. Measured at 620 the stacked form was still the
+   better of the two by a wide margin (532px of content against 333). */
+@media (max-width: 760px) {
+  .listing__row {
+    gap: 8px 12px;
+    padding: 14px 15px;
+  }
+
+  .listing__badge {
+    order: 1;
+    margin-top: 0;
+  }
+
+  .listing__meta {
+    order: 2;
+    margin-top: 0;
+    margin-left: auto;
+    align-self: center;
+  }
+
+  .listing__main {
+    order: 3;
+    flex: 1 1 100%;
+  }
 }
 
 .listing__empty {

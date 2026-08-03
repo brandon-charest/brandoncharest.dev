@@ -58,5 +58,9 @@
    announces "visitor at dev colon tilde dollar tree tilde slash garden" before
    the content it decorates. #}
 {% macro prompt(cmd="", path="", dim="", cursor=false, class="") %}
-<div class="prompt {{ class }}" aria-hidden="true"><span class="prompt__user">visitor@dev</span><span class="prompt__punct">:~$</span>{% if cmd %} {{ cmd }}{% endif %}{% if path %} <span class="prompt__path">{{ path }}</span>{% endif %}{% if dim %} <span class="prompt__dim">{{ dim }}</span>{% endif %}{% if cursor %}<span class="prompt__cursor"></span>{% endif %}</div>
+{# The separators are &nbsp;, not plain spaces. minify_html collapses runs of
+   whitespace *between two tags* while keeping whitespace next to a text node,
+   so `ls <span>` survived and `</span> <span>` did not — which rendered as
+   `ls ~/blog--sort=date`. Same failure mode as the tree's indentation. #}
+<div class="prompt {{ class }}" aria-hidden="true"><span class="prompt__user">visitor@dev</span><span class="prompt__punct">:~$</span>{% if cmd %}&nbsp;{{ cmd }}{% endif %}{% if path %}&nbsp;<span class="prompt__path">{{ path }}</span>{% endif %}{% if dim %}&nbsp;<span class="prompt__dim">{{ dim }}</span>{% endif %}{% if cursor %}<span class="prompt__cursor"></span>{% endif %}</div>
 {% endmacro prompt %}
