@@ -181,6 +181,14 @@
 
   /* --- events -------------------------------------------------------------- */
 
+  // The markup ships ⌘K; only Apple platforms actually use ⌘. Everyone else
+  // presses Ctrl. Rewriting here rather than in the template keeps it out of
+  // the cached HTML, which is served to every platform alike.
+  var kbd = document.getElementById('search-kbd');
+  if (kbd && !/Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent)) {
+    kbd.textContent = 'Ctrl K';
+  }
+
   if (trigger) {
     trigger.addEventListener('click', function (e) { e.preventDefault(); open(); });
     // Warm the index on intent, so the first open renders instantly.

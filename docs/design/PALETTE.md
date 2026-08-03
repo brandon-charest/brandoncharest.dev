@@ -38,7 +38,7 @@ generated syntax-highlighting CSS are the only exceptions.
 
 | Token | Hex | Job |
 |---|---|---|
-| `--orange` | `#fe8019` | Primary actionable signal: nav active pill, brand/username, shell prompt user, standalone UI links ("browse all tags →"), active TOC item, status-bar mode block |
+| `--orange` | `#fe8019` | Primary actionable signal: nav active pill, brand **username only** (`brandoncharest`, not `@dev`), shell prompt user, standalone UI links ("browse all tags →"), active TOC item, status-bar mode block |
 | `--aqua` | `#8ec07c` | Headings — post `h2`/`h3` — **and directory names** (decision 1) |
 | `--yellow` | `#fabd2f` | "growing" maturity badge only |
 | `--green` | `#b8bb26` | "evergreen" maturity badge — **and** the home "online" status dot (documented exception) |

@@ -132,9 +132,12 @@ pre::-webkit-scrollbar-thumb {
   text-decoration: none;
   white-space: nowrap;
 
-  .brand__name,
-  .brand__host { color: var(--orange); }
-  .brand__at   { color: var(--fg2); }
+  /* Orange marks the *username* only. `@dev` is the host half of the mark, not
+     a name and not actionable — leaving it orange gave the brand two accent
+     words competing with the active nav pill a few hundred pixels away. */
+  .brand__name { color: var(--orange); }
+  .brand__at,
+  .brand__host { color: var(--fg2); }
   .brand__cwd  { color: var(--gray); }
 }
 
@@ -374,6 +377,37 @@ pre::-webkit-scrollbar-thumb {
   }
 
   .brand { font-size: 12px; }
+
+  /* The nav needs 275px. Below 760px the row cannot spare that while the
+     search button carries a keyboard hint, so the hint goes first — it is
+     also the least useful thing on a device with no keyboard. Each step below
+     buys back the exact shortfall measured at that width. */
+  .search-trigger .kbd { display: none; }
+}
+
+/* ⌘ is a Mac key and there is no keyboard at all on touch, so the hint is
+   both wrong and useless here. js/palette.js rewrites it to "Ctrl K" on
+   non-Apple desktops. */
+@media (pointer: coarse) {
+  .search-trigger .kbd { display: none; }
+}
+
+/* Frees ~43px: the prompt glyph alone still reads as "search" in a terminal
+   vocabulary, and the button keeps its accessible name. */
+@media (max-width: 430px) {
+  .search-trigger__label { display: none; }
+
+  .search-trigger {
+    justify-content: center;
+    min-width: 44px;
+    padding: 5px 12px;
+  }
+}
+
+/* Last 30px at the narrowest sizes. */
+@media (max-width: 360px) {
+  .site-nav__item { padding-inline: 6px; }
+  .site-nav { gap: 2px; }
 }
 
 /* The index numbers exist for the 1-5 shortcuts, which a touch device cannot
