@@ -23,7 +23,7 @@
     {# Tera cannot parenthesise a filtered expression inside another expression,
        so the count is bound before being concatenated. #}
     {% set tag_count = terms | length %}
-    {{ ui::prompt(cmd="ls ~/tags", dim="| sort -rn  # " ~ tag_count ~ " tags", class="cloud__prompt") }}
+    {{ ui::prompt(cmd="ls", path="~/tags", dim="| sort -rn  # " ~ tag_count ~ " tags", class="cloud__prompt") }}
 
     <div class="cloud">
         {% for term in all_terms | reverse %}

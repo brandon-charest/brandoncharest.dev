@@ -107,7 +107,7 @@
     {% endif %}
 
     <div class="garden__bar">
-        {{ ui::prompt(cmd="tree ~/garden", dim="--filter=all", class="garden__prompt") }}
+        {{ ui::prompt(cmd="tree", path="~/garden", dim="--filter=all", class="garden__prompt") }}
         <a class="garden__tags-link" href="{{ get_url(path="tags") }}">
             <span class="garden__hash">#</span> browse all tags &rarr;
         </a>

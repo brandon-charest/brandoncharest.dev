@@ -123,15 +123,19 @@
    markup picks up the corrected treatment without a template sweep.
    -------------------------------------------------------------------------- */
 
+/* Metrics deliberately match .chip in parts/_tree.scss — 13px, 4px 12px, both
+   pill-shaped links sitting on the same surfaces. They had drifted to 12px /
+   1px 9px, which rendered 23.19px tall against the chip's 32px: visibly
+   different, and under the 24px WCAG 2.5.8 minimum for a touch target. */
 .tag-pill,
 .tech-tag,
 .mini-tag {
   display: inline-flex;
   align-items: center;
-  padding: 1px 9px;
+  padding: 4px 12px;
   font-family: var(--font-ui);
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: 13px;
+  line-height: 1.7; /* 1.6 left it 31px against the chip's 32 */
   color: var(--fg2);
   background: transparent;
   border: 1px solid var(--bg3);
@@ -158,9 +162,18 @@
 
   .prompt__user { color: var(--orange); }
   .prompt__punct,
+  .prompt__flag,
   .prompt__dim   { color: var(--gray); }
 
   .prompt__path { color: var(--aqua); }
+
+  /* The verb is the part that says what the screen below is doing, so it reads
+     first. Without this every segment sat at one weight and one colour and the
+     line ran together as a single string. */
+  .prompt__cmd {
+    color: var(--fg1);
+    font-weight: 500;
+  }
 }
 
 .prompt__cursor {

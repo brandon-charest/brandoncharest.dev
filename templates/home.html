@@ -75,7 +75,7 @@
                                | sort(attribute="date") | reverse | slice(end=5) %}
     {% if recent | length > 0 %}
     <section class="recent">
-        {{ ui::prompt(cmd="git log --oneline", dim="~/recent", class="recent__prompt") }}
+        {{ ui::prompt(cmd="git log", flag="--oneline", path="~/recent", class="recent__prompt") }}
 
         {% for page in recent %}
             {% set kind = page.extra.type | default(value="note") %}
