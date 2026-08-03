@@ -1,3 +1,49 @@
+/* Dev-log entries.
+ *
+ * Entries are authored as ordinary markdown — `## 2026-05-08 — Back to Basics`
+ * — so they stay easy to write and readable in the source. Here each dated
+ * heading gets a git-log-style short hash (the date as yymmdd) and is grouped
+ * with the content that follows it into one tinted block, which CSS cannot do
+ * on its own: there is no selector that wraps an element together with its
+ * following siblings.
+ *
+ * With JS off, the headings simply render as normal section headings.
+ */
+(function () {
+  var prose = document.querySelector('.prose[data-log]');
+  if (!prose) return;
+
+  var DATE = /^(\d{4})-(\d{2})-(\d{2})\s*(?:[—–-]\s*)?(.*)$/;
+
+  Array.prototype.slice.call(prose.children).forEach(function (node) {
+    if (node.tagName !== 'H2') return;
+
+    var m = DATE.exec(node.textContent.trim());
+    if (!m) return;
+
+    var hash = m[1].slice(2) + m[2] + m[3];
+    var title = m[4] || node.textContent.trim();
+
+    node.textContent = '';
+    var h = document.createElement('span');
+    h.className = 'devlog-hash';
+    h.textContent = hash;
+    node.appendChild(h);
+    node.appendChild(document.createTextNode(title));
+
+    var entry = document.createElement('div');
+    entry.className = 'devlog-entry';
+    node.parentNode.insertBefore(entry, node);
+
+    // Move the heading and everything up to the next h2 into the block.
+    var next;
+    while ((next = entry.nextSibling)) {
+      if (next.nodeType === 1 && next.tagName === 'H2' && next !== node) break;
+      entry.appendChild(next);
+    }
+  });
+})();
+
 /* Table-of-contents scroll spy.
  *
  * Marks the TOC entry for whichever heading you are currently reading. Uses an

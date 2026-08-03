@@ -96,12 +96,13 @@ Do not "fix" these.
    It is literally a palette display — the conventional neofetch element.
 3. **Code blocks** use full multi-hue Gruvbox syntax highlighting. The rules here govern the
    prose *around* code, not the code itself.
-4. **Inline `<code>` is orange on `bg1`.** Not actionable, but it is what the design specifies
-   and it reads as a distinct inline object rather than a link.
-5. **The code-block filename tab** carries an orange 7px square and an `inset 0 2px 0` orange
+4. **The code-block filename tab** carries an orange 7px square and an `inset 0 2px 0` orange
    top rule — chrome that marks the active file, consistent with orange as the "current
    position" signal.
-6. **Prose list bullets are orange `-`.**
+5. **Prose list bullets are orange `-`.**
+6. **Dev-log entry hashes are orange** — the `260508` short hash heading each dated entry.
+   (Note: the homepage's `git log` rows use `fg4` for the same idea. Divergence is
+   intentional for now; align if it starts to read as inconsistent.)
 7. **Alpha layers are not new hues** and are exempt from the 18-hex rule:
    - `::selection` — `rgba(254,128,25,.30)` with `#ebdbb2` text
    - Terminal card shadow — `0 24px 60px -34px rgba(0,0,0,.85)`, `inset 0 1px 0 rgba(255,255,255,.02)`
@@ -148,6 +149,24 @@ items are `fg4`; the active item and its rail segment turn orange.
 **Maturity is always three visually distinct hues** — gray / yellow / green — in filter chips,
 per-note dots, meta rows, and the note-info card. A previous revision collapsed growing and
 evergreen to the same color; that is the single most important thing to check.
+
+Never hand-render a stage. Every surface goes through one of three macros in
+`templates/macros/ui.html`, all resolving to `parts/_badges.scss`:
+
+| Macro | Renders | Use for |
+|---|---|---|
+| `ui::growth_state(growth)` | coloured dot **+ coloured word** | Anywhere the stage is *stated*: article byline, note-info card |
+| `ui::growth_dot(growth)` | dot only | Where a label already sits beside it: tree rows, filter chips |
+| `ui::growth_badge(growth)` | `[seed]` / `[grow]` / `[ever]` | Table columns and dense listings |
+
+`growth_state` colours the label and lets the dot inherit via `currentColor`, so word and dot
+cannot disagree. An 8px dot alone is genuinely hard to read — Gruvbox yellow `#fabd2f` next to
+Gruvbox orange `#fe8019` is a close call at that size — which is why stated stages carry the
+colour in text too.
+
+**Inline `<code>` is neutral** — `fg1` on `bg1`. The bg1 panel is enough to mark it as a
+distinct object. It was orange in an earlier revision, which put an actionable-looking box
+around quoted product names and other plain nouns.
 
 ---
 

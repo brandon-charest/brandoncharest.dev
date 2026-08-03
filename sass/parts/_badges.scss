@@ -39,6 +39,22 @@
   &.dot-growth--lg { width: 8px; height: 8px; }
 }
 
+/* Dot + label as one unit. The label carries the stage colour and the dot
+   inherits it, so a stage cannot render with a matching word and a mismatched
+   dot. Yellow at 8px is easy to read as orange; the coloured word removes the
+   ambiguity without adding a hue. */
+.growth-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--gray);
+
+  &[data-growth="growing"]   { color: var(--yellow); }
+  &[data-growth="evergreen"] { color: var(--green); }
+
+  .dot-growth { background: currentColor; }
+}
+
 /* --- Content kind -----------------------------------------------------------
    Uniform fg2, exactly like tags: `[note]` and `[proj]` differ in text, never
    in hue. Giving each kind its own colour recreates the "every element has its

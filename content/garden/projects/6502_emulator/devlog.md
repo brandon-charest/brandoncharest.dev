@@ -10,13 +10,13 @@ growth = "growing"
 +++
 
 
-# 🏗️ Build Log
+# Build Log
 
 *A chronological record of my suffering.*
 
 [Main Branch](https://github.com/brandon-charest/Rust6502)
 
-## 📅 2026-01-09
+## 2026-01-09
 
 ### NES Test Verification
 
@@ -108,7 +108,7 @@ What is `.db`? From a quick search called code/data interleaving?? 🤔
 
 With the CPU verified and for what I can tell at the moment is correct. I will move on to being able to now see something. The [PPU](https://www.nesdev.org/wiki/PPU)!
 
-## 📅 2026-01-08
+## 2026-01-08
 
 ### CPU Refactoring
 
@@ -143,7 +143,7 @@ So for now ill abandon the Klaus Dormann's functional tests, and instead focus o
 
 This means I need to look into loading ROMs into memory and running them.
 
-## 📅 2026-01-07
+## 2026-01-07
 
 ### Refactor For `AccessMode`
 
@@ -206,7 +206,7 @@ I set it up to run and.....  it failed. Not only did it fail, it failed on the V
 
 missing opcode Clear Decimal Mode (CLD=$D8)
 
-## 📅 2026-01-04
+## 2026-01-04
 
 ### The "Panic Driven" Development Strategy
 
@@ -268,7 +268,7 @@ I need to find a way to implement proper clock cycles, each opcode or read/write
 
 ref: [6502 Opcodes](http://www.6502.org/tutorials/6502opcodes.html)
 
-## 📅 2026-01-02
+## 2026-01-02
 
 Spent a few hours trying to put Bus inside CPU. I want to have a debugger (maybe visual) and implement graphics. I'm worried I will run into borrow checker issues if the CPU **owns** the `Bus`.
 

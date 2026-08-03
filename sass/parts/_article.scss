@@ -118,7 +118,10 @@
 
   p { margin: 0 0 20px; }
 
-  h2, h3, h4 {
+  /* h1 is included: a note that opens with `# Build Log` is at the same
+     hierarchy level as its `## ` siblings as far as the reader is concerned,
+     and leaving it unstyled dropped it to body colour in a mono face. */
+  h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 700;
     color: var(--aqua);
@@ -126,6 +129,7 @@
     scroll-margin-top: var(--header-h);
   }
 
+  h1 { font-size: 26px; margin: 44px 0 14px; }
   h2 { font-size: 26px; margin: 44px 0 14px; }
   h3 { font-size: 20px; margin: 34px 0 12px; }
   h4 { font-size: 17px; margin: 28px 0 10px; }
@@ -176,13 +180,15 @@
     border-radius: var(--radius-card);
   }
 
-  /* Inline code is orange on bg1 — a sanctioned exception. It reads as an
-     inline object, not a link; links in prose are blue and underlined. */
+  /* Inline code is neutral: the bg1 panel is enough to mark it as a distinct
+     object. It used to be orange, which put an actionable-looking box around
+     quoted product names and other plain nouns. Orange stays reserved for
+     things you can act on. */
   code {
     padding: 2px 6px;
     border-radius: var(--radius-badge);
     background: var(--bg1);
-    color: var(--orange);
+    color: var(--fg1);
     font-family: var(--font-code);
     font-size: 14px;
     /* Inline snippets like `*3\r\n$3\r\nSET\r\n` have no break opportunities
@@ -213,6 +219,41 @@
     font-family: var(--font-ui);
     font-size: 13px;
   }
+}
+
+/* --- Dev-log entries --------------------------------------------------------
+   A devlog is a column of dated entries. Left flat, the whole page reads as one
+   undifferentiated run of text, so each entry gets a tinted block and a
+   git-log-style short hash derived from its date. Grouping is done in
+   js/article.js: the entries are plain `## YYYY-MM-DD — Title` markdown, and
+   CSS cannot wrap a heading together with the siblings that follow it.
+   Without JS the headings still render as ordinary aqua section headings.
+   -------------------------------------------------------------------------- */
+
+.devlog-entry {
+  margin: 0 0 20px;
+  padding: 4px 22px 18px;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+
+  /* The heading is the entry's title bar, so it should not also carry the
+     large top margin it uses when it is a free-standing section heading. */
+  > h2:first-child {
+    margin-top: 18px;
+    font-size: 22px;
+  }
+
+  > :last-child { margin-bottom: 0; }
+}
+
+.devlog-hash {
+  margin-right: 12px;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--orange);
 }
 
 /* --- Still-growing notice ---------------------------------------------------- */

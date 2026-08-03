@@ -19,10 +19,19 @@
 <span class="badge-growth" data-growth="{{ growth }}" title="{{ growth | capitalize }}">{% if brackets %}[{% endif %}{% if growth == "growing" %}grow{% elif growth == "evergreen" %}ever{% else %}seed{% endif %}{% if brackets %}]{% endif %}</span>
 {% endmacro growth_badge %}
 
-{# Dot form used in tree rows, meta rows and filter chips. #}
+{# Dot form used in tree rows and filter chips, where a label sits elsewhere. #}
 {% macro growth_dot(growth="seedling", large=false) %}
 <span class="dot-growth{% if large %} dot-growth--lg{% endif %}" data-growth="{{ growth }}" title="{{ growth | capitalize }}"></span>
 {% endmacro growth_dot %}
+
+{# Dot + label as one unit. Use this anywhere maturity is *stated* rather than
+   just indicated: an 8px dot alone is easy to misread, and Gruvbox yellow next
+   to Gruvbox orange is a genuinely hard call at that size. The label carries
+   the stage colour and the dot inherits it via currentColor, so the two can
+   never disagree. #}
+{% macro growth_state(growth="seedling", large=true) %}
+<span class="growth-state" data-growth="{{ growth }}"><span class="dot-growth{% if large %} dot-growth--lg{% endif %}"></span>{{ growth }}</span>
+{% endmacro growth_state %}
 
 {# Kind badge: uniform fg2, never per-kind hues. #}
 {% macro kind_badge(type="note", boxed=false, brackets=true) %}

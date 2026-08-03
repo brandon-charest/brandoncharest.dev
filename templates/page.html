@@ -15,6 +15,9 @@
 {% set is_blog = root == "blog" %}
 {% set is_note = root == "garden" %}
 {% set tended  = page.updated | default(value=page.date) %}
+{# `default` is required, not defensive: pages like now.md carry no [extra]
+   table at all, and Tera raises on a missing key rather than returning null. #}
+{% set ctype   = page.extra.type | default(value="note") %}
 
 <div class="{% if is_blog or is_note %}article-surface{% else %}plain-surface{% endif %}">
     <div class="article-wrap">
@@ -38,9 +41,7 @@
 
             {% if is_blog or is_note %}
             <div class="article__meta">
-                <span class="article__stage">
-                    {{ ui::growth_dot(growth=growth, large=true) }}{{ growth }}
-                </span>
+                {{ ui::growth_state(growth=growth) }}
                 {% if is_blog and page.reading_time %}<span>{{ page.reading_time }} min read</span>{% endif %}
                 {% if tended %}
                     <span>{% if is_note %}last tended {% endif %}{{ tended | date(format="%b %-d, %Y") }}</span>
@@ -74,7 +75,7 @@
             </div>
             {% endif %}
 
-            <div class="prose">
+            <div class="prose"{% if ctype == "log" %} data-log="true"{% endif %}>
                 {{ page.content | safe }}
             </div>
 
@@ -122,7 +123,7 @@
                 <div class="note-info">
                     <div>
                         <div class="note-info__key">STAGE</div>
-                        <div class="note-info__val">{{ ui::growth_dot(growth=growth, large=true) }}{{ growth }}</div>
+                        <div class="note-info__val">{{ ui::growth_state(growth=growth) }}</div>
                     </div>
                     {% if tended %}
                     <div>
