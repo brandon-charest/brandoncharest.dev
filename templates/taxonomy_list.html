@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
+
+{# /tags/ — every tag as a weighted cloud.
+
+   Size carries the weight; hue never does. Giving each tag its own colour is
+   precisely the "every element has its own accent" problem the palette exists
+   to prevent, so every tag here is fg2 and only the type size varies. #}
+
+{% block main_content %}
+<div class="body">
+
+    {% set all_terms = terms | sort(attribute="page_count") %}
+    {% set biggest = all_terms | last %}
+    {% set maxc = biggest.page_count %}
+
+    <h1 class="garden__title">Tags</h1>
+    <p class="garden__lede">
+        Every thread running through the garden. Bigger means more notes — pick one to
+        see everything connected to it.
+    </p>
+
+    {# Tera cannot parenthesise a filtered expression inside another expression,
+       so the count is bound before being concatenated. #}
+    {% set tag_count = terms | length %}
+    {{ ui::prompt(cmd="ls ~/tags", dim="| sort -rn  # " ~ tag_count ~ " tags", class="cloud__prompt") }}
+
+    <div class="cloud">
+        {% for term in all_terms | reverse %}
+            {% set ratio = term.page_count / maxc %}
+            {% set size  = 15 + ratio * 17 %}
+            <a class="cloud__tag" href="{{ term.permalink }}" style="font-size: {{ size | round }}px">
+                #{{ term.name }}<span class="cloud__count">{{ term.page_count }}</span>
+            </a>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock main_content %}

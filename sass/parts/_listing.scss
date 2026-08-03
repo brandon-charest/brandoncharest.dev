@@ -139,3 +139,71 @@
   color: var(--fg2);
   font-size: 13px;
 }
+
+/* Pinned marker on the blog index. Purple is the FEATURED signal elsewhere;
+   a pinned post is the same idea in a list. */
+.listing__pin {
+  color: var(--purple);
+  font-size: 12px;
+}
+
+/* --- Tag cloud (/tags/) ------------------------------------------------------
+   Size carries the weight, hue never does — every tag is fg2. Per-tag colours
+   are exactly the problem the palette exists to prevent.
+   -------------------------------------------------------------------------- */
+
+.cloud__prompt { margin-bottom: 22px; }
+
+.cloud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px 18px;
+  padding: 26px 26px 30px;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+}
+
+.cloud__tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 2px 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--fg2);
+  text-decoration: none;
+  transition: color var(--t-mid), transform var(--t-mid);
+
+  &:hover {
+    color: var(--fg1);
+    transform: translateY(-2px);
+  }
+
+  .cloud__count {
+    font-family: var(--font-ui);
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--fg2);
+  }
+}
+
+@media (pointer: coarse) {
+  .cloud { gap: 16px 20px; }
+  .cloud__tag { min-height: 32px; align-items: center; }
+}
+
+/* --- Standalone prose pages (now, about) ------------------------------------ */
+
+.prose-page__prompt { margin-bottom: 22px; }
+
+.prose-page__title {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  color: var(--fg1);
+}

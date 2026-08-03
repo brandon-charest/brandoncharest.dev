@@ -1,8 +1,7 @@
 +++
 title = "About Me"
 path = "about"
-template = "page.html"
-status = "evergreen"
+template = "prose.html"
 +++
 
 ## Hey, I'm Brandon
