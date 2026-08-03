@@ -68,8 +68,10 @@ generated syntax-highlighting CSS are the only exceptions.
    which is a no-op for rows that already sit on a `bg1` card (garden tree, folder listings,
    series lists). The rule is now "exactly 18 hex values", not 17.
 
-4. **No light theme.** `config.toml` sets `theme = "dark"`. Every contrast figure below is
-   computed against dark surfaces; a light mode would be undesigned and unverified.
+4. **No light theme.** The `theme` key, both theme stylesheets and the toggle script are gone
+   entirely — tokens live on `:root` with no class gate, so nothing has to apply a theme for the
+   site to render. Every contrast figure below is computed against dark surfaces; a light mode
+   would be undesigned and unverified.
 
 5. **`/blog` and `/tags/<tag>/` use the folder-listing primitive** — breadcrumbs, badge, `h1`,
    overview, `ls` prompt, then a `bg1` card of child rows. No new visual vocabulary.
@@ -77,9 +79,10 @@ generated syntax-highlighting CSS are the only exceptions.
 6. **The ⌘K palette is custom**, fed by a compact Tera-emitted JSON index.
    `build_search_index = false`; elasticlunr and its 1.2 MB index are removed.
 
-7. **The home terminal card is `width: fit-content; max-width: 100%`.** The README's
-   "~294px of dead space" figure implies a natural content width of ~626px, which matches
-   `fit-content`; the prototype's `width:100%` is stale.
+7. **The home terminal card is `width: 100%`.** Originally resolved as `fit-content` from the
+   README's "~294px of dead space" figure, then settled by the mock, which shows the card
+   spanning the full column. With real blurb copy the two resolve identically anyway, so full
+   width is simply the predictable spelling.
 
 8. **GitHub and LinkedIn live in the status bar** as text links (`gh:` / `in:`), since the
    redesigned header has no socials slot.
