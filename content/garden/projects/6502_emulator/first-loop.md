@@ -40,7 +40,7 @@ The 6502 reads these bytes during reset and sets the program counter (PC) to `$8
 
 Here's what our test program looks like in memory:
 
-```text
+```txt
 Address   Value    Description
 ───────────────────────────────────
 $8000:    EA       NOP (do nothing)

@@ -28,7 +28,7 @@ By no means am I an expert in bitwise logic, in fact I actively avoid it when so
 
 We have the value 172 (Binary 1010 1100).
 
-```text
+```txt
     [ Carry ]             [ Bit 7 ............ Bit 0 ]
    +---------+           +---------------------------+
    |    ?    |           |  1  0  1  0   1  1  0  0 |

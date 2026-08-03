@@ -14,12 +14,19 @@ feed_filenames = ["atom.xml"]
 
 [markdown]
 highlight_code = true
-highlight_theme = "material-dark"
+# Zola 0.17 bundles no Gruvbox theme, so we ship one and let Zola export it to
+# CSS classes. "css" also stops Zola inlining a background/foreground on every
+# <pre>, which let the code card own its own surface.
+highlight_theme = "css"
+highlight_themes_css = [{ theme = "gruvbox-dark", filename = "syntax-theme-dark.css" }]
+extra_syntaxes_and_themes = ["highlight_themes"]
 
 [extra]
 # Dark-only. There is no light palette to switch to, so no theme class, no
 # toggle script, and no theme stylesheet links — tokens live on :root.
-fancy_code = false
+# Enables static/js/codeblock.js, which builds the code card (filename tab,
+# language label, line-number gutter) around Zola's <pre>.
+fancy_code = true
 mathjax = true
 mathjax_dollar_inline_enable = true
 favicon = "images/favicon.ico"

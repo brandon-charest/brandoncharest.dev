@@ -55,7 +55,7 @@ The key insight: the alias table makes the system *self-improving*. Every confir
 
 This is where the real pain is. Consider:
 
-```text
+```txt
 "Padron 1964 Anniversary Series Maduro Torpedo Box of 20"
 "CAO Flathead V660 Carb Gordo Maduro (6x60) 20ct Box"
 "La Aroma de Cuba Mi Amor Reserva Magnifico 6 1/2 x 54 Box of 24"
@@ -79,7 +79,7 @@ The bigger lesson: **garbage in, garbage out**. I spent more time on pre-process
 
 By this point I had accumulated... a collection:
 
-```text
+```txt
 repair_vendor_qty.py
 repair_lcp_duplicates.py
 repair_url_mismatches.py
@@ -96,7 +96,7 @@ I had been building the catalog *from* matched vendor data — scrape titles, ex
 
 New approach: **build the catalog first, then match against it.** Some vendor sites have structured spec pages with clean data — dimensions, wrapper, strength, country, filler. So I wrote a catalog builder that scrapes specs directly and creates canonical entries before any pricing data comes in.
 
-```text
+```txt
 catalog_builder.py  → scrapes specs → data/spec_cache/
 seed_manager.py     → versions brand_seed.json (diff, backfill, rollback)
 ```

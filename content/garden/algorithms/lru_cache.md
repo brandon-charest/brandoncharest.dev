@@ -217,7 +217,7 @@ if __name__ == "__main__":
     print(f"🚀 Speedup Factor: {speedup:.2f}x faster")
 ```
 
-```text
+```txt
 🏁 BENCHMARK CONFIG: 50 Threads, 5000 Ops/Thread
 
 🔥 Starting Standard LRU Stress Test...
@@ -269,7 +269,7 @@ class SlowShardedLRU(ShardedLRUCache):
         self.segments = [SlowStandardLRU(capacity // 16) for _ in range(16)]
 ```
 
-```text
+```txt
 🏁 BENCHMARK CONFIG: 50 Threads, 5000 Ops/Thread
 
 🔥 Starting Standard LRU Stress Test...

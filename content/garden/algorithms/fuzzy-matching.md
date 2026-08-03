@@ -13,7 +13,7 @@ type = "note"
 
 You take product data from five different vendors. None of them agree on what to call the same product. If you're lucky they **might** be close in names:
 
-```text
+```txt
 Vendor A: "Padron 1964 Anniversary Series Natural Robusto Box of 20"
 Vendor B: "Padron Anniversary 1964 Nat. 5x50 (20ct)"
 Vendor C: "Padron Aniversario 1964 Robusto Natural - Box of 20"
@@ -48,7 +48,7 @@ Maybe if I had more experience in LLMs this issue could have been solved easier,
 
 My approach:
 
-```text
+```txt
 Raw vendor title
        │
        ▼

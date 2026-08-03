@@ -98,16 +98,13 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" />
 
-    {# Syntax theme #}
-    {% if config.markdown.highlight_code and config.markdown.highlight_theme == "css" %}
+    {# Syntax theme — Gruvbox, exported to CSS classes from
+       highlight_themes/gruvbox-dark.tmTheme. Loaded unconditionally: the site
+       is dark-only, so there is no light counterpart to switch between. #}
+    {% if config.markdown.highlight_code %}
         <link rel="stylesheet"
               type="text/css"
-              href="/syntax-theme-dark.css"
-              media="(prefers-color-scheme: dark)" />
-        <link rel="stylesheet"
-              type="text/css"
-              href="/syntax-theme-light.css"
-              media="(prefers-color-scheme: light)" />
+              href="{{ get_url(path='syntax-theme-dark.css') }}" />
     {% endif %}
 
     {# Analytics #}

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Gruvbox Dark — hand-authored for brandoncharest.dev.
+
+  Zola 0.17 bundles no Gruvbox theme, so this file supplies one. Every colour
+  below comes from the 18 in docs/design/PALETTE.md. Code blocks are the one
+  sanctioned place the palette runs multi-hue.
+
+  Roles follow the handoff's worked example:
+    keyword / control      red     #fb4934
+    function name & string green   #b8bb26
+    type & constant        yellow  #fabd2f
+    variable & parameter   blue    #83a598
+    operator               aqua    #8ec07c
+    punctuation            fg2     #d5c4a1
+    comment                gray    #928374
+    number / literal       purple  #d3869b
+
+  Zola turns this into CSS classes at build time; see config.toml
+  [markdown] highlight_themes_css.
+-->
+<plist version="1.0">
+<dict>
+  <key>name</key>
+  <string>gruvbox-dark</string>
+  <key>settings</key>
+  <array>
+
+    <dict>
+      <key>settings</key>
+      <dict>
+        <key>background</key><string>#3c3836</string>
+        <key>foreground</key><string>#ebdbb2</string>
+        <key>caret</key><string>#fe8019</string>
+        <key>lineHighlight</key><string>#504945</string>
+        <key>selection</key><string>#504945</string>
+      </dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Comment</string>
+      <key>scope</key><string>comment, punctuation.definition.comment</string>
+      <key>settings</key>
+      <dict>
+        <key>foreground</key><string>#928374</string>
+        <key>fontStyle</key><string>italic</string>
+      </dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>String</string>
+      <key>scope</key><string>string, string.quoted, punctuation.definition.string</string>
+      <key>settings</key><dict><key>foreground</key><string>#b8bb26</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>String escape</string>
+      <key>scope</key><string>constant.character.escape, string.regexp</string>
+      <key>settings</key><dict><key>foreground</key><string>#fe8019</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Number and literal constant</string>
+      <key>scope</key><string>constant.numeric, constant.language, constant.character</string>
+      <key>settings</key><dict><key>foreground</key><string>#d3869b</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Other constant</string>
+      <key>scope</key><string>constant, constant.other, support.constant</string>
+      <key>settings</key><dict><key>foreground</key><string>#d3869b</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Keyword</string>
+      <key>scope</key><string>keyword, keyword.control, keyword.other</string>
+      <key>settings</key><dict><key>foreground</key><string>#fb4934</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Operator</string>
+      <key>scope</key><string>keyword.operator</string>
+      <key>settings</key><dict><key>foreground</key><string>#8ec07c</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Storage and modifier</string>
+      <key>scope</key><string>storage, storage.type, storage.modifier</string>
+      <key>settings</key><dict><key>foreground</key><string>#fb4934</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Function name</string>
+      <key>scope</key><string>entity.name.function, meta.function-call, support.function, meta.require</string>
+      <key>settings</key>
+      <dict>
+        <key>foreground</key><string>#b8bb26</string>
+        <key>fontStyle</key><string>bold</string>
+      </dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Type, class, struct</string>
+      <key>scope</key><string>entity.name.type, entity.name.class, entity.name.struct, entity.name.enum, entity.other.inherited-class, support.type, support.class, storage.type.class</string>
+      <key>settings</key><dict><key>foreground</key><string>#fabd2f</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Variable and parameter</string>
+      <key>scope</key><string>variable, variable.other, variable.parameter, meta.definition.variable</string>
+      <key>settings</key><dict><key>foreground</key><string>#83a598</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Language variable (self, this)</string>
+      <key>scope</key><string>variable.language</string>
+      <key>settings</key><dict><key>foreground</key><string>#d3869b</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Punctuation</string>
+      <key>scope</key><string>punctuation, meta.brace, punctuation.separator, punctuation.terminator, punctuation.accessor</string>
+      <key>settings</key><dict><key>foreground</key><string>#d5c4a1</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Tag</string>
+      <key>scope</key><string>entity.name.tag, punctuation.definition.tag</string>
+      <key>settings</key><dict><key>foreground</key><string>#fb4934</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Attribute</string>
+      <key>scope</key><string>entity.other.attribute-name</string>
+      <key>settings</key><dict><key>foreground</key><string>#fabd2f</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Annotation and decorator</string>
+      <key>scope</key><string>meta.annotation, meta.decorator, entity.name.decorator, support.type.attribute</string>
+      <key>settings</key><dict><key>foreground</key><string>#fabd2f</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Namespace and module</string>
+      <key>scope</key><string>entity.name.namespace, entity.name.module, support.module</string>
+      <key>settings</key><dict><key>foreground</key><string>#8ec07c</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Invalid</string>
+      <key>scope</key><string>invalid, invalid.illegal</string>
+      <key>settings</key>
+      <dict>
+        <key>foreground</key><string>#fb4934</string>
+        <key>fontStyle</key><string>bold</string>
+      </dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Deprecated</string>
+      <key>scope</key><string>invalid.deprecated</string>
+      <key>settings</key><dict><key>foreground</key><string>#fe8019</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Diff inserted</string>
+      <key>scope</key><string>markup.inserted</string>
+      <key>settings</key><dict><key>foreground</key><string>#b8bb26</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Diff deleted</string>
+      <key>scope</key><string>markup.deleted</string>
+      <key>settings</key><dict><key>foreground</key><string>#fb4934</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Diff changed</string>
+      <key>scope</key><string>markup.changed</string>
+      <key>settings</key><dict><key>foreground</key><string>#fabd2f</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Markup heading</string>
+      <key>scope</key><string>markup.heading, entity.name.section</string>
+      <key>settings</key>
+      <dict>
+        <key>foreground</key><string>#8ec07c</string>
+        <key>fontStyle</key><string>bold</string>
+      </dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Markup link</string>
+      <key>scope</key><string>markup.underline.link, string.other.link</string>
+      <key>settings</key><dict><key>foreground</key><string>#83a598</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Markup emphasis</string>
+      <key>scope</key><string>markup.italic</string>
+      <key>settings</key><dict><key>fontStyle</key><string>italic</string></dict>
+    </dict>
+
+    <dict>
+      <key>name</key><string>Markup strong</string>
+      <key>scope</key><string>markup.bold</string>
+      <key>settings</key><dict><key>fontStyle</key><string>bold</string></dict>
+    </dict>
+
+  </array>
+</dict>
+</plist>

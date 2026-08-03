@@ -17,7 +17,7 @@ Given an array of integers `nums` and an integer `target`, return indices of the
 You can return the answer in any order.
 **Examples**
 
-```text
+```txt
 Input: nums = [2,7,11,15], target = 9
 Output: [0,1]
 Because nums[0] + nums[1] == 9, we return [0, 1].
@@ -35,7 +35,7 @@ Output: [0,1]
 
 Before coding, I like to whiteboard the approach. Since we are looking for two numbers `a + b = target`, we are essentially iterating through `a` and checking if `b` (which is `target - a`) exists in the array.
 
-```text
+```txt
 nums = [2,7,11,15], target = 9
 solution = [0,1] 
 

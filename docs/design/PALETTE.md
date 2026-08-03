@@ -95,7 +95,11 @@ Do not "fix" these.
 2. **The neofetch swatch row** paints red/orange/yellow/green/aqua/blue/purple decoratively.
    It is literally a palette display — the conventional neofetch element.
 3. **Code blocks** use full multi-hue Gruvbox syntax highlighting. The rules here govern the
-   prose *around* code, not the code itself.
+   prose *around* code, not the code itself. Zola 0.17 bundles no Gruvbox theme, so the site
+   ships `highlight_themes/gruvbox-dark.tmTheme` and Zola exports it to CSS classes at build
+   time (`highlight_theme = "css"`). Every colour in that theme still comes from the 18 —
+   keyword red, function and string green, type and constant yellow, variable blue, operator
+   aqua, punctuation `fg2`, comment gray, literal purple.
 4. **The code-block filename tab** carries an orange 7px square and an `inset 0 2px 0` orange
    top rule — chrome that marks the active file, consistent with orange as the "current
    position" signal.

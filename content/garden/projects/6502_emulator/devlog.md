@@ -45,7 +45,7 @@ src/hardware/cpu/tests/
 
 This makes it a little easier to write tests and verify, plus I added code coverage to my CI pipeline. I don't think I need to shoot for 100% coverage, but I will try to work and bump it up some more before moving onto the next parts.
 
-```text
+```txt
 Filename                           Regions    Missed Regions     Cover   Functions  Missed Functions  Executed       Lines      Missed Lines     Cover    Branches   Missed Branches     Cover
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bus.rs                                  90                 3    96.67%          11                 0   100.00%          52                 0   100.00%           0                 0         -
@@ -77,7 +77,7 @@ TOTAL                                 2219               556    74.94%         1
 
 I came across some interesting pieces of data when running the ROM test through the disassembler.
 
-```text,hl_lines=10-11
+```txt,hl_lines=10-11
 EBDA: JSR $FADA
 EBDD: LDA $0647
 EBE0: CMP #$38
