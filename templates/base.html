@@ -10,7 +10,7 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     {% include "partials/site_header.html" %}
-    {% include "partials/search_modal.html" %}
+    {% include "partials/palette.html" %}
 
     <main class="site-main" id="main-content">
         {# The old global `visitor@dev:~$ <cmd>` hero lived here. The redesign
@@ -39,6 +39,7 @@
     {% include "partials/statusbar.html" %}
 
     <script defer src="{{ get_url(path='js/statusbar.js') }}"></script>
+    <script defer src="{{ get_url(path='js/palette.js') }}"></script>
 </body>
 
 </html>

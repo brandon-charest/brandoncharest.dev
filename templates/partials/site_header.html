@@ -35,7 +35,10 @@
                         {# Tag pages are part of the garden, so the garden item owns them. #}
                         {% if item.url == "/garden" and cp is starting_with("/tags") %}{% set_global nav_active = true %}{% endif %}
                     {% endif %}
-                    <a href="{{ get_url(path=item.url) }}"
+                    {# `trailing_slash=true` is deliberate: get_url strips it by
+                       default, and every permalink on the site carries one, so
+                       without this each nav click costs a 301. #}
+                    <a href="{{ get_url(path=item.url, trailing_slash=true) }}"
                        class="site-nav__item{% if nav_active %} is-active{% endif %}"
                        {% if nav_active %}aria-current="page"{% endif %}>
                         <span class="site-nav__num">{{ loop.index }}</span> {{ item.name }}

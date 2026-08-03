@@ -5,11 +5,13 @@ description = "Senior Backend Engineer constantly learning and building new thin
 taxonomies = [{ name = "tags" }]
 compile_sass = true
 minify_html = true
-build_search_index = true
+# The command palette ships its own compact index (templates/search_index.xml);
+# Zola's elasticlunr index was 1.2 MB and indexed page bodies we never match on.
+build_search_index = false
 generate_sitemap = true
 generate_robots_txt = true
 generate_feeds = true
-feed_filenames = ["atom.xml"]
+feed_filenames = ["atom.xml", "search_index.xml"]
 
 
 [markdown]
@@ -31,13 +33,15 @@ mathjax = true
 mathjax_dollar_inline_enable = true
 favicon = "images/favicon.ico"
 
-# Nav order drives the 1–5 keyboard shortcuts, so weight is the index.
+# Nav order drives the 1-5 keyboard shortcuts, so weight is the index.
+# URLs keep their trailing slash so nav links match the permalinks Zola
+# generates; without it every nav click costs a 301 redirect.
 menu = [
     { name = "home", url = "/", weight = 0 },
-    { name = "garden", url = "/garden", weight = 1 },
-    { name = "blog", url = "/blog", weight = 2 },
-    { name = "now", url = "/now", weight = 3 },
-    { name = "about", url = "/about", weight = 4 },
+    { name = "garden", url = "/garden/", weight = 1 },
+    { name = "blog", url = "/blog/", weight = 2 },
+    { name = "now", url = "/now/", weight = 3 },
+    { name = "about", url = "/about/", weight = 4 },
 ]
 
 location = "Boston, MA"

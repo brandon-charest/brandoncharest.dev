@@ -1,0 +1,69 @@
+{#- Command-palette index (JSON, despite the extension).
+
+    Emitted through Zola's feed mechanism: any name in `feed_filenames` is
+    rendered from the template of the same name, and that is the only way this
+    Zola version can write an arbitrary generated file from template data.
+
+    The `.xml` extension is not a mistake. Zola only globs templates matching
+    `*.*ml`, so `search_index.json` is silently "not found". The file is served
+    as JSON regardless — `fetch().json()` ignores the content type.
+
+    Deliberately small: label, sub-label, url and type, with no body text. The
+    palette matches titles and descriptions, so indexing content would multiply
+    the payload for matches it never uses. Zola's own elasticlunr index was
+    1.2 MB.
+
+    `json_encode` on every string — titles and descriptions contain quotes and
+    apostrophes and this file has to stay parseable. `sep` keeps the commas
+    valid no matter which groups turn out to be empty.
+-#}
+{%- set garden = get_section(path="garden/_index.md") -%}
+{%- set blog = get_section(path="blog/_index.md") -%}
+{%- set_global notes = garden.pages | concat(with=blog.pages) -%}
+{%- set_global folders = [] -%}
+{%- for a_path in garden.subsections -%}
+    {%- set a = get_section(path=a_path) -%}
+    {%- set_global notes = notes | concat(with=a.pages) -%}
+    {%- set_global folders = folders | concat(with=a) -%}
+    {%- for b_path in a.subsections -%}
+        {%- set b = get_section(path=b_path) -%}
+        {%- set_global notes = notes | concat(with=b.pages) -%}
+        {%- set_global folders = folders | concat(with=b) -%}
+        {%- for c_path in b.subsections -%}
+            {%- set c = get_section(path=c_path) -%}
+            {%- set_global notes = notes | concat(with=c.pages) -%}
+            {%- set_global folders = folders | concat(with=c) -%}
+            {%- for d_path in c.subsections -%}
+                {%- set d = get_section(path=d_path) -%}
+                {%- set_global notes = notes | concat(with=d.pages) -%}
+                {%- set_global folders = folders | concat(with=d) -%}
+            {%- endfor -%}
+        {%- endfor -%}
+    {%- endfor -%}
+{%- endfor -%}
+{%- set tags = get_taxonomy(kind="tags") -%}
+{%- set_global sep = "" -%}
+[
+{%- for item in config.extra.menu -%}
+{%- set label = item.name | capitalize -%}
+{{ sep }}{"t":"page","l":{{ label | json_encode | safe }},"s":"","u":{{ item.url | json_encode | safe }}}
+{%- set_global sep = "," -%}
+{%- endfor -%}
+{{ sep }}{"t":"page","l":"Tags","s":"browse the whole tag index","u":"/tags/"}
+{%- set_global sep = "," -%}
+{%- for f in folders -%}
+{%- set fname = f.components | last -%}
+{%- set label = fname ~ "/" -%}
+{{ sep }}{"t":"dir","l":{{ label | json_encode | safe }},"s":{{ f.title | json_encode | safe }},"u":{{ f.permalink | json_encode | safe }}}
+{%- endfor -%}
+{%- for p in notes -%}
+{%- set fname = p.relative_path | split(pat="/") | last -%}
+{%- set kind = p.extra.type | default(value="note") -%}
+{{ sep }}{"t":{{ kind | json_encode | safe }},"l":{{ fname | json_encode | safe }},"s":{{ p.title | json_encode | safe }},"u":{{ p.permalink | json_encode | safe }}}
+{%- endfor -%}
+{%- for term in tags.items -%}
+{%- set label = "#" ~ term.name -%}
+{%- set sub = term.page_count ~ " notes" -%}
+{{ sep }}{"t":"tag","l":{{ label | json_encode | safe }},"s":{{ sub | json_encode | safe }},"u":{{ term.permalink | json_encode | safe }}}
+{%- endfor -%}
+]
