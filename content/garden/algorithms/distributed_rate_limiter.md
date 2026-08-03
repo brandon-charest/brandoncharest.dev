@@ -8,7 +8,7 @@ tags = ["system-design", "python"]
 
 [extra]
 growth = "evergreen"
-type="resource"
+type = "reference"
 +++
 
 

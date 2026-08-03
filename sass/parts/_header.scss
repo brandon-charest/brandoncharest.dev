@@ -1,21 +1,21 @@
 .page-header {
   font-size: 2.5em;
   line-height: 100%;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   margin: 4rem 0px 1rem 0px;
 
 }
 
 /* 404 header */
 .not-found-header {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
   font-size: 3em;
-  color: var(--destructive)
+  color: var(--red)
 }
 
 /* The old bare-`nav` block and `.logo` lived here. The redesigned header is
@@ -28,7 +28,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   margin-top: 2em;
 }
 

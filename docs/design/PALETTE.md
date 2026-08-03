@@ -161,7 +161,7 @@ Never hand-render a stage. Every surface goes through one of three macros in
 |---|---|---|
 | `ui::growth_state(growth)` | coloured dot **+ coloured word** | Anywhere the stage is *stated*: article byline, note-info card |
 | `ui::growth_dot(growth)` | dot only | Where a label already sits beside it: tree rows, filter chips |
-| `ui::growth_badge(growth)` | `[seed]` / `[grow]` / `[ever]` | Table columns and dense listings |
+| `ui::growth_badge(growth)` | `[seed]` / `[grow]` / `[ever]` | *(retired — nothing renders dense stage columns any more)* |
 
 `growth_state` colours the label and lets the dot inherit via `currentColor`, so word and dot
 cannot disagree. An 8px dot alone is genuinely hard to read — Gruvbox yellow `#fabd2f` next to

@@ -1,5 +1,6 @@
 +++
 title = "About Me"
+description = "Senior backend engineer, distributed systems, and why this garden exists."
 path = "about"
 template = "prose.html"
 +++

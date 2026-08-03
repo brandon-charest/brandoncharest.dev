@@ -6,7 +6,7 @@ aliases = ["/garden/6502_emulator/opcodes/"]
 [taxonomies]
 tags = ["emulator"]
 [extra]
-type = "notes"
+type = "note"
 growth = "growing"
 local_image="images/6502/6502-opcode-table.png"
 +++

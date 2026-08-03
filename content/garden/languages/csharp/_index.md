@@ -1,6 +1,6 @@
 +++
 title = "The C# Language"
-description = ""
+description = "Syntax patterns, struggle logs, and idiomatic solutions in C#."
 aliases = ["/garden/csharp/"]
 sort_by = "date"
 template = "section.html"

@@ -6,8 +6,8 @@ description = "A chronological record of my suffering."
 [taxonomies]
 tags = ["devlog"]
 [extra]
-type = "log" 
-growth = "growing" 
+type = "log"
+growth = "growing"
 +++
 
 # Build Log
