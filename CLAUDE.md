@@ -6,6 +6,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal developer blog and digital garden built with [Zola](https://www.getzola.org/) (Rust-based static site generator). Uses the [Apollo theme](https://github.com/not-matthias/apollo) as a git submodule with heavy customization via local templates and SCSS overrides.
 
+## Toolchain
+
+**Zola 0.20.0.** Production builds on Cloudflare Pages with `ZOLA_VERSION=0.20.0`
+(a Plaintext environment variable in the Pages project settings). Keep the local
+binary on the same version — they drifted once (local 0.17.2 vs prod 0.20.0) and
+the symptoms were silent: `generate_feeds`/`feed_filenames` are 0.19+ names, so
+the local build produced no Atom feed at all while production was fine.
+
+Local install lives at `~/.local/bin/zola`, which precedes `/usr/local/bin` on
+PATH. Check with `zola --version` before trusting a build.
+
+When verifying with `zola serve`, confirm which binary is actually serving —
+a stale server from an older version will keep the port and silently answer
+every request:
+
+```sh
+readlink -f /proc/$(pgrep -x zola | head -1)/exe
+```
+
+Upgrading past 0.21 is a breaking change: 0.22 replaces syntect with Giallo and
+moves all highlighting config into `[markdown.highlighting]`. That would rewrite
+`config.toml`'s markdown section and probably retire
+`highlight_themes/gruvbox-dark.tmTheme` in favour of Giallo's built-in
+`gruvbox-dark`. Bump the Cloudflare variable and the config in the same change.
+
 ## Common Commands
 
 - **Dev server:** `zola serve` (hot-reloading at localhost:1111)

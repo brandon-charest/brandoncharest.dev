@@ -1,68 +1,27 @@
 /* Code card.
  *
- * Zola 0.17 emits a bare `<pre class="language-rust z-code" data-lang="rust">`.
- * The design wants that inside a card with a filename tab, a right-aligned
- * language label and a line-number gutter. Zola 0.17 can do none of those:
- * there is no `name=` fence attribute until a later release, and `linenos` is
- * per-fence, which would mean editing 140 fences across 37 files.
+ * Zola emits `<pre class="language-rust z-code" data-lang="rust"
+ * data-name="src/resp.rs">`. The design wants that inside a card with a
+ * filename tab, a right-aligned language label and a line-number gutter.
  *
- * So the card is built here instead. The filename comes from a leading path
- * comment (`// src/resp.rs`) when the author wrote one — that line moves into
- * the tab rather than being duplicated. With JS off the block still renders as
- * a readable panel; this only adds chrome.
+ * The filename comes from the fence itself (```rust,name=src/resp.rs), added
+ * in Zola 0.20. An earlier version of this file parsed a leading `// path`
+ * comment out of the highlighted markup instead, which was both fragile and
+ * genuinely dangerous: highlighted code is a tree, so trimming text anywhere
+ * above a leaf replaced that whole subtree with plain text and silently
+ * flattened the highlighting.
+ *
+ * Line numbers still need JS — `linenos` is per-fence, so using it would mean
+ * annotating 140 fences. With JS off the block still renders as a readable bg1
+ * panel; this only adds chrome.
  */
 (function () {
-  var FILENAME = /^\s*(?:\/\/|#|--|;)\s*([\w.\-/]+\.[A-Za-z0-9]+)\s*$/;
-
-  /* Remove the first rendered line, in place.
-   *
-   * Highlighted code is a tree, not a flat list: syntect wraps the whole block
-   * in one `z-source` span and nests every token inside it. Editing textContent
-   * anywhere above a leaf therefore replaces that entire subtree with plain
-   * text — which silently destroys the highlighting. Walk to the text nodes and
-   * trim only those, then discard any elements left empty. */
-  function dropFirstLine(code) {
-    var walker = document.createTreeWalker(code, NodeFilter.SHOW_TEXT, null, false);
-    var doomed = [];
-    var node;
-
-    while ((node = walker.nextNode())) {
-      var nl = node.nodeValue.indexOf('\n');
-      if (nl === -1) {
-        doomed.push(node);
-        continue;
-      }
-      node.nodeValue = node.nodeValue.slice(nl + 1);
-      break;
-    }
-
-    doomed.forEach(function (n) {
-      if (n.parentNode) n.parentNode.removeChild(n);
-    });
-
-    // Prune scope spans the removal emptied out (the comment's own wrapper).
-    Array.prototype.forEach.call(code.querySelectorAll('span'), function (s) {
-      if (!s.textContent && !s.children.length && s.parentNode) {
-        s.parentNode.removeChild(s);
-      }
-    });
-  }
-
   function build(pre) {
     var code = pre.querySelector('code');
     if (!code || pre.closest('.code-card')) return;
 
     var lang = pre.getAttribute('data-lang') || '';
-    var filename = '';
-
-    // Lift a leading `// path/to/file.ext` comment into the tab.
-    var firstLine = (code.textContent || '').split('\n')[0];
-    var m = FILENAME.exec(firstLine);
-    if (m) {
-      filename = m[1];
-      dropFirstLine(code);
-    }
-
+    var filename = pre.getAttribute('data-name') || '';
     var lines = (code.textContent || '').replace(/\n$/, '').split('\n').length;
 
     var card = document.createElement('div');
@@ -108,7 +67,7 @@
 
   function run() {
     // Only Zola-highlighted blocks. Anything else that renders a <pre> — the
-    // neofetch art, the dev-log gutter this script creates — is left alone.
+    // neofetch art, the gutter this script creates — is left alone.
     var blocks = document.querySelectorAll('pre.z-code, pre[data-lang]');
     Array.prototype.forEach.call(blocks, build);
   }

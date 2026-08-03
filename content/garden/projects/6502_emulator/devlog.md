@@ -212,8 +212,7 @@ missing opcode Clear Decimal Mode (CLD=$D8)
 
 There are a lot of opcodes that need to be implemented and I do not thinking writing them all and then just doing a full send on the CPU is a great idea. So Ill just build it in steps one code at a time, and have the CPU yell at me when I miss something.
 
-```rust
-// cpu.rs
+```rust,name=cpu.rs
 match opcode {
     0xEA => { self.cycles += 1; } // NOP
     _ => todo!("Opcode {:#X} not implemented!", opcode), 

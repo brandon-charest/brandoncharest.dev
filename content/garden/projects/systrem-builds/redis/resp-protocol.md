@@ -18,8 +18,7 @@ RESP (Redis Serialization Protocol)
 
 I represented the protocol using a Rust Enum.
 
-```rust
-// src/resp.rs
+```rust,name=src/resp.rs
 #[derive(Debug, Clone, PartialEq)]
 pub enum RespValue {
     SimpleString(String),  // +OK\r\n
@@ -35,8 +34,7 @@ pub enum RespValue {
 
 Each variant knows how to turn itself back into raw bytes. The format is straightforward — prefix byte, content, `\r\n` terminator.
 
-```rust
-// src/resp.rs
+```rust,name=src/resp.rs
 impl RespValue {
     pub fn serialize(&self) -> Vec<u8> {
         match self {
