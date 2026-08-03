@@ -145,3 +145,10 @@ pre {
 .code-card .z-code {
   background: transparent;
 }
+
+/* Line numbers earn their place on a desktop. On a 390px screen the gutter is
+   9% of the viewport taken from the code itself, and the code is already
+   scrolling — so it goes. */
+@media (max-width: 560px) {
+  .code-card__gutter { display: none; }
+}

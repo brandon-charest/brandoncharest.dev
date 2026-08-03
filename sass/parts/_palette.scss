@@ -158,3 +158,18 @@
 @media (max-width: 560px) {
   .palette__foot { display: none; }
 }
+
+/* The `esc` chip is a real button. It looks identical to the static chip it
+   replaced; the difference is that it works on a phone, where there is no Esc
+   key and the footer hint that mentions one is hidden. */
+.palette__close {
+  cursor: pointer;
+  background: none;
+  font-family: var(--font-ui);
+
+  &:hover { color: var(--fg1); border-color: var(--fg4); }
+}
+
+@media (pointer: coarse) {
+  .palette__close { min-height: 32px; padding-inline: 10px; }
+}

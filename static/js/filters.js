@@ -1,8 +1,12 @@
 /* Garden tree filtering.
  *
- * Filters by maturity (?growth=) and tag (?tag=), which compose. Folders with
- * no surviving notes are pruned entirely — a tree full of empty directories
- * tells you nothing.
+ * Filters by maturity (?growth=). Folders with no surviving notes are pruned
+ * entirely — a tree full of empty directories tells you nothing.
+ *
+ * There was a ?tag= filter here too. Nothing ever linked to it: tag pills go to
+ * real /tags/<tag>/ pages, which are deep-linkable and indexable, so the tree
+ * filter was unreachable unless you typed the query string by hand. Removed
+ * rather than left as a second, hidden way to do the same job.
  *
  * Connectors are the fiddly part. They are rendered server-side so the tree is
  * correct without JS, but hiding rows invalidates them: the last *visible*
@@ -19,7 +23,6 @@
 
   var params = new URLSearchParams(window.location.search);
   var growth = (params.get('growth') || 'all').toLowerCase();
-  var tag = (params.get('tag') || '').toLowerCase();
 
   var meta = rows.map(function (el) {
     return {
@@ -27,19 +30,16 @@
       depth: parseInt(el.getAttribute('data-depth'), 10) || 0,
       isDir: el.classList.contains('tree__row--dir'),
       growth: (el.getAttribute('data-growth') || '').toLowerCase(),
-      tags: (el.getAttribute('data-tags') || '').toLowerCase().split(/\s+/).filter(Boolean),
       pre: el.querySelector('.tree__pre')
     };
   });
 
   function noteMatches(r) {
-    if (growth !== 'all' && r.growth !== growth) return false;
-    if (tag && r.tags.indexOf(tag) === -1) return false;
-    return true;
+    return growth === 'all' || r.growth === growth;
   }
 
   function apply() {
-    var filtering = growth !== 'all' || !!tag;
+    var filtering = growth !== 'all';
 
     if (!filtering) {
       meta.forEach(function (r) { r.el.hidden = false; });
@@ -109,27 +109,13 @@
   Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (chip) {
     var v = (chip.getAttribute('data-growth') || 'all').toLowerCase();
     chip.classList.toggle('is-active', v === growth);
-    // Keep any active tag when switching maturity.
-    if (tag) {
-      chip.href = v === 'all' ? '?tag=' + encodeURIComponent(tag)
-                              : '?growth=' + v + '&tag=' + encodeURIComponent(tag);
-    }
   });
 
   var promptFilter = document.querySelector('.garden__prompt .prompt__dim');
   if (promptFilter) {
-    promptFilter.textContent = '--filter=' + growth + (tag ? ' --tag=' + tag : '');
-  }
-
-  var bar = document.getElementById('tagbar');
-  if (bar && tag) {
-    bar.hidden = false;
-    document.getElementById('tagbar-name').textContent = '#' + tag;
-    document.getElementById('tagbar-clear').addEventListener('click', function () {
-      window.location.search = growth === 'all' ? '' : '?growth=' + growth;
-    });
+    promptFilter.textContent = '--filter=' + growth;
   }
 
   var empty = document.getElementById('tree-empty');
-  if (empty) empty.hidden = !(growth !== 'all' || tag) || count > 0;
+  if (empty) empty.hidden = growth === 'all' || count > 0;
 })();

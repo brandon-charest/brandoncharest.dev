@@ -18,18 +18,21 @@
   Array.prototype.slice.call(prose.children).forEach(function (node) {
     if (node.tagName !== 'H2') return;
 
+    // Every section becomes a block, dated or not. Wrapping only the dated ones
+    // left "The Problem" and "What's Next" floating outside the rhythm, which
+    // read as a rendering fault rather than a distinction.
     var m = DATE.exec(node.textContent.trim());
-    if (!m) return;
 
-    var hash = m[1].slice(2) + m[2] + m[3];
-    var title = m[4] || node.textContent.trim();
-
-    node.textContent = '';
-    var h = document.createElement('span');
-    h.className = 'devlog-hash';
-    h.textContent = hash;
-    node.appendChild(h);
-    node.appendChild(document.createTextNode(title));
+    if (m) {
+      var hash = m[1].slice(2) + m[2] + m[3];
+      var title = m[4] || node.textContent.trim();
+      node.textContent = '';
+      var h = document.createElement('span');
+      h.className = 'devlog-hash';
+      h.textContent = hash;
+      node.appendChild(h);
+      node.appendChild(document.createTextNode(title));
+    }
 
     var entry = document.createElement('div');
     entry.className = 'devlog-entry';
@@ -103,4 +106,25 @@
     io.observe(h);
   });
   paint();
+})();
+
+/* Back to top.
+ *
+ * Only useful where the sticky TOC is not: below 820px there is no sidebar, and
+ * a dev log runs to several screens. Appears once you are a viewport down.
+ */
+(function () {
+  var btn = document.getElementById('to-top');
+  if (!btn) return;
+
+  function sync() {
+    btn.hidden = window.scrollY < window.innerHeight;
+  }
+
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
+
+  window.addEventListener('scroll', sync, { passive: true });
+  sync();
 })();

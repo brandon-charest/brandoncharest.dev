@@ -71,6 +71,7 @@
 /* Outlined variant used by folder/tag child listings and palette results. */
 .badge-kind--boxed {
   display: inline-block;
+  text-transform: uppercase;
   width: 46px;
   padding: 3px 0;
   text-align: center;

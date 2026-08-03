@@ -296,9 +296,12 @@
   }
 }
 
+/* Same component as the dev-log entry hash — same idea, so the same colour.
+   These used to be fg4 here and orange there. */
 .recent-row__hash {
   flex: none;
-  color: var(--fg4);
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
 }
 
 .recent-row__kind {

@@ -77,11 +77,24 @@
         <meta property="og:url" content="{{ config.base_url }}" />
         <link rel="canonical" href="{{ config.base_url }}" />
     {% endif %}
+    {# Per-page cover, else the site default. Without a fallback most shares
+       render as a bare text card — only one page here sets a cover_image.
+       Set config.extra.default_og_image to a 1200x630 asset to enable it. #}
     {% if page.extra.cover_image %}
-        <meta property="og:image" content="{{ page.extra.cover_image }}" />
-        <meta name="twitter:image" content="{{ page.extra.cover_image }}" />
+        {% set og_image = page.extra.cover_image %}
+    {% elif config.extra.default_og_image %}
+        {% set og_image = config.extra.default_og_image %}
+    {% else %}
+        {% set og_image = false %}
     {% endif %}
-    <meta name="twitter:card" content="summary_large_image" />
+    {% if og_image %}
+        <meta property="og:image" content="{{ get_url(path=og_image) }}" />
+        <meta name="twitter:image" content="{{ get_url(path=og_image) }}" />
+        <meta name="twitter:card" content="summary_large_image" />
+    {% else %}
+        <meta name="twitter:card" content="summary" />
+    {% endif %}
+    <meta property="og:site_name" content="{{ config.title }}" />
 
     {# Favicon #}
     {% if config.extra.favicon %}
@@ -92,11 +105,16 @@
 
     {# Fonts — the four families the design calls for, in one request.
        Space Mono (display), IBM Plex Mono (chrome), IBM Plex Sans (prose),
-       JetBrains Mono (code). See docs/design/TOKENS.md § Typography. #}
+       JetBrains Mono (code). See docs/design/TOKENS.md § Typography.
+
+       Only the variants the stylesheet actually references: 12, down from 22.
+       Space Mono and IBM Plex Mono italics were being downloaded and never
+       used, as were several 600 weights. JetBrains Mono keeps bold and italic
+       because the syntax theme sets them for functions and comments. #}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" />
+          href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
 
     {# Syntax theme — Gruvbox, exported to CSS classes from
        highlight_themes/gruvbox-dark.tmTheme. Loaded unconditionally: the site
@@ -210,6 +228,29 @@
        tokens live on :root in main.css. See docs/design/PALETTE.md decision 4. #}
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#1d2021" />
+
+    {# Structured data. Articles describe themselves; the home page describes
+       the site so search results can show a name and a search action. #}
+    {% if page.title and page.date %}
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"BlogPosting",
+     "headline":{{ page.title | json_encode | safe }},
+     "datePublished":{{ page.date | date(format="%Y-%m-%d") | json_encode | safe }},
+     "dateModified":{{ page.updated | default(value=page.date) | date(format="%Y-%m-%d") | json_encode | safe }},
+     {% if page.description %}"description":{{ page.description | json_encode | safe }},{% endif %}
+     "url":{{ page.permalink | json_encode | safe }},
+     "author":{"@type":"Person","name":"Brandon Charest"},
+     "mainEntityOfPage":{{ page.permalink | json_encode | safe }}}
+    </script>
+    {% elif current_path == "/" %}
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebSite",
+     "name":{{ config.title | json_encode | safe }},
+     "description":{{ config.description | json_encode | safe }},
+     "url":{{ config.base_url | json_encode | safe }},
+     "author":{"@type":"Person","name":"Brandon Charest"}}
+    </script>
+    {% endif %}
 
     <link rel="stylesheet"
           type="text/css"

@@ -376,6 +376,13 @@ pre::-webkit-scrollbar-thumb {
   .brand { font-size: 12px; }
 }
 
+/* The index numbers exist for the 1-5 shortcuts, which a touch device cannot
+   use. On the narrowest screens they are pure cost — dropping them fits more
+   of the nav on screen at once. */
+@media (pointer: coarse) and (max-width: 480px) {
+  .site-nav__num { display: none; }
+}
+
 /* Page titles are set at 40px for a 1120px column; that is oversized on a
    phone, where it costs several lines of vertical space before any content. */
 @media (max-width: 560px) {
@@ -404,4 +411,16 @@ pre::-webkit-scrollbar-thumb {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* Build-time canary. Loud on purpose: it means generated numbers are wrong. */
+.build-warning {
+  margin: 0 0 20px;
+  padding: 12px 16px;
+  border: 1px solid var(--red);
+  border-radius: var(--radius-card);
+  background: var(--bg1);
+  color: var(--fg1);
+  font-family: var(--font-ui);
+  font-size: 13px;
 }

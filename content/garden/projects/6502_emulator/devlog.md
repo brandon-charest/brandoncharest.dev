@@ -10,8 +10,7 @@ growth = "growing"
 +++
 
 
-# Build Log
-
+## Build Log
 *A chronological record of my suffering.*
 
 [Main Branch](https://github.com/brandon-charest/Rust6502)

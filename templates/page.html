@@ -26,7 +26,7 @@
 
             {# --- Breadcrumbs: every segment above the file is routable --- #}
             <nav class="crumbs" aria-label="Breadcrumb">
-                <a href="{{ config.base_url }}">~</a>
+                <a href="{{ config.base_url }}" aria-label="Home">~</a>
                 {% for part in comps %}
                     <span class="crumbs__sep" aria-hidden="true">/</span>
                     {% if loop.last %}
@@ -73,6 +73,22 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+
+            {# The sidebar TOC is hidden below 820px, which left long notes with no
+               way to jump — the RESP note is ~3300px tall on a phone. This is the
+               same list, collapsed, and only rendered where the sidebar is not. #}
+            {% if page.toc | length > 1 %}
+            <details class="toc-mobile">
+                <summary class="toc-mobile__summary">:: ON THIS PAGE <span class="toc-mobile__count">{{ page.toc | length }}</span></summary>
+                <nav class="toc">
+                    {% for h in page.toc %}
+                    <a class="toc__item" href="#{{ h.id }}">
+                        <span class="toc__num">{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span>{{ h.title }}
+                    </a>
+                    {% endfor %}
+                </nav>
+            </details>
             {% endif %}
 
             <div class="prose"{% if ctype == "log" %} data-log="true"{% endif %}>
@@ -161,6 +177,8 @@
 
     </div>
 </div>
+
+<button type="button" class="to-top" id="to-top" aria-label="Back to top" hidden>&uarr;</button>
 
 <script defer src="{{ get_url(path='js/article.js') }}"></script>
 {% endblock main_content %}

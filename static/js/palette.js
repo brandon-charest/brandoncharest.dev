@@ -93,6 +93,7 @@
       var a = document.createElement('a');
       a.className = 'palette__row' + (i === active ? ' is-selected' : '');
       a.href = e.u;
+      a.id = 'palette-opt-' + i;
       a.setAttribute('role', 'option');
       a.setAttribute('aria-selected', i === active ? 'true' : 'false');
 
@@ -123,6 +124,14 @@
     });
 
     if (countEl) countEl.textContent = results.length + ' result' + (results.length === 1 ? '' : 's');
+    announce();
+  }
+
+  /* Arrow-key selection is invisible to a screen reader unless the combobox
+     points at the active option — focus never leaves the input. */
+  function announce() {
+    input.setAttribute('aria-expanded', results.length ? 'true' : 'false');
+    input.setAttribute('aria-activedescendant', results.length ? 'palette-opt-' + active : '');
   }
 
   function paint() {
@@ -131,6 +140,7 @@
       el.classList.toggle('is-selected', i === active);
       el.setAttribute('aria-selected', i === active ? 'true' : 'false');
     });
+    announce();
   }
 
   function update() {
@@ -200,9 +210,6 @@
         e.preventDefault();
         var hit = results[active];
         if (hit) window.location.href = hit.u;
-      } else if (e.key === 'Tab') {
-        // Focus stays in the field; there is nothing else to tab to.
-        e.preventDefault();
       }
       return;
     }

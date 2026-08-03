@@ -38,7 +38,10 @@
 <a href="{{ get_taxonomy_url(kind='tags', name=tag) }}" class="tag-pill">#{{ tag }}</a>
 {% endmacro tag_pill %}
 
-{# Shell prompt line: `visitor@dev:~$ <cmd> <path>`, with an optional cursor. #}
+{# Shell prompt line: `visitor@dev:~$ <cmd> <path>`, with an optional cursor.
+   aria-hidden: it is scene-setting, not information. Without it every screen
+   announces "visitor at dev colon tilde dollar tree tilde slash garden" before
+   the content it decorates. #}
 {% macro prompt(cmd="", path="", dim="", cursor=false, class="") %}
-<div class="prompt {{ class }}"><span class="prompt__user">visitor@dev</span><span class="prompt__punct">:~$</span>{% if cmd %} {{ cmd }}{% endif %}{% if path %} <span class="prompt__path">{{ path }}</span>{% endif %}{% if dim %} <span class="prompt__dim">{{ dim }}</span>{% endif %}{% if cursor %}<span class="prompt__cursor"></span>{% endif %}</div>
+<div class="prompt {{ class }}" aria-hidden="true"><span class="prompt__user">visitor@dev</span><span class="prompt__punct">:~$</span>{% if cmd %} {{ cmd }}{% endif %}{% if path %} <span class="prompt__path">{{ path }}</span>{% endif %}{% if dim %} <span class="prompt__dim">{{ dim }}</span>{% endif %}{% if cursor %}<span class="prompt__cursor"></span>{% endif %}</div>
 {% endmacro prompt %}

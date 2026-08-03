@@ -44,8 +44,7 @@
         <a class="tree__row tree__row--note"
            href="{{ page.permalink }}"
            data-depth="{{ depth }}"
-           data-growth="{{ growth }}"
-           {% if page.taxonomies.tags %}data-tags="{{ page.taxonomies.tags | join(sep=' ') }}"{% endif %}>
+           data-growth="{{ growth }}">
             <span class="tree__pre">{{ prefix }}{% if n_subs + loop.index == total %}└─ {% else %}├─ {% endif %}</span>
             <span class="tree__note">
                 <span class="tree__kind">{{ ui::kind_badge(type=kind) }}</span>
@@ -61,9 +60,15 @@
 {% block main_content %}
 <div class="body">
 
-    {# Counts for the filter chips. Sections are no longer transparent, so this
-       walks the real hierarchy; five levels covers the deepest path today
-       (garden/projects/AdventOfCode/2025/day-01). #}
+    {# Counts for the filter chips.
+
+       The tree macro below recurses without limit, but Tera cannot accumulate a
+       value across recursion, so the counts are a hand-unrolled walk bounded at
+       five levels. If content is ever nested deeper, a note would appear in the
+       tree while silently vanishing from these counts and from search — so
+       `depth_exceeded` catches that and says so on the page rather than letting
+       the numbers quietly drift. #}
+    {% set_global depth_exceeded = false %}
     {% set_global all_pages = section.pages %}
     {% for a_path in section.subsections %}
         {% set a = get_section(path=a_path) %}
@@ -77,6 +82,7 @@
                 {% for d_path in c.subsections %}
                     {% set d = get_section(path=d_path) %}
                     {% set_global all_pages = all_pages | concat(with=d.pages) %}
+                    {% if d.subsections | length > 0 %}{% set_global depth_exceeded = true %}{% endif %}
                 {% endfor %}
             {% endfor %}
         {% endfor %}
@@ -86,6 +92,14 @@
     {% set seedling  = all_pages | filter(attribute="extra.growth", value="seedling")  | length %}
     {% set growing   = all_pages | filter(attribute="extra.growth", value="growing")   | length %}
     {% set evergreen = all_pages | filter(attribute="extra.growth", value="evergreen") | length %}
+
+    {% if depth_exceeded %}
+    <p class="build-warning" role="alert">
+        Content is nested deeper than the count walk in <code>garden.html</code>,
+        <code>section.html</code> and <code>search_index.xml</code> handles — the
+        totals below and the search index are undercounting. Add a level to each.
+    </p>
+    {% endif %}
 
     <h1 class="garden__title">{{ section.title }}</h1>
     {% if section.description %}
@@ -113,13 +127,6 @@
         <a class="chip" href="?growth=evergreen" data-growth="evergreen">
             {{ ui::growth_dot(growth="evergreen", large=true) }}evergreen <span class="chip__count">{{ evergreen }}</span>
         </a>
-    </div>
-
-    {# Shown by js/filters.js when ?tag= is present. #}
-    <div class="tagbar" id="tagbar" hidden>
-        <span>filtering by</span>
-        <span class="tag-pill" id="tagbar-name"></span>
-        <button class="tagbar__clear" id="tagbar-clear" type="button">&#10005; clear</button>
     </div>
 
     <div class="tree scroll-x" id="tree">

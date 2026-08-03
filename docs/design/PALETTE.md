@@ -107,9 +107,9 @@ Do not "fix" these.
    top rule — chrome that marks the active file, consistent with orange as the "current
    position" signal.
 5. **Prose list bullets are orange `-`.**
-6. **Dev-log entry hashes are orange** — the `260508` short hash heading each dated entry.
-   (Note: the homepage's `git log` rows use `fg4` for the same idea. Divergence is
-   intentional for now; align if it starts to read as inconsistent.)
+6. **Short hashes are orange** — the `260508` on a dev-log entry and the same hash on the
+   homepage's `git log` rows. One component, one colour; the homepage used to render these in
+   `fg4`, which made the same idea look like two different things.
 7. **Alpha layers are not new hues** and are exempt from the 18-hex rule:
    - `::selection` — `rgba(254,128,25,.30)` with `#ebdbb2` text
    - Terminal card shadow — `0 24px 60px -34px rgba(0,0,0,.85)`, `inset 0 1px 0 rgba(255,255,255,.02)`

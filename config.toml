@@ -22,6 +22,8 @@ highlight_code = true
 highlight_theme = "css"
 highlight_themes_css = [{ theme = "gruvbox-dark", filename = "syntax-theme-dark.css" }]
 extra_syntaxes_and_themes = ["highlight_themes"]
+# Adds loading="lazy" decoding="async" to markdown images.
+lazy_async_image = true
 
 [extra]
 # Dark-only. There is no light palette to switch to, so no theme class, no
@@ -32,6 +34,9 @@ fancy_code = true
 mathjax = true
 mathjax_dollar_inline_enable = true
 favicon = "images/favicon.ico"
+# Fallback social card. Needs a purpose-made 1200x630 asset; until one
+# exists, pages without a cover_image fall back to a text-only card.
+# default_og_image = "images/og-default.png"
 
 # Nav order drives the 1-5 keyboard shortcuts, so weight is the index.
 # URLs keep their trailing slash so nav links match the permalinks Zola

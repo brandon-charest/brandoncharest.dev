@@ -11,8 +11,7 @@ type = "log"
 growth = "growing"
 +++
 
-# Build Log
-
+## Build Log
 *A chronological record of my suffering.*
 
 ---
