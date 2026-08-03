@@ -153,6 +153,51 @@ border-radius: 999px;
 **Kind badges** carry a hue for exactly three kinds; see *Kind tags* below. **The tag cloud**
 varies size only — `15 + round(count / max * 17)` px — never hue.
 
+### Surfaces and contrast — from the full-site audit, 2026-08-03
+
+A sweep of all 104 routes measuring every text node against its real backdrop
+found **102 unique contrast failures**. Two root causes accounted for nearly all
+of them, and both were surface choices rather than colour choices.
+
+**1. Code blocks sat on `bg1`, the lightest surface on the site.** That single
+decision dragged four syntax colours under AA at once. They now sit on
+`bg0-hard`:
+
+| token | on `bg1` | on `bg0-hard` |
+|---|---|---|
+| red — keywords | 3.37 | **4.77** |
+| purple — constants | 4.23 | **5.98** |
+| blue — parameters | 4.31 | **6.09** |
+| gray — comments | 3.16 | 4.47 → moved to `fg4` |
+
+**2. `--gray #928374` clears 4.5:1 on no surface we have** — 3.16 on `bg1`, 3.58
+on `bg0-soft`, 4.02 on `bg0`, 4.47 on `bg0-hard`. Treat it as **decoration
+only**, exactly as its row in the table above says. Anything that carries
+information uses `fg2`.
+
+`--fg4 #a89984` likewise fails on `bg1` (4.17) while passing on every darker
+ground. Small text on a `bg1` card wants `fg2`.
+
+**Sanctioned decorative exceptions** — the three the audit still reports. All are
+non-informational glyphs, exempt under WCAG 1.4.3 "pure decoration":
+
+| Selector | Ratio | Why it stands |
+|---|---|---|
+| `.tree__pre` | 3.16 | Box-drawing connectors. Raising them to pass would make the scaffolding as loud as the filenames. |
+| `.neofetch__comment` | 3.16 | The `//` glyph before a comment. |
+| `.prompt__punct` (terminal card only) | 4.17 | `:~$`. The whole prompt is `aria-hidden="true"`. |
+
+**Touch targets.** WCAG 2.5.8 wants 24×24 minimum. The audit found 17 unique
+failures at 412px — breadcrumbs, brand, tag pills, footer links — all now at 24px
+or more. Note that a desktop-width audit reports false positives here: the
+`pointer: coarse` rules that size targets for touch do not apply to a fine
+pointer, so **measure touch targets at mobile width**.
+
+**The audit has one blind spot:** it resolves backgrounds by walking ancestors
+for `background-color`, so SVG `fill` is invisible to it. Mermaid diagrams
+passed the audit while rendering cream labels on near-white nodes. Check SVG by
+eye.
+
 ### Kind tags — supersedes the original "uniformly fg2" rule
 
 Reversed 2026-08-03 at Brandon's direction. Uniform `fg2` produced a badge column that read as

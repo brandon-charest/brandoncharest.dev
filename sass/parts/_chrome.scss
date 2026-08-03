@@ -123,6 +123,7 @@ pre::-webkit-scrollbar-thumb {
 }
 
 .brand {
+  min-height: 24px; /* WCAG 2.5.8 — was 20px */
   display: flex;
   align-items: center;
   gap: 9px;
@@ -138,7 +139,7 @@ pre::-webkit-scrollbar-thumb {
   .brand__name { color: var(--orange); }
   .brand__at,
   .brand__host { color: var(--fg2); }
-  .brand__cwd  { color: var(--gray); }
+  .brand__cwd  { color: var(--fg4); } /* gray was 4.47:1 on bg0-hard */
 }
 
 .site-header__right {
@@ -323,9 +324,7 @@ pre::-webkit-scrollbar-thumb {
     min-height: 44px;
   }
 
-  .tag-pill,
-  .tech-tag,
-  .mini-tag {
+  .tag-pill {
     min-height: 32px;
     padding-inline: 12px;
   }

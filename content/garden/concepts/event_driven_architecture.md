@@ -25,9 +25,6 @@ graph TD
     B --> C[Contracts Table]
     B --> D[Payments Table]
     B --> E[Movies Table]
-    
-    style A fill:#4CAF50
-    style B fill:#2196F3
 {% end %}
 
 ### The Transaction

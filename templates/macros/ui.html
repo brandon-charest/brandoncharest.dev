@@ -66,9 +66,12 @@
    Pass the path as `path`, never baked into `cmd`. Three callers did that and
    their paths rendered fg2 while every other page's rendered aqua. #}
 {% macro prompt(cmd="", flag="", path="", dim="", cursor=false, class="") %}
-{# The separators are &nbsp;, not plain spaces. minify_html collapses runs of
-   whitespace *between two tags* while keeping whitespace next to a text node,
-   so `ls <span>` survived and `</span> <span>` did not — which rendered as
-   `ls ~/blog--sort=date`. Same failure mode as the tree's indentation. #}
-<div class="prompt {{ class }}" aria-hidden="true"><span class="prompt__user">visitor@dev</span><span class="prompt__punct">:~$</span>{% if cmd %}&nbsp;<span class="prompt__cmd">{{ cmd }}</span>{% endif %}{% if flag %}&nbsp;<span class="prompt__flag">{{ flag }}</span>{% endif %}{% if path %}&nbsp;<span class="prompt__path">{{ path }}</span>{% endif %}{% if dim %}&nbsp;<span class="prompt__dim">{{ dim }}</span>{% endif %}{% if cursor %}<span class="prompt__cursor"></span>{% endif %}</div>
+{# Segments are separated by flex `gap`, not by whitespace in the markup.
+
+   Plain spaces were eaten by minify_html (it collapses whitespace between two
+   tags), and the &nbsp; that replaced them then refused to break, so
+   `~/garden/projects/AdventOfCode/2025` pushed the line 30px past a 412px
+   viewport. A flex gap has neither problem: nothing to minify, and the line
+   wraps. user and punct share one child so `visitor@dev:~$` stays closed up. #}
+<div class="prompt {{ class }}" aria-hidden="true"><span class="prompt__lead"><span class="prompt__user">visitor@dev</span><span class="prompt__punct">:~$</span></span>{% if cmd %}<span class="prompt__cmd">{{ cmd }}</span>{% endif %}{% if flag %}<span class="prompt__flag">{{ flag }}</span>{% endif %}{% if path %}<span class="prompt__path">{{ path }}</span>{% endif %}{% if dim %}<span class="prompt__dim">{{ dim }}</span>{% endif %}{% if cursor %}<span class="prompt__cursor"></span>{% endif %}</div>
 {% endmacro prompt %}

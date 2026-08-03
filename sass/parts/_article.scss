@@ -49,6 +49,13 @@
   overflow-wrap: anywhere;
 
   a {
+    /* inline-flex + min-height: as bare text these were 20px, under the 24px
+       WCAG 2.5.8 target floor, and they are the primary way back up a tree. */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    min-width: 24px; /* the "~" root crumb is one glyph — 7px wide without this */
     color: var(--fg4);
     text-decoration: none;
     transition: color var(--t-mid);
@@ -56,7 +63,8 @@
     &:hover { color: var(--orange); }
   }
 
-  .crumbs__sep { color: var(--bg3); }
+  /* bg3 measured 2.02:1 here — a separator is quiet, not invisible. */
+  .crumbs__sep { color: var(--fg4); } /* bg3 measured 2.02:1 here */
   .crumbs__current { color: var(--fg4); }
 }
 
@@ -81,12 +89,6 @@
   margin-bottom: 16px;
   font-size: 12px;
   color: var(--fg2);
-
-  .article__stage {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
 
   .article__tags {
     display: flex;
@@ -252,7 +254,9 @@
 .devlog-entry {
   margin: 0 0 20px;
   padding: 4px 22px 18px;
-  background: var(--bg1);
+  /* bg0-soft, not bg1: prose links inside these blocks measured 4.31:1 on bg1
+     and 4.88 here. The tint still separates entries from the page. */
+  background: var(--bg0-soft);
   border: 1px solid var(--bg2);
   border-radius: var(--radius-card);
 
@@ -310,10 +314,12 @@
 
 /* --- Terminal panels: related notes and backlinks ---------------------------- */
 
+/* bg0-soft rather than bg1: on bg1 the panel's own title measured 3.16:1 and
+   the prose links inside these panels 4.31:1. */
 .term-panel {
   margin-top: 38px;
   padding: 16px 18px;
-  background: var(--bg1);
+  background: var(--bg0-soft);
   border: 1px solid var(--bg2);
   border-radius: var(--radius-card);
   font-family: var(--font-ui);
@@ -337,7 +343,7 @@
   color: var(--fg2);
   text-decoration: none;
 
-  .term-panel__branch { flex: none; color: var(--gray); }
+  .term-panel__branch { flex: none; color: var(--fg4); } /* gray was 3.58:1 */
   .term-panel__name   { flex: none; color: var(--fg2); }
 
   .term-panel__title {
@@ -346,7 +352,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: var(--gray);
+    color: var(--fg2); /* gray measured 3.16:1; this is a title, not chrome */
   }
 
   &:hover {
@@ -426,7 +432,7 @@
   padding: 5px 0 5px 14px;
   margin-left: -1px;
   border-left: 1px solid transparent;
-  color: var(--fg4);
+  color: var(--fg2); /* fg4 measured 4.17:1 on the bg1 sidebar card */
   text-decoration: none;
   transition: color var(--t-mid), border-color var(--t-mid);
 
@@ -466,7 +472,7 @@
   font-family: var(--font-display);
   font-size: 12px;
   letter-spacing: 1.5px;
-  color: var(--fg4);
+  color: var(--fg2); /* fg4 measured 4.17:1 on bg1 */
   list-style: none;
 
   &::-webkit-details-marker { display: none; }

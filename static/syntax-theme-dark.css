@@ -4,11 +4,11 @@
 
 .z-code {
  color: #ebdbb2;
- background-color: #3c3836;
+ background-color: #1d2021;
 }
 
 .z-comment, .z-punctuation.z-definition.z-comment {
- color: #928374;
+ color: #a89984;
 font-style: italic;
 }
 .z-string, .z-string.z-quoted, .z-punctuation.z-definition.z-string {

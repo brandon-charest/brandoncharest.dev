@@ -103,3 +103,20 @@ Apollo theme is a git submodule at `themes/apollo/`. Local `templates/` and `sas
 - **Front Matter CMS** config in `frontmatter.json` (VS Code extension for content management)
 - **Obsidian** vault config in `content/.obsidian/` (content editing)
 - Site analytics via Umami (configured in `config.toml`)
+
+## Syntax highlighting — a trap worth knowing
+
+`highlight_themes/gruvbox-dark.tmTheme` is the source of truth for code colours,
+and Zola regenerates `public/syntax-theme-dark.css` from it on every build.
+
+A committed `static/syntax-theme-dark.css` used to shadow that output — static
+files are copied over generated ones, so the tmTheme was dead code and edits to
+it changed nothing. It was deleted 2026-08-03. **Do not re-add a checked-in copy
+of a file Zola generates.**
+
+The tell is the mtime: if `public/syntax-theme-dark.css` is older than the build
+you just ran, something is shadowing it.
+
+```sh
+zola build && stat -c '%y %n' public/syntax-theme-dark.css
+```

@@ -120,7 +120,7 @@
   width: 74px;
   flex: none;
   font-weight: 500;
-  color: var(--fg4);
+  color: var(--fg2); /* fg4 measured 4.17:1 on the bg1 terminal card */
 }
 
 .neofetch__val { color: var(--fg2); }

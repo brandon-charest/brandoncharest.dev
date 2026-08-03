@@ -1,0 +1,69 @@
+{# Local override of themes/apollo/templates/shortcodes/mermaid.html.
+
+   Apollo lets mermaid auto-initialise, which selects its default *light*
+   theme: node labels render #333 on our dark card and measured 1.09:1 in the
+   site audit — effectively invisible. Initialise explicitly with the Gruvbox
+   values instead. Every colour below is one of the sanctioned hexes, so the
+   palette gate still passes over templates/.
+
+   startOnLoad is off and run() is called on DOMContentLoaded rather than
+   inline: the inline script executes before any later <pre> on the page has
+   been parsed, so a second diagram would never be drawn.
+
+   The guard makes both the init and the run happen once per page no matter how
+   many times the shortcode is used. #}
+<script src="{{ get_url(path='js/mermaid.js') }}"></script>
+
+<pre class="mermaid">
+{{ body | safe }}
+</pre>
+
+<script>
+(function () {
+  if (window.__bcMermaidInit) return;
+  window.__bcMermaidInit = true;
+
+  mermaid.initialize({
+    startOnLoad: false,
+    securityLevel: 'strict',
+    theme: 'base',
+    fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+    themeVariables: {
+      darkMode: true,
+      background: '#3c3836',
+      mainBkg: '#32302f',
+      primaryColor: '#32302f',
+      primaryTextColor: '#ebdbb2',
+      primaryBorderColor: '#665c54',
+      secondaryColor: '#282828',
+      secondaryTextColor: '#ebdbb2',
+      secondaryBorderColor: '#504945',
+      tertiaryColor: '#1d2021',
+      tertiaryTextColor: '#ebdbb2',
+      tertiaryBorderColor: '#504945',
+      nodeBorder: '#665c54',
+      clusterBkg: '#282828',
+      clusterBorder: '#504945',
+      lineColor: '#a89984',
+      textColor: '#ebdbb2',
+      edgeLabelBackground: '#282828',
+      titleColor: '#ebdbb2',
+      labelBoxBkgColor: '#32302f',
+      labelBoxBorderColor: '#665c54',
+      labelTextColor: '#ebdbb2',
+      actorBkg: '#32302f',
+      actorBorder: '#665c54',
+      actorTextColor: '#ebdbb2',
+      signalColor: '#ebdbb2',
+      signalTextColor: '#ebdbb2'
+    }
+  });
+
+  var draw = function () { mermaid.run({ querySelector: 'pre.mermaid' }); };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', draw);
+  } else {
+    draw();
+  }
+})();
+</script>
