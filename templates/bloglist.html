@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 {% import "macros/ui.html" as ui %}
 
-{# /blog — the folder-listing primitive. Same vocabulary as a garden folder;
-   the meta column carries date and read time instead of maturity, because a
-   published post has a date rather than a growth stage. #}
+{# /blog — a stack of lifted post cards, not the folder-listing primitive.
+
+   The primitive is built for density: a garden folder holds a dozen terse
+   notes and the filename is the thing you scan. /blog holds a handful of
+   substantial posts, so the title has to lead. In the dense form the post
+   title sat at 13px underneath a longer 13px filename and lost every time.
+
+   Each card is a small terminal window — bg0-soft bar carrying the path, body
+   carrying the headline — echoing the home page's neofetch card. Deliberately
+   one step quieter than .featured-card (22px title vs 26px) so the home page's
+   FEATURED slot still outranks a routine post here. #}
 
 {% block main_content %}
 <div class="body">
@@ -27,43 +35,42 @@
 
     {{ ui::prompt(cmd="ls", path="~/blog", dim="--sort=date", class="folder__prompt") }}
 
-    {# Pinned first, then the rest in section order (date, newest first). #}
-    {% set pinned = section.pages | filter(attribute="extra.pinned", value=true) %}
-
-    <div class="listing">
-        {% for page in pinned %}
-            <a class="listing__row" href="{{ page.permalink }}">
-                <span class="listing__badge">{{ ui::kind_badge(type="blog", boxed=true) }}</span>
-                <span class="listing__main">
-                    <span class="listing__line">
-                        <span class="listing__name">{{ page.relative_path | split(pat="/") | last }}</span>
-                        <span class="listing__title">{{ page.title }}</span>
-                        <span class="listing__pin" title="Pinned">&#9733;</span>
-                    </span>
-                    {% if page.description %}<span class="listing__desc">{{ page.description }}</span>{% endif %}
-                </span>
-                <span class="listing__meta">
-                    {{ page.date | date(format="%b %-d, %Y") }}{% if page.reading_time %} &middot; {{ page.reading_time }} min{% endif %}
-                </span>
-            </a>
-        {% endfor %}
-
+    {# Pinned first, then the rest in section order (date, newest first). Two
+       passes over one loop rather than two copies of the card: the previous
+       version duplicated the whole row and the pinned copy had already drifted
+       (it carried the star, the other did not). #}
+    <div class="postlist">
+        {% for want_pinned in [true, false] %}
         {% for page in section.pages %}
-            {% if not page.extra.pinned %}
-            <a class="listing__row" href="{{ page.permalink }}">
-                <span class="listing__badge">{{ ui::kind_badge(type="blog", boxed=true) }}</span>
-                <span class="listing__main">
-                    <span class="listing__line">
-                        <span class="listing__name">{{ page.relative_path | split(pat="/") | last }}</span>
-                        <span class="listing__title">{{ page.title }}</span>
-                    </span>
-                    {% if page.description %}<span class="listing__desc">{{ page.description }}</span>{% endif %}
-                </span>
-                <span class="listing__meta">
-                    {{ page.date | date(format="%b %-d, %Y") }}{% if page.reading_time %} &middot; {{ page.reading_time }} min{% endif %}
-                </span>
+        {% set is_pinned = page.extra.pinned | default(value=false) %}
+        {% if is_pinned == want_pinned %}
+            <a class="post-card" href="{{ page.permalink }}">
+                <div class="post-card__bar">
+                    <span class="post-card__path"><span class="post-card__dir">~/blog/</span>{{ page.relative_path | split(pat="/") | last }}</span>
+                    {% if is_pinned %}<span class="post-card__pin">&#9733; pinned</span>{% endif %}
+                </div>
+
+                <div class="post-card__body">
+                    {# A real heading: the index gets a document outline, and the
+                       title stops being a 13px span buried under a filename. #}
+                    <h2 class="post-card__title">{{ page.title }}<span class="post-card__arrow" aria-hidden="true">&rarr;</span></h2>
+
+                    {% if page.description %}<p class="post-card__lede">{{ page.description }}</p>{% endif %}
+
+                    <div class="post-card__foot">
+                        {% if page.taxonomies.tags %}
+                        <span class="post-card__tags">
+                            {# Plain spans, not ui::tag_pill — that macro emits an
+                               <a>, and the whole card is already a link. #}
+                            {% for tag in page.taxonomies.tags | slice(end=3) %}<span class="tag-pill">#{{ tag }}</span>{% endfor %}
+                        </span>
+                        {% endif %}
+                        <span class="post-card__meta">{{ page.date | date(format="%b %-d, %Y") }}{% if page.reading_time %} &middot; {{ page.reading_time }} min{% endif %}</span>
+                    </div>
+                </div>
             </a>
-            {% endif %}
+        {% endif %}
+        {% endfor %}
         {% endfor %}
 
         {% if section.pages | length == 0 %}

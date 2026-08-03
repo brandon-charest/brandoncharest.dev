@@ -177,11 +177,161 @@
   font-size: 13px;
 }
 
-/* Pinned marker on the blog index. Purple is the FEATURED signal elsewhere;
-   a pinned post is the same idea in a list. */
-.listing__pin {
-  color: var(--purple);
+/* --- Blog post cards (/blog) -------------------------------------------------
+   The folder-listing primitive above is built for density — a dozen terse
+   garden notes where the filename is what you scan. /blog holds a handful of
+   substantial posts, so it gets its own component and the title leads.
+
+   Each card is a small terminal window: bg0-soft bar carrying the path, bg1
+   body carrying the headline. That reuses the home neofetch card's anatomy
+   rather than inventing a third card shape, and the two grounds are what stop
+   the stack reading as one flat slab.
+   -------------------------------------------------------------------------- */
+
+.postlist {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.post-card {
+  display: block;
+  overflow: hidden;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color var(--t-slow), transform var(--t-slow),
+              box-shadow var(--t-slow);
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+
+    .post-card__arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+.post-card__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  background: var(--bg0-soft);
+  border-bottom: 1px solid var(--bg2);
   font-size: 12px;
+  color: var(--fg4);
+}
+
+/* Same aqua a directory carries everywhere else. */
+.post-card__dir { color: var(--aqua); }
+
+.post-card__path {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Purple is the FEATURED signal on the home page; a pinned post is that same
+   idea, so it borrows the label form rather than a second colour. */
+.post-card__pin {
+  flex: none;
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--purple);
+}
+
+.post-card__body { padding: 18px 20px 17px; }
+
+.post-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.3px;
+  color: var(--fg1);
+  overflow-wrap: break-word;
+}
+
+/* The gap is a margin, not a space in the markup: minify_html strips leading
+   whitespace inside an inline element, so `title <span>→</span>` rendered as
+   "hell→". Reserving it here also means the arrow's reveal costs no reflow. */
+.post-card__arrow {
+  display: inline-block;
+  margin-left: 7px;
+  color: var(--orange);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--t-slow), transform var(--t-slow);
+}
+
+.post-card__lede {
+  margin: 10px 0 0;
+  max-width: 64ch;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--fg2);
+}
+
+.post-card__foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 16px;
+}
+
+.post-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+/* fg2, not fg4: the palette assigns fg2 to "small or critical meta —
+   timestamps, read time", and fg4 at 12px on bg1 measures 4.17:1, under AA. */
+.post-card__meta {
+  flex: none;
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--fg2);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 560px) {
+  .post-card__bar  { padding: 8px 13px; }
+  .post-card__body { padding: 15px 15px 14px; }
+  .post-card__title { font-size: 20px; }
+}
+
+/* The arrow is a hover affordance, and touch has no hover — it would never
+   appear on a phone. Show it at rest wherever hover does not exist. */
+@media (hover: none) {
+  .post-card__arrow {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-card {
+    transition: border-color var(--t-slow);
+
+    &:hover,
+    &:focus-visible { transform: none; }
+  }
+
+  .post-card__arrow { transition: none; }
 }
 
 /* --- Tag cloud (/tags/) ------------------------------------------------------
