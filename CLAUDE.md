@@ -92,7 +92,11 @@ SCSS compiled by Zola (`compile_sass = true`). Entry point is `sass/main.scss`.
 - **`sass/parts/`** — Component-specific styles (24 partial files)
 - **`sass/theme/`** — `light.scss` and `dark.scss` theme overrides
 - Design uses a terminal/hacker aesthetic with CSS custom properties for theming
-- Fonts: Inter (sans), JetBrains Mono (mono) via Google Fonts
+- Fonts: three families via Google Fonts — IBM Plex Mono (headings at 700,
+  terminal chrome at 400–600), IBM Plex Sans (prose), JetBrains Mono (code).
+  `docs/design/TOKENS.md` § Typography is the source of truth; the font URL
+  lives in `templates/partials/header.html`. Add a weight to one without the
+  other and it silently falls back to `ui-monospace`.
 
 ### Theme
 

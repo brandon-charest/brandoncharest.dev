@@ -61,8 +61,15 @@
   --shadow-panel:  0 30px 80px -20px rgba(0, 0, 0, 0.8);
   --scrim:         rgba(12, 10, 8, 0.66);
 
-  /* --- Typography -------------------------------------------------------- */
-  --font-display: 'Space Mono', ui-monospace, monospace;      /* h1, h2, labels */
+  /* --- Typography ----------------------------------------------------------
+     --font-display and --font-ui deliberately resolve to the same family. The
+     tokens name a role, not a typeface: display is 700 for headings, labels and
+     badges; ui is 400-600 for prompts, tree, breadcrumbs and the status bar.
+     Space Mono held display until its uppercase M and W proved unreadable as a
+     first impression at 40px. Keeping the token separate means the next change
+     of display voice is this one line, not seventeen call sites.
+     -------------------------------------------------------------------------- */
+  --font-display: 'IBM Plex Mono', ui-monospace, monospace;   /* h1, h2, labels */
   --font-ui:      'IBM Plex Mono', ui-monospace, monospace;   /* terminal chrome */
   --font-sans:    'IBM Plex Sans', system-ui, sans-serif;     /* running prose */
   --font-code:    'JetBrains Mono', ui-monospace, monospace;  /* code only */

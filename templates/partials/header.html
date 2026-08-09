@@ -103,18 +103,23 @@
               href="{{ get_url(path=config.extra.favicon) }}" />
     {% endif %}
 
-    {# Fonts — the four families the design calls for, in one request.
-       Space Mono (display), IBM Plex Mono (chrome), IBM Plex Sans (prose),
+    {# Fonts — the three families the design calls for, in one request.
+       IBM Plex Mono (display at 700, chrome at 400-600), IBM Plex Sans (prose),
        JetBrains Mono (code). See docs/design/TOKENS.md § Typography.
 
-       Only the variants the stylesheet actually references: 12, down from 22.
-       Space Mono and IBM Plex Mono italics were being downloaded and never
-       used, as were several 600 weights. JetBrains Mono keeps bold and italic
-       because the syntax theme sets them for functions and comments. #}
+       Only the variants the stylesheet actually references: 11. Italics for
+       Plex Mono and several 600 weights were being downloaded and never used;
+       JetBrains Mono keeps bold and italic because the syntax theme sets them
+       for functions and comments.
+
+       Space Mono used to hold the display voice and is gone as of 2026-08-08 —
+       its uppercase M and W read badly at 40px, and Plex Mono was already on
+       every page for chrome, so promoting it dropped a family rather than
+       adding one. Bold is the only weight this cost. #}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
 
     {# Syntax theme — Gruvbox, exported to CSS classes from
        highlight_themes/gruvbox-dark.tmTheme. Loaded unconditionally: the site

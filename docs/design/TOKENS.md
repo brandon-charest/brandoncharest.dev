@@ -7,12 +7,11 @@ styles. Colors live in [`PALETTE.md`](./PALETTE.md).
 
 ## Typography
 
-Four families, loaded from Google Fonts in one request.
+Three families, loaded from Google Fonts in one request.
 
 | Family | Weights | Used for |
 |---|---|---|
-| Space Mono | 400, 700 | Display voice — page `h1`, post `h2`/`h3`, section labels, brand logo, status-bar mode, kind badges, `DIR` badge |
-| IBM Plex Mono | 400, 500, 600, 700 | Terminal chrome — prompts, file tree, breadcrumbs, meta, status bar, palette, nav index numbers |
+| IBM Plex Mono | 400, 500, 600, 700 | Two roles. **Display voice at 700** — page `h1`, post `h2`/`h3`, section labels, brand logo, status-bar mode, kind badges, `DIR` badge. **Terminal chrome at 400–600** — prompts, file tree, breadcrumbs, meta, status bar, palette, nav index numbers |
 | IBM Plex Sans | 400, 500, 600, 700 | Running prose — article body, intro blurbs, descriptions — **and nav labels** (see below) |
 | JetBrains Mono | 400–700 | Code only — code blocks, inline `<code>`, the `// currently` aside, the ASCII coffee cup. Ligatures on. |
 
@@ -27,11 +26,21 @@ superfamily and already loaded, so no extra font request. Net effect on layout:
 the nav got *narrower* (331px, from ~360px).
 
 ```
---font-display: 'Space Mono', ui-monospace, monospace;
---font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+--font-display: 'IBM Plex Mono', ui-monospace, monospace;
+--font-ui:      'IBM Plex Mono', ui-monospace, monospace;
 --font-sans:    'IBM Plex Sans', system-ui, sans-serif;
 --font-code:    'JetBrains Mono', ui-monospace, monospace;
 ```
+
+**Why two tokens for one family.** `--font-display` and `--font-ui` resolve to
+IBM Plex Mono alike, and that is deliberate: they name a role, not a typeface.
+Display is 700 and owns headings, labels and badges; ui is 400–600 and owns the
+terminal chrome. Space Mono held display until 2026-08-08, when its uppercase M
+and W — the first two letters a reader meets in "About **M**e" and "**W**hy this
+Site Exists" — were judged unreadable at 40px. Plex Mono was already downloaded
+for chrome, so promoting it removed a family instead of adding one, taking the
+budget from twelve variants to eleven. Keeping the tokens separate means the
+next change of display voice is one line rather than seventeen call sites.
 
 ### Scale
 
