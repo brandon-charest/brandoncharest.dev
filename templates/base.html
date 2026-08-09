@@ -38,8 +38,8 @@
 
     {% include "partials/statusbar.html" %}
 
-    <script defer src="{{ get_url(path='js/statusbar.js') }}"></script>
-    <script defer src="{{ get_url(path='js/palette.js') }}"></script>
+    <script defer src="{{ get_url(path='js/statusbar.js', cachebust=true) }}"></script>
+    <script defer src="{{ get_url(path='js/palette.js', cachebust=true) }}"></script>
 </body>
 
 </html>
