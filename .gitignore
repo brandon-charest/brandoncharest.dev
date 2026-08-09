@@ -9,3 +9,5 @@ content/garden/notes/*
 node_modules/
 .env
 .env.local
+# Superpowers brainstorming session files
+.superpowers/
