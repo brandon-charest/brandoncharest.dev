@@ -1,5 +1,6 @@
 +++
 title = "6502 Registers"
+description = "What the 6502's registers are for, and why they are 8 bits wide."
 date = "2025-12-19T15:34:29.514Z"
 updated = 2026-01-04
 

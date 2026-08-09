@@ -1,25 +1,19 @@
-<div class="backlinks-container">
-    <div class="terminal-comment">
-        <span class="log-entry">> TRACING INCOMING REFERENCES...</span>
-        
-        {% if page.backlinks | length > 0 %}
-            <span class="log-entry log-success">> {{ page.backlinks | length }} {% if page.backlinks | length == 1 %}link{% else %}links{% endif %} found</span>
-        {% else %}
-            <span class="log-entry log-dim">> No incoming references</span>
-        {% endif %}
-    </div>
+{# Backlinks, rendered as terminal output. `page.backlinks` is populated by Zola
+   from internal links (`@/path.md`) that point at this page. Renders nothing
+   when there are none — an empty "no incoming references" panel is noise. #}
 
-    {% if page.backlinks %}
-    <ul class="backlinks-grid">
-        {% for link in page.backlinks %}
-        <li>
-            <a href="{{ link.permalink }}" class="signal-card">
-                <span class="signal-path">{{ link.permalink | trim_end_matches(pat="/") | split(pat="/") | last }}.md</span>
-                <span class="signal-title">{{ link.title }}</span>
-                <span class="signal-arrow">→</span>
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+{% if page.backlinks | length > 0 %}
+<div class="term-panel">
+    <div class="term-panel__log"><span class="term-panel__caret">&gt;</span> tracing incoming references&hellip;</div>
+    <div class="term-panel__log"><span class="term-panel__caret">&gt;</span> {{ page.backlinks | length }} link{% if page.backlinks | length != 1 %}s{% endif %} found</div>
+
+    {% for link in page.backlinks %}
+        {% set bslug = link.permalink | trim_end_matches(pat="/") | split(pat="/") | last %}
+        <a href="{{ link.permalink }}" class="term-panel__row">
+            <span class="term-panel__branch" aria-hidden="true">&#9492;&#9472;</span>
+            <span class="term-panel__name">{{ bslug }}.md</span>
+            <span class="term-panel__title">{{ link.title }}</span>
+        </a>
+    {% endfor %}
 </div>
+{% endif %}

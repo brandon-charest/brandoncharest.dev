@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
+
+{# Standalone prose pages (now, about).
+
+   The handoff specifies "a single 17px paragraph"; both real pages are full
+   documents with headings, lists and links, so this renders the whole body
+   with the article prose rules. Surface stays bg0 — bg0-soft is reserved for
+   long-form reading pages. #}
+
+{% block main_content %}
+{% set slug = page.components | last | default(value="index") %}
+
+<div class="plain-surface">
+    <div class="body prose-page">
+        {{ ui::prompt(cmd="cat", path="~/" ~ slug ~ ".md", class="prose-page__prompt") }}
+
+        <h1 class="prose-page__title">{{ page.title }}</h1>
+
+        <div class="prose">
+            {{ page.content | safe }}
+        </div>
+    </div>
+</div>
+{% endblock main_content %}

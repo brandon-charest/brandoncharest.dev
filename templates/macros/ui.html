@@ -1,170 +1,77 @@
-{# 1. THE MAIN WINDOW BAR COMPONENT #}
-{# Usage:
-For Pages: {{ ui::window_bar(resource=page) }}
-For Sections: {{ ui::window_bar(resource=section) }}
-Custom Path: {{ ui::window_bar(path=some_list) }}
-Static Title: {{ ui::window_bar(title="My Title") }}
-#}
-{% macro window_bar(resource=false, path=false, title="") %}
+{# =============================================================================
+   SHARED PRIMITIVES — maturity, kind, tags, prompt
 
-<div class="window-bar">
-    <div class="window-controls" aria-hidden="true">
-        <span class="control close"></span>
-        <span class="control minimize"></span>
-        <span class="control maximize"></span>
-    </div>
+   Maturity colour is decided in exactly one place (parts/_badges.scss) and
+   reached only through these macros. Rendering `[seed]`/`[grow]`/`[ever]` by
+   hand is how seedling and growing ended up sharing a colour on the homepage;
+   call the macro instead so a fix lands everywhere at once.
+   ============================================================================= #}
 
-    <div class="window-title-container">
-        {% if resource %}
-        {# RENDER FROM RESOURCE (Page or Section) #}
-        <span class="terminal-path">
-            <a href="/" class="path-segment root">~</a>
-            {% for part in resource.components %}
-            <span class="path-sep">/</span>
-            <a href="/{{ resource.components | slice(end=loop.index) | join(sep="/") }}" class="path-segment">{{ part }}</a>
-            {% endfor %}
-        </span>
-        {% elif path %}
-        {# RENDER FROM PATH LIST #}
-        <span class="terminal-path">
-            <a href="/" class="path-segment root">~</a>
-            {% for part in path %}
-            <span class="path-sep">/</span>
-            <a href="/{{ path | slice(end=loop.index) | join(sep="/") }}" class="path-segment">{{ part }}</a>
-            {% endfor %}
-        </span>
-        {% else %}
-        {# RENDER STATIC TITLE #}
-        <span class="terminal-path">
-            <span class="path-segment root">{{ title }}</span>
-        </span>
-        {% endif %}
-    </div>
-</div>
-{% endmacro window_bar %}
+{# The label maps are inlined in each macro rather than factored into a shared
+   one. Tera resolves `self::` against the *importing* template, so a macro
+   calling a sibling breaks for every caller, and importing this file into
+   itself sends Zola 0.17 into infinite recursion. Two short duplicated
+   conditionals are the cheap, working option — the colours, which are the part
+   that actually drifts, still live in exactly one place (parts/_badges.scss). #}
 
+{# Dot form used in tree rows and filter chips, where a label sits elsewhere. #}
+{% macro growth_dot(growth="seedling", large=false) %}
+<span class="dot-growth{% if large %} dot-growth--lg{% endif %}" data-growth="{{ growth }}" title="{{ growth | capitalize }}"></span>
+{% endmacro growth_dot %}
 
-{# 2. COMMAND LINE (Helper) #}
-{# Added margin_bottom for layout flexibility #}
-{% macro cmd(cmd="cat", args="", prompt="&gt;", cursor=false, opacity=0.3, margin_top="0", margin_bottom="0") %}
-<div class="cmd-line" style="margin-top: {{margin_top}}; margin-bottom: {{margin_bottom}}; opacity: {{opacity}};">
-    <span class="cmd-prompt">{{ prompt | safe }}</span>
-    {% if cmd %}<span class="cmd">{{ cmd }}</span>{% endif %}
-    {% if args %}<span class="args">{{ args }}</span>{% endif %}
-    {% if cursor %}<span class="cursor">_</span>{% endif %}
-</div>
-{% endmacro cmd %}
+{# Dot + label as one unit. Use this anywhere maturity is *stated* rather than
+   just indicated: an 8px dot alone is easy to misread, and Gruvbox yellow next
+   to Gruvbox orange is a genuinely hard call at that size. The label carries
+   the stage colour and the dot inherits it via currentColor, so the two can
+   never disagree. #}
+{% macro growth_state(growth="seedling", large=true) %}
+<span class="growth-state" data-growth="{{ growth }}"><span class="dot-growth{% if large %} dot-growth--lg{% endif %}"></span>{{ growth }}</span>
+{% endmacro growth_state %}
 
+{# Kind badge. The short code is derived once and used for both the visible
+   label and data-kind, so the attribute the colour hangs off can never drift
+   from the word on screen.
 
-{# 3. CARD INDICATORS (Growth & Type Badges) #}
-{# Returns terminal text indicators for growth stage and content type #}
-{% macro card_indicators(growth_stage="seedling", content_type="note", show_growth=true, show_type=true) %}
-{% if show_growth %}
-<span class="growth-indicator" title="{{ growth_stage | capitalize }}">{% if growth_stage == "seedling" %}[seed]{% elif growth_stage == "growing" %}[grow]{% elif growth_stage == "evergreen" %}[ever]{% else %}[seed]{% endif %}</span>
-{% endif %}
-{% if show_type %}
-<span class="type-indicator" title="{{ content_type | capitalize }}">{% if content_type == "blog" %}[blog]{% elif content_type == "project" %}[proj]{% elif content_type == "reference" %}[ref]{% elif content_type == "tutorial" %}[tut]{% elif content_type == "snippet" %}[snip]{% elif content_type == "log" %}[log]{% else %}[note]{% endif %}</span>
-{% endif %}
-{% endmacro card_indicators %}
+   Colour comes from parts/_badges.scss, which also paints the bg0 chip the
+   three coloured kinds need to clear AA. `set_global` rather than `set`:
+   plain `set` does not escape an {% if %} block in Tera. #}
+{% macro kind_badge(type="note", boxed=false, brackets=true) %}
+{%- set_global k = "note" -%}
+{%- if type == "dir" %}{% set_global k = "dir" %}
+{%- elif type == "blog" %}{% set_global k = "blog" %}
+{%- elif type == "project" %}{% set_global k = "proj" %}
+{%- elif type == "reference" %}{% set_global k = "ref" %}
+{%- elif type == "tutorial" %}{% set_global k = "tut" %}
+{%- elif type == "snippet" %}{% set_global k = "snip" %}
+{%- elif type == "log" %}{% set_global k = "log" %}
+{%- endif -%}
+<span class="badge-kind{% if boxed %} badge-kind--boxed{% endif %}" data-kind="{{ k }}" title="{{ type | capitalize }}">{% if brackets and not boxed %}[{% endif %}{{ k }}{% if brackets and not boxed %}]{% endif %}</span>
+{% endmacro kind_badge %}
 
+{# Uniform tag pill. Identical on every tag, regardless of topic. #}
+{% macro tag_pill(tag) %}
+<a href="{{ get_taxonomy_url(kind='tags', name=tag) }}" class="tag-pill">#{{ tag }}</a>
+{% endmacro tag_pill %}
 
-{# 4. CARD HEADER #}
-{# Renders a consistent card header with title and optional indicators #}
-{% macro card_header(title, growth_stage="seedling", content_type="note", show_growth=false, show_type=true) %}
-<div class="card-header">
-    <h3>
-        {{ self::card_indicators(growth_stage=growth_stage, content_type=content_type, show_growth=show_growth,
-        show_type=show_type) }}
-        {{ title }}
-    </h3>
-</div>
-{% endmacro card_header %}
+{# Shell prompt line: `visitor@dev:~$ <cmd> <path>`, with an optional cursor.
+   aria-hidden: it is scene-setting, not information. Without it every screen
+   announces "visitor at dev colon tilde dollar tree tilde slash garden" before
+   the content it decorates. #}
+{# Slots, in render order: cmd `flag` path `dim`.
 
+   `flag` and `dim` are both gray; they differ only in where they sit, because
+   real invocations put modifiers on either side of the path —
+   `git log --oneline ~/recent` needs flag, `ls ~/blog --sort=date` needs dim.
 
-{# 5. CARD TAGS #}
-{# Renders tag badges #}
-{% macro card_tags(tags, max_tags=3) %}
-{% if tags %}
-<div class="card-tags">
-    {% for tag in tags | slice(end=max_tags) %}
-    <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="mini-tag">#{{ tag }}</a>
-    {% endfor %}
-</div>
-{% endif %}
-{% endmacro card_tags %}
+   Pass the path as `path`, never baked into `cmd`. Three callers did that and
+   their paths rendered fg2 while every other page's rendered aqua. #}
+{% macro prompt(cmd="", flag="", path="", dim="", cursor=false, class="") %}
+{# Segments are separated by flex `gap`, not by whitespace in the markup.
 
-
-{# 6. FLAG BAR — CLI-style filter row used on hub pages.
-   Tera doesn't support inline object literals, so we render the row as
-   open + n×opt + close. Parent template emits the options inline.
-
-   Pattern:
-     {{ ui::flag_row_open(flag="--growth") }}
-       {{ ui::flag_opt(value="all",       label="all",       count=40, href="?",                active="all") }}
-       {{ ui::flag_opt(value="seedling",  label="seedling",  count=12, href="?growth=seedling", active="all") }}
-     {{ ui::flag_row_close(hint="filters by growth stage") }}
-#}
-{% macro flag_row_open(flag) %}
-<div class="flag-row">
-    <span class="flag-key">{{ flag }}</span>
-    <span class="flag-options">
-{% endmacro flag_row_open %}
-
-{% macro flag_opt(value, label, count=false, href="#", active="all") %}
-<a href="{{ href }}" class="flag-opt{% if value == active %} active{% endif %}" data-flag-value="{{ value }}"><span class="flag-bullet">{% if value == active %}●{% else %}○{% endif %}</span>{{ label }}{% if count is string or count is number %}<span class="flag-count">{{ count }}</span>{% endif %}</a>
-{% endmacro flag_opt %}
-
-{% macro flag_row_close(hint=false) %}
-    </span>
-    {% if hint %}<span class="flag-hint">{{ hint }}</span>{% endif %}
-</div>
-{% endmacro flag_row_close %}
-
-
-{# 7. PANE — terminal-styled bordered panel for streaming content lists.
-   Tera doesn't support {% call %} blocks, so the pane is split into
-   open/close macros. Place pane_row entries between them.
-
-   Pattern:
-     {{ ui::pane_open(cmd="tail -f", args="./blog", meta="recent") }}
-       {{ ui::pane_row(...) }}
-     {{ ui::pane_close(footer_label="View all posts", footer_href="/blog/") }}
-#}
-{% macro pane_open(cmd, args="", prompt="$", meta=false) %}
-<div class="pane">
-    <div class="pane-bar">
-        <span class="pane-dot" aria-hidden="true"></span>
-        <span class="pane-prompt">{{ prompt | safe }}</span>
-        <span class="pane-cmd">{{ cmd }}</span>
-        {% if args %}<span class="pane-args">{{ args }}</span>{% endif %}
-        {% if meta %}<span class="pane-meta">{{ meta }}</span>{% endif %}
-    </div>
-    <div class="pane-body">
-{% endmacro pane_open %}
-
-{% macro pane_close(footer_label=false, footer_href=false, footer_meta=false) %}
-    </div>
-    {% if footer_label or footer_meta %}
-    <div class="pane-footer">
-        {% if footer_meta %}<span>{{ footer_meta }}</span>{% else %}<span></span>{% endif %}
-        {% if footer_label %}
-            {% if footer_href %}<a href="{{ footer_href }}">{{ footer_label }} →</a>
-            {% else %}<span>{{ footer_label }}</span>{% endif %}
-        {% endif %}
-    </div>
-    {% endif %}
-</div>
-{% endmacro pane_close %}
-
-
-{# 8. PANE ROW — single line inside a pane.
-   Renders: [date]  [badge]  [title......]  [aside]
-#}
-{% macro pane_row(href, date="", badge="", title="", aside="", pinned=false, growth=false) %}
-<a href="{{ href }}" class="pane-row"{% if pinned %} data-pinned="true"{% endif %}{% if growth %} data-growth="{{ growth }}"{% endif %}>
-    {% if date %}<span class="pane-row-date">{{ date }}</span>{% else %}<span class="pane-row-date"></span>{% endif %}
-    {% if badge %}<span class="pane-row-badge">{{ badge }}</span>{% else %}<span class="pane-row-badge"></span>{% endif %}
-    <span class="pane-row-title">{{ title }}</span>
-    {% if aside %}<span class="pane-row-aside">{{ aside }}</span>{% else %}<span class="pane-row-aside"></span>{% endif %}
-</a>
-{% endmacro pane_row %}
+   Plain spaces were eaten by minify_html (it collapses whitespace between two
+   tags), and the &nbsp; that replaced them then refused to break, so
+   `~/garden/projects/AdventOfCode/2025` pushed the line 30px past a 412px
+   viewport. A flex gap has neither problem: nothing to minify, and the line
+   wraps. user and punct share one child so `visitor@dev:~$` stays closed up. #}
+<div class="prompt {{ class }}" aria-hidden="true"><span class="prompt__lead"><span class="prompt__user">visitor@dev</span><span class="prompt__punct">:~$</span></span>{% if cmd %}<span class="prompt__cmd">{{ cmd }}</span>{% endif %}{% if flag %}<span class="prompt__flag">{{ flag }}</span>{% endif %}{% if path %}<span class="prompt__path">{{ path }}</span>{% endif %}{% if dim %}<span class="prompt__dim">{{ dim }}</span>{% endif %}{% if cursor %}<span class="prompt__cursor"></span>{% endif %}</div>
+{% endmacro prompt %}

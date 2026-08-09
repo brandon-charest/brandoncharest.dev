@@ -72,7 +72,7 @@ const NEIGHBORS: [(i32, i32); 8] = [
 
 Each number corresponds to NEIGHBORS array index. The tuples show (`row_offset`,`col_offset`)
 
-```text
+```txt
 [0][1][2]     (-1,-1) (-1, 0) (-1,+1)   
 [3][X][4]  ←  ( 0,-1)    X    ( 0,+1)  Current cell
 [5][6][7]     (+1,-1) (+1, 0) (+1,+1)

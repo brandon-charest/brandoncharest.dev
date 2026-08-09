@@ -1,0 +1,50 @@
+{# Sticky site header — brand, search trigger, primary nav.
+
+   Nav order comes from config.extra.menu and its index doubles as the 1–5
+   keyboard shortcut wired up in Phase 7, so loop.index is the label.
+
+   The active pill is a class, not a swapped inline style: the design prototype
+   mutated a background through a template hole and stranded the highlight on
+   one item. A static rule cannot drift that way. #}
+
+{% set cp = current_path | default(value="/") %}
+
+<header class="site-header">
+    <div class="site-header__inner">
+        <a href="{{ config.base_url }}" class="brand" aria-label="{{ config.title }} — home">
+            <span class="brand__name">brandoncharest</span><span class="brand__at">@</span><span class="brand__host">dev</span><span class="brand__cwd">:~</span>
+        </a>
+
+        <div class="site-header__right">
+            <button id="search-button"
+                    class="search-trigger"
+                    type="button"
+                    aria-label="Search">
+                <span class="search-trigger__slash" aria-hidden="true">/</span>
+                <span class="search-trigger__label">search</span>
+                <span class="kbd" id="search-kbd" aria-hidden="true">⌘K</span>
+            </button>
+
+            <nav class="site-nav" aria-label="Primary">
+                {% for item in config.extra.menu %}
+                    {% set_global nav_active = false %}
+                    {% if item.url == "/" %}
+                        {% if cp == "/" %}{% set_global nav_active = true %}{% endif %}
+                    {% else %}
+                        {% if cp is starting_with(item.url) %}{% set_global nav_active = true %}{% endif %}
+                        {# Tag pages are part of the garden, so the garden item owns them. #}
+                        {% if item.url == "/garden" and cp is starting_with("/tags") %}{% set_global nav_active = true %}{% endif %}
+                    {% endif %}
+                    {# `trailing_slash=true` is deliberate: get_url strips it by
+                       default, and every permalink on the site carries one, so
+                       without this each nav click costs a 301. #}
+                    <a href="{{ get_url(path=item.url, trailing_slash=true) }}"
+                       class="site-nav__item{% if nav_active %} is-active{% endif %}"
+                       {% if nav_active %}aria-current="page"{% endif %}>
+                        <span class="site-nav__num">{{ loop.index }}</span> {{ item.name }}
+                    </a>
+                {% endfor %}
+            </nav>
+        </div>
+    </div>
+</header>

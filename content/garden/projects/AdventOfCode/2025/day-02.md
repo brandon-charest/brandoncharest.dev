@@ -13,7 +13,7 @@ description = "Finding invalid product IDs"
 Day 1 done, we made it to the gift shop! (who is even visiting this shop??).
 
 An elf has added a bunch of invalid product IDs to their database, and we are given a list of ranges we need to check.
-```text
+```txt
 11-22,95-115,998-1012,1188511880-1188511890,222220-222224,...
 ```
 An invalid product ID is made only of some sequence of digits repeated twice. So, 55 (5 twice), 6464 (64 twice), and 123123 (123 twice).

@@ -5,18 +5,17 @@ description = "A chronological record of my suffering."
 [taxonomies]
 tags = ["devlog"]
 [extra]
-type = "log" 
-growth = "growing" 
+type = "log"
+growth = "growing"
 +++
 
 
-# 🏗️ Build Log
-
+## Build Log
 *A chronological record of my suffering.*
 
 [Main Branch](https://github.com/brandon-charest/Rust6502)
 
-## 📅 2026-01-09
+## 2026-01-09
 
 ### NES Test Verification
 
@@ -45,7 +44,7 @@ src/hardware/cpu/tests/
 
 This makes it a little easier to write tests and verify, plus I added code coverage to my CI pipeline. I don't think I need to shoot for 100% coverage, but I will try to work and bump it up some more before moving onto the next parts.
 
-```text
+```txt
 Filename                           Regions    Missed Regions     Cover   Functions  Missed Functions  Executed       Lines      Missed Lines     Cover    Branches   Missed Branches     Cover
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bus.rs                                  90                 3    96.67%          11                 0   100.00%          52                 0   100.00%           0                 0         -
@@ -77,7 +76,7 @@ TOTAL                                 2219               556    74.94%         1
 
 I came across some interesting pieces of data when running the ROM test through the disassembler.
 
-```text,hl_lines=10-11
+```txt,hl_lines=10-11
 EBDA: JSR $FADA
 EBDD: LDA $0647
 EBE0: CMP #$38
@@ -108,7 +107,7 @@ What is `.db`? From a quick search called code/data interleaving?? 🤔
 
 With the CPU verified and for what I can tell at the moment is correct. I will move on to being able to now see something. The [PPU](https://www.nesdev.org/wiki/PPU)!
 
-## 📅 2026-01-08
+## 2026-01-08
 
 ### CPU Refactoring
 
@@ -143,7 +142,7 @@ So for now ill abandon the Klaus Dormann's functional tests, and instead focus o
 
 This means I need to look into loading ROMs into memory and running them.
 
-## 📅 2026-01-07
+## 2026-01-07
 
 ### Refactor For `AccessMode`
 
@@ -206,14 +205,13 @@ I set it up to run and.....  it failed. Not only did it fail, it failed on the V
 
 missing opcode Clear Decimal Mode (CLD=$D8)
 
-## 📅 2026-01-04
+## 2026-01-04
 
 ### The "Panic Driven" Development Strategy
 
 There are a lot of opcodes that need to be implemented and I do not thinking writing them all and then just doing a full send on the CPU is a great idea. So Ill just build it in steps one code at a time, and have the CPU yell at me when I miss something.
 
-```rust
-// cpu.rs
+```rust,name=cpu.rs
 match opcode {
     0xEA => { self.cycles += 1; } // NOP
     _ => todo!("Opcode {:#X} not implemented!", opcode), 
@@ -268,7 +266,7 @@ I need to find a way to implement proper clock cycles, each opcode or read/write
 
 ref: [6502 Opcodes](http://www.6502.org/tutorials/6502opcodes.html)
 
-## 📅 2026-01-02
+## 2026-01-02
 
 Spent a few hours trying to put Bus inside CPU. I want to have a debugger (maybe visual) and implement graphics. I'm worried I will run into borrow checker issues if the CPU **owns** the `Bus`.
 

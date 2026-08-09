@@ -4,7 +4,6 @@ description = "Log of my attempts to solve AoC puzzles in Rust and Go."
 aliases = ["/garden/AdventOfCode/2025/"]
 sort_by = "date"
 template = "section.html"
-transparent = true
 +++
 
 # Year 2025

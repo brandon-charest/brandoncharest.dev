@@ -1,227 +1,141 @@
 {% extends "base.html" %}
 {% import "macros/ui.html" as ui %}
 
-{% block main_content %}
-<div class="body full-width-layout">
+{# =============================================================================
+   The Garden — the whole note collection as a `tree` listing.
 
-    {# Walk every garden subsection (transparent only bubbles one level up,
-       so we recurse manually), then dedupe by permalink for the totals
-       and the flag-bar counts. #}
-    {% set_global all_pages = section.pages %}
-    {% for sub_path in section.subsections %}
+   The recursive macro lives here rather than in macros/, because Tera resolves
+   `self::` against the template that *imports* a macro: a recursive macro only
+   works in the file that calls it.
+
+   Sections used to carry `transparent = true`, which bubbled descendants' pages
+   up into their ancestors' `pages` and made `section.pages` useless for a tree.
+   That flag is gone, so `pages` is now exactly the direct children.
+   ============================================================================= #}
+
+{# Indentation uses U+00A0 (non-breaking space), not a plain space:
+   `minify_html = true` collapses runs of ordinary whitespace and has no
+   way to know CSS gives this span `white-space: pre`, which silently ate
+   one column from every level of the tree. In a monospace face nbsp has
+   the same advance width, so the alignment is identical. js/filters.js
+   emits the same character when it recomputes prefixes. #}
+{% macro branch(path, prefix, depth) %}
+    {% set sec = get_section(path=path) %}
+    {% set n_subs  = sec.subsections | length %}
+    {% set n_pages = sec.pages | length %}
+    {% set total   = n_subs + n_pages %}
+
+    {% for sub_path in sec.subsections %}
         {% set sub = get_section(path=sub_path) %}
-        {% set_global all_pages = all_pages | concat(with=sub.pages) %}
-        {% for nested_path in sub.subsections %}
-            {% set nested = get_section(path=nested_path) %}
-            {% set_global all_pages = all_pages | concat(with=nested.pages) %}
-            {% for deeper_path in nested.subsections %}
-                {% set deeper = get_section(path=deeper_path) %}
-                {% set_global all_pages = all_pages | concat(with=deeper.pages) %}
+        <a class="tree__row tree__row--dir" href="{{ sub.permalink }}" data-depth="{{ depth }}">
+            <span class="tree__pre">{{ prefix }}{% if loop.index == total %}└─ {% else %}├─ {% endif %}</span>
+            <span class="tree__dir">{{ sub.components | last }}/</span>
+        </a>
+        {% if loop.index == total %}
+            {{ self::branch(path=sub_path, prefix=prefix ~ "   ", depth=depth + 1) }}
+        {% else %}
+            {{ self::branch(path=sub_path, prefix=prefix ~ "│  ", depth=depth + 1) }}
+        {% endif %}
+    {% endfor %}
+
+    {% for page in sec.pages %}
+        {% set growth = page.extra.growth | default(value="seedling") %}
+        {% set kind   = page.extra.type   | default(value="note") %}
+        <a class="tree__row tree__row--note"
+           href="{{ page.permalink }}"
+           data-depth="{{ depth }}"
+           data-growth="{{ growth }}">
+            <span class="tree__pre">{{ prefix }}{% if n_subs + loop.index == total %}└─ {% else %}├─ {% endif %}</span>
+            <span class="tree__note">
+                <span class="tree__kind">{{ ui::kind_badge(type=kind) }}</span>
+                <span class="tree__name">{{ page.relative_path | split(pat="/") | last }}</span>
+                <span class="tree__desc">{{ page.description | default(value="") }}</span>
+                {{ ui::growth_dot(growth=growth) }}
+            </span>
+        </a>
+    {% endfor %}
+{% endmacro branch %}
+
+
+{% block main_content %}
+<div class="body">
+
+    {# Counts for the filter chips.
+
+       The tree macro below recurses without limit, but Tera cannot accumulate a
+       value across recursion, so the counts are a hand-unrolled walk bounded at
+       five levels. If content is ever nested deeper, a note would appear in the
+       tree while silently vanishing from these counts and from search — so
+       `depth_exceeded` catches that and says so on the page rather than letting
+       the numbers quietly drift. #}
+    {% set_global depth_exceeded = false %}
+    {% set_global all_pages = section.pages %}
+    {% for a_path in section.subsections %}
+        {% set a = get_section(path=a_path) %}
+        {% set_global all_pages = all_pages | concat(with=a.pages) %}
+        {% for b_path in a.subsections %}
+            {% set b = get_section(path=b_path) %}
+            {% set_global all_pages = all_pages | concat(with=b.pages) %}
+            {% for c_path in b.subsections %}
+                {% set c = get_section(path=c_path) %}
+                {% set_global all_pages = all_pages | concat(with=c.pages) %}
+                {% for d_path in c.subsections %}
+                    {% set d = get_section(path=d_path) %}
+                    {% set_global all_pages = all_pages | concat(with=d.pages) %}
+                    {% if d.subsections | length > 0 %}{% set_global depth_exceeded = true %}{% endif %}
+                {% endfor %}
             {% endfor %}
         {% endfor %}
     {% endfor %}
-    {% set all_pages = all_pages | unique(attribute="permalink") %}
 
-    {% set total = all_pages | length %}
-    {% set seedling_count  = all_pages | filter(attribute="extra.growth", value="seedling")  | length %}
-    {% set growing_count   = all_pages | filter(attribute="extra.growth", value="growing")   | length %}
-    {% set evergreen_count = all_pages | filter(attribute="extra.growth", value="evergreen") | length %}
+    {% set total     = all_pages | length %}
+    {% set seedling  = all_pages | filter(attribute="extra.growth", value="seedling")  | length %}
+    {% set growing   = all_pages | filter(attribute="extra.growth", value="growing")   | length %}
+    {% set evergreen = all_pages | filter(attribute="extra.growth", value="evergreen") | length %}
 
-    {# Active filter from URL query (?growth=evergreen). Default to "all". #}
-    {% set growth_filter = "all" %}
+    {% if depth_exceeded %}
+    <p class="build-warning" role="alert">
+        Content is nested deeper than the count walk in <code>garden.html</code>,
+        <code>section.html</code> and <code>search_index.xml</code> handles — the
+        totals below and the search index are undercounting. Add a level to each.
+    </p>
+    {% endif %}
 
-    <div class="terminal-window">
-        {{ ui::window_bar(resource=section) }}
+    <h1 class="garden__title">{{ section.title }}</h1>
+    {% if section.description %}
+    <p class="garden__lede">{{ section.description }}</p>
+    {% endif %}
 
-        <div class="window-content">
-
-            {# Bonsai sits as the first line of terminal output — like an
-               ASCII signature printed by `cat ~/.bonsai`. Inside the window
-               (on bg-surface) the screen blend mode neutralizes the PNG's
-               dark backdrop. #}
-            <div class="garden-bonsai">
-                <img src="/images/garden-bonsai.png" alt="ASCII bonsai" />
-            </div>
-
-            {# 1. Intro prompt — counts notes via shell-style command #}
-            <div class="cmd-line" style="opacity: 0.55;">
-                <span class="cmd-prompt">$</span>
-                <span class="cmd">find</span>
-                <span class="args">. -type f -name '*.md' | wc -l</span>
-            </div>
-            <div class="garden-count">{{ total }}</div>
-
-            {# 2. Section description rendered as `cat README.md` output —
-                 plain text flow, no nested chrome. The terminal-window IS
-                 the panel; nesting borders inside it competes visually. #}
-            {% if section.content %}
-            <div class="cmd-line" style="opacity: 0.55; margin-top: 1.25rem;">
-                <span class="cmd-prompt">$</span>
-                <span class="cmd">cat</span>
-                <span class="args">README.md</span>
-            </div>
-            <div class="hub-stdout">{{ section.content | safe }}</div>
-            {% endif %}
-
-            {# 3. ls prompt #}
-            <div class="cmd-line" style="opacity: 0.55; margin-top: 1.5rem;">
-                <span class="cmd-prompt">$</span>
-                <span class="cmd">ls</span>
-                <span class="args">-lah --sort=recent</span>
-            </div>
-
-            {# 4. Directory jump block — categories as a top-of-table summary.
-                 Clickable; jumps to anchor below. Mirrors `tree -L 1` output. #}
-            <div class="hub-table-wrap" style="margin-top: 0.65rem;">
-                <table class="hub-table">
-                    <thead>
-                        <tr>
-                            <th class="col-perms">PERMS</th>
-                            <th>CATEGORY</th>
-                            <th class="col-size">NOTES</th>
-                            <th class="col-updated">LAST</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for sub_path in section.subsections %}
-                            {% set sub = get_section(path=sub_path) %}
-                            {% set_global sub_pages = sub.pages %}
-                            {% for nested_path in sub.subsections %}
-                                {% set nested = get_section(path=nested_path) %}
-                                {% set_global sub_pages = sub_pages | concat(with=nested.pages) %}
-                                {% for deeper_path in nested.subsections %}
-                                    {% set deeper = get_section(path=deeper_path) %}
-                                    {% set_global sub_pages = sub_pages | concat(with=deeper.pages) %}
-                                {% endfor %}
-                            {% endfor %}
-                            {% set sub_pages = sub_pages | unique(attribute="permalink") %}
-                            {% if sub_pages | length > 0 %}
-                                {% set sorted = sub_pages | sort(attribute="date") | reverse %}
-                                {% set last = sorted | first %}
-                            <tr class="hub-row">
-                                <td class="col-perms">drwxr-xr-x</td>
-                                <td class="col-name">
-                                    <a href="#cat-{{ sub.title | slugify }}">{{ sub.title | lower }}/</a>
-                                </td>
-                                <td class="col-size">{{ sub_pages | length }}</td>
-                                <td class="col-updated">{{ last.date | date(format="%Y-%m-%d") }}</td>
-                            </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            {# 5. Filter flag bar — links toggle URL params on the same page #}
-            <div class="flag-bar">
-                {{ ui::flag_row_open(flag="--growth") }}
-                    {{ ui::flag_opt(value="all",       label="all",       count=total,           href="?",                  active=growth_filter) }}
-                    {{ ui::flag_opt(value="seedling",  label="seedling",  count=seedling_count,  href="?growth=seedling",   active=growth_filter) }}
-                    {{ ui::flag_opt(value="growing",   label="growing",   count=growing_count,   href="?growth=growing",    active=growth_filter) }}
-                    {{ ui::flag_opt(value="evergreen", label="evergreen", count=evergreen_count, href="?growth=evergreen",  active=growth_filter) }}
-                {{ ui::flag_row_close(hint="filters by growth stage") }}
-            </div>
-
-            {# 6. Per-category note tables.
-                 Each category is its own table grouping for scannability. #}
-            {% for sub_path in section.subsections %}
-                {% set sub = get_section(path=sub_path) %}
-                {% set_global cat_pages = sub.pages %}
-                {% for nested_path in sub.subsections %}
-                    {% set nested = get_section(path=nested_path) %}
-                    {% set_global cat_pages = cat_pages | concat(with=nested.pages) %}
-                    {% for deeper_path in nested.subsections %}
-                        {% set deeper = get_section(path=deeper_path) %}
-                        {% set_global cat_pages = cat_pages | concat(with=deeper.pages) %}
-                    {% endfor %}
-                {% endfor %}
-                {% set cat_pages = cat_pages | unique(attribute="permalink") %}
-
-                {% if cat_pages | length > 0 %}
-                    {% set cat_pages_sorted = cat_pages | sort(attribute="date") | reverse %}
-
-                <h2 class="hub-heading" id="cat-{{ sub.title | slugify }}">
-                    <a href="{{ sub.permalink }}" style="color: inherit; text-decoration: none;">~/{{ sub.title | lower }}</a>
-                    <span class="hub-heading-count">// {{ cat_pages | length }} notes</span>
-                </h2>
-
-                <div class="hub-table-wrap">
-                    <table class="hub-table">
-                        <thead>
-                            <tr>
-                                <th class="col-growth">GROWTH</th>
-                                <th class="col-type">TYPE</th>
-                                <th class="col-updated">UPDATED</th>
-                                <th class="col-tags">TAGS</th>
-                                <th>NAME</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for page in cat_pages_sorted %}
-                                {% set growth = page.extra.growth | default(value="seedling") %}
-                                {% set ctype  = page.extra.type   | default(value="note") %}
-                                {% set pinned = page.extra.pinned | default(value=false) %}
-                            <tr class="hub-row"
-                                data-growth="{{ growth }}"
-                                data-type="{{ ctype }}"
-                                data-pinned="{{ pinned }}">
-                                <td class="col-growth">{% if growth == "seedling" %}[seed]{% elif growth == "growing" %}[grow]{% elif growth == "evergreen" %}[ever]{% else %}[seed]{% endif %}</td>
-                                <td class="col-type">{% if ctype == "blog" %}[blog]{% elif ctype == "project" %}[proj]{% elif ctype == "reference" %}[ref]{% elif ctype == "tutorial" %}[tut]{% elif ctype == "snippet" %}[snip]{% elif ctype == "log" %}[log]{% else %}[note]{% endif %}</td>
-                                <td class="col-updated"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
-                                <td class="col-tags">
-                                    {% if page.taxonomies.tags %}
-                                        {% for tag in page.taxonomies.tags | slice(end=3) %}<a href="{{ get_taxonomy_url(kind="tags", name=tag) }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
-                                    {% else %}—{% endif %}
-                                </td>
-                                <td class="col-name">
-                                    {% if pinned %}<span class="badge-pinned" title="Pinned">★</span>{% endif %}
-                                    <a href="{{ page.permalink }}">{{ page.title }}</a>
-                                    {% if page.extra and page.extra.status %}<span class="badge-status {{ page.extra.status }}">[{{ page.extra.status }}]</span>{% endif %}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% endif %}
-            {% endfor %}
-
-            {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="2rem", opacity=0.5) }}
-
-        </div>
+    <div class="garden__bar">
+        {{ ui::prompt(cmd="tree", path="~/garden", dim="--filter=all", class="garden__prompt") }}
+        <a class="garden__tags-link" href="{{ get_url(path="tags") }}">
+            <span class="garden__hash">#</span> browse all tags &rarr;
+        </a>
     </div>
+
+    <div class="chips">
+        <span class="chips__total">{{ total }} notes:</span>
+        <a class="chip is-active" href="?" data-growth="all">
+            <span class="chip__dot"></span>all <span class="chip__count">{{ total }}</span>
+        </a>
+        <a class="chip" href="?growth=seedling" data-growth="seedling">
+            {{ ui::growth_dot(growth="seedling", large=true) }}seedling <span class="chip__count">{{ seedling }}</span>
+        </a>
+        <a class="chip" href="?growth=growing" data-growth="growing">
+            {{ ui::growth_dot(growth="growing", large=true) }}growing <span class="chip__count">{{ growing }}</span>
+        </a>
+        <a class="chip" href="?growth=evergreen" data-growth="evergreen">
+            {{ ui::growth_dot(growth="evergreen", large=true) }}evergreen <span class="chip__count">{{ evergreen }}</span>
+        </a>
+    </div>
+
+    <div class="tree scroll-x" id="tree">
+        <div class="tree__root">~/garden/</div>
+        {{ self::branch(path=section.relative_path, prefix="", depth=0) }}
+        <div class="tree__empty" id="tree-empty" hidden>no notes match this filter.</div>
+    </div>
+
 </div>
 
-<script>
-// URL-param-driven growth filter. Hides rows that don't match.
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const growth = (params.get('growth') || 'all').toLowerCase();
-    if (growth === 'all') return;
-
-    document.querySelectorAll('.hub-row[data-growth]').forEach(row => {
-        if (row.dataset.growth !== growth) row.style.display = 'none';
-    });
-
-    // Mark the active flag option
-    document.querySelectorAll('.flag-opt').forEach(a => {
-        const url = new URL(a.href, window.location.origin);
-        const v = (url.searchParams.get('growth') || 'all').toLowerCase();
-        a.classList.toggle('active', v === growth);
-        const bullet = a.querySelector('.flag-bullet');
-        if (bullet) bullet.textContent = (v === growth) ? '●' : '○';
-    });
-
-    // Hide category headings whose tables are empty after filtering
-    document.querySelectorAll('h2.hub-heading[id^="cat-"]').forEach(h => {
-        const table = h.nextElementSibling;
-        if (!table) return;
-        const visible = table.querySelectorAll('.hub-row:not([style*="display: none"])').length;
-        if (visible === 0) {
-            h.style.display = 'none';
-            table.style.display = 'none';
-        }
-    });
-})();
-</script>
+<script defer src="{{ get_url(path='js/filters.js') }}"></script>
 {% endblock main_content %}

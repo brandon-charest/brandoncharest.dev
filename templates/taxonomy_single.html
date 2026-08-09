@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
+
+{# /tags/<tag>/ — the folder-listing primitive, pointed at a tag instead of a
+   directory. A tag is a folder you did not have to file things into. #}
+
+{% block main_content %}
+<div class="body">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="{{ config.base_url }}" aria-label="Home">~</a>
+        <span class="crumbs__sep" aria-hidden="true">/</span>
+        <a href="{{ get_url(path='tags') }}">tags</a>
+        <span class="crumbs__sep" aria-hidden="true">/</span>
+        <span class="crumbs__current" aria-current="page">{{ term.name }}</span>
+    </nav>
+
+    <div class="folder__head">
+        <span class="folder__badge">TAG</span>
+        <span class="folder__count">{{ term.pages | length }} note{% if term.pages | length != 1 %}s{% endif %}</span>
+    </div>
+
+    <h1 class="folder__title">#{{ term.name }}</h1>
+
+    {{ ui::prompt(cmd="ls", path="~/tags/" ~ term.name, class="folder__prompt") }}
+
+    <div class="listing">
+        {% for page in term.pages %}
+            {% set growth = page.extra.growth | default(value="seedling") %}
+            {% set kind   = page.extra.type   | default(value="note") %}
+            <a class="listing__row" href="{{ page.permalink }}">
+                <span class="listing__badge">{{ ui::kind_badge(type=kind, boxed=true) }}</span>
+                <span class="listing__main">
+                    <span class="listing__line">
+                        <span class="listing__name">{{ page.relative_path | split(pat="/") | last }}</span>
+                        <span class="listing__title">{{ page.title }}</span>
+                    </span>
+                    {% if page.description %}<span class="listing__desc">{{ page.description }}</span>{% endif %}
+                </span>
+                <span class="listing__meta">{{ ui::growth_state(growth=growth, large=false) }}</span>
+            </a>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock main_content %}

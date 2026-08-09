@@ -1,86 +1,45 @@
 {% import "macros/macros.html" as post_macros %}
 {% import "macros/ui.html" as ui %}
-{% import "macros/meta.html" as meta %}
 
 <!DOCTYPE html>
 <html lang="en">
 
 {% include "partials/header.html" %}
 
-<body class="light dark">
+<body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div class="ambient-shape shape-1" aria-hidden="true"></div>
 
-    <div class="content" id="main-content">
-        {% include "partials/nav.html" %}
+    {% include "partials/site_header.html" %}
+    {% include "partials/palette.html" %}
 
-        <div class="terminal-container">
-            {% include "partials/terminal_header.html" %}
-        </div>
+    <main class="site-main" id="main-content">
+        {# The old global `visitor@dev:~$ <cmd>` hero lived here. The redesign
+           still has that prompt, but per screen and inside the content column
+           (`tree ~/garden`, `ls <path>`, `cat ~/now.md`, `git log --oneline`),
+           so the default is empty and each screen emits its own. #}
+        {% block terminal_header %}{% endblock terminal_header %}
+
         {# Post page is the default #}
         {% block main_content %}
         Nothing here?!
         {% endblock main_content %}
 
         {% if page.extra.comment is defined %}
-        {% set show_comment = page.extra.comment %}
+            {% set show_comment = page.extra.comment %}
         {% else %}
-        {% set show_comment = false %}
+            {% set show_comment = false %}
         {% endif %}
 
         {% if show_comment %}
-        <div class="giscus">
-        </div>
-        {% include "_giscus_script.html" %}
+            <div class="giscus"></div>
+            {% include "_giscus_script.html" %}
         {% endif %}
-    </div>
+    </main>
 
-    <footer class="system-status">
-        <div class="status-item">
-            <span class="status-label">MODE:</span>
-            <span class="status-value">READ_ONLY</span>
-        </div>
-        <div class="status-item">
-            <span class="status-label">LOC:</span>
-            <span class="status-value">{{ config.extra.location }}</span>
-        </div>
-        <div class="status-item">
-            <span class="status-label">UPTIME:</span>
-            <span class="status-value" id="uptime">00:00:00</span>
-        </div>
-        <div class="status-item right">
-            <span class="status-label">GIT:</span>
-            <span class="status-value">{{ config.extra.branch }}</span>
-        </div>
-    </footer>
+    {% include "partials/statusbar.html" %}
+
+    <script defer src="{{ get_url(path='js/statusbar.js') }}"></script>
+    <script defer src="{{ get_url(path='js/palette.js') }}"></script>
 </body>
-
-
-<script>
-    // Persistent Uptime Counter
-    // Get or set the initial start time in localStorage
-    if (!localStorage.getItem('siteStartTime')) {
-        localStorage.setItem('siteStartTime', Date.now());
-    }
-
-    const startTime = parseInt(localStorage.getItem('siteStartTime'));
-
-    function updateUptime() {
-        const now = Date.now();
-        const uptimeMs = now - startTime;
-        const uptimeSeconds = Math.floor(uptimeMs / 1000);
-
-        const hours = Math.floor(uptimeSeconds / 3600);
-        const minutes = Math.floor((uptimeSeconds % 3600) / 60);
-        const seconds = uptimeSeconds % 60;
-
-        const formatted = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        document.getElementById('uptime').innerText = formatted;
-    }
-
-    // Update immediately and then every second
-    updateUptime();
-    setInterval(updateUptime, 1000);
-</script>
 
 </html>

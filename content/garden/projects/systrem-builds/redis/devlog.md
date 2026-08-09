@@ -6,17 +6,16 @@ description = "A chronological record of my suffering."
 [taxonomies]
 tags = ["devlog"]
 [extra]
-type = "log" 
-growth = "growing" 
+type = "log"
+growth = "growing"
 +++
 
-# 🏗️ Build Log
-
+## Build Log
 *A chronological record of my suffering.*
 
 [Main Branch](https://github.com/brandon-charest/redis-lite)
 
-## 📅 2026-02-18
+## 2026-02-18
 
 ### Blocking retrieval BLPOP
 

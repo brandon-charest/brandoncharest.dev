@@ -1,15 +1,15 @@
 :root {
-  --note-header-bg: var(--bg-2);
-  --note-header-color: var(--foreground);
-  --note-content-bg: var(--bg-1);
+  --note-header-bg: var(--bg0-soft);
+  --note-header-color: var(--fg1);
+  --note-content-bg: var(--bg1);
 }
 
 .note-container {
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-badge);
   overflow: hidden;
   margin: 1em 0;
   position: relative;
-  border-left: 3px solid var(--primary);
+  border-left: 3px solid var(--orange);
 }
 
 .note-toggle,
@@ -71,7 +71,7 @@
 
 .note-icon::before {
   content: "✎";
-  color: var(--primary);
+  color: var(--orange);
   position: absolute;
   left: 20px;
   top: 50%;
@@ -82,8 +82,8 @@ summary {
     padding-left: 0.5em;
 
     &:hover {
-        background-color: var(--primary);
-        color: var(--primary-foreground);
+        background-color: var(--orange);
+        color: var(--bg0);
         cursor: pointer;
     }
 }

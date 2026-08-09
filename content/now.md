@@ -1,6 +1,7 @@
 +++
 title = "What I'm Working On Now"
 description = "Current focus areas, research queue, and active projects"
+template = "prose.html"
 +++
 
 > Last updated: March 2026

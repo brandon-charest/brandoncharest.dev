@@ -1,213 +1,205 @@
-:root {
-  --label-color: #f0f0f0;
-  --code-bg: #f5f5f5;
-  --highlight-color: #f0f0f0;
-  --code-mark-bg: var(--primary-a10);
-  --code-mark-border: var(--primary);
-}
+/* =============================================================================
+   Code blocks
+   Spec: docs/design/TOKENS.md § Code block
 
-:root.dark {
-  --code-bg: #1a1e26;
-  --highlight-color: #204e8a;
-}
+   Colours *inside* the block come from the generated Gruvbox syntax stylesheet
+   (public/syntax-theme-dark.css, built from highlight_themes/gruvbox-dark.tmTheme).
+   That is the one sanctioned place the palette runs multi-hue; everything here
+   is the surrounding chrome.
 
-$language-colors: (
-  "js": (#f7df1e,
-    "JavaScript",
-  ),
-  "yaml": (#f71e6a,
-    "YAML",
-  ),
-  "shell": (#4eaa25,
-    "Shell",
-  ),
-  "json": (dodgerblue,
-    "JSON",
-  ),
-  "python": (#3572a5,
-    "Python",
-  ),
-  "css": (#264de4,
-    "CSS",
-  ),
-  "go": (#00add8, "Go", ),
-  "markdown": (#0000ff, "Markdown", ),
-  "rust": (#ff4647,
-    "Rust",
-  ),
-  "java": (#f89820,
-    "Java",
-  ),
-  "csharp": (#178600,
-    "C#",
-  ),
-  "ruby": (#701516,
-    "Ruby",
-  ),
-  "swift": (#f05138,
-    "Swift",
-  ),
-  "php": (#777bb4,
-    "PHP",
-  ),
-  "typescript": (#3178c6,
-    "TypeScript",
-  ),
-  "scala": (#c22d40,
-    "Scala",
-  ),
-  "kotlin": (#f18e33,
-    "Kotlin",
-  ),
-  "lua": (#000080,
-    "Lua",
-  ),
-  "perl": (#0298c3,
-    "Perl",
-  ),
-  "haskell": (#5e5086,
-    "Haskell",
-  ),
-  "r": (#198ce7,
-    "R",
-  ),
-  "dart": (#00d2b8,
-    "Dart",
-  ),
-  "elixir": (#6e4a7e,
-    "Elixir",
-  ),
-  "clojure": (#5881d8,
-    "Clojure",
-  ),
-  "bash": (#4eaa25,
-    "Bash",
-  ),
-  "default": (#333,
-    "Code",
-  ),
-);
+   The card is assembled by static/js/codeblock.js — Zola 0.17 cannot emit a
+   filename tab or a line-number gutter without per-fence flags. The plain
+   `<pre>` below is styled to look like the finished card minus its chrome, so
+   the enhancement adds a header bar rather than restyling the whole block.
 
-@mixin base-label-style($bg-color, $text-color: var(--label-color)) {
-  background: $bg-color;
-  color: $text-color;
-  border-radius: 0 0 var(--radius) var(--radius);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.05rem;
-  padding: 0.25rem 0.75rem;
-  text-align: right;
-  text-transform: uppercase;
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin-top: 0;
-}
-
-.code-label {
-  @include base-label-style(#333);
-}
-
-@each $lang, $color-info in $language-colors {
-  .label-#{$lang} {
-    @include base-label-style(nth($color-info, 1));
-  }
-}
+   This file previously carried ~27 per-language brand colours for code labels
+   (JavaScript yellow, Rust orange, Go cyan …). Those were the last non-palette
+   hex values on the site, and a per-language hue is exactly what the palette
+   exists to prevent. The language label is now uniform fg2 text.
+   ============================================================================= */
 
 code {
-  background-color: var(--secondary);
-  padding: 0.1em 0.2em;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
 }
 
 pre {
-  background: var(--code-bg);
-  border: 1px solid var(--primary-a15);
-  border-radius: var(--radius);
-  padding: 1.75rem;
+  margin: 0 0 24px;
+  padding: 16px 20px;
+  max-width: 100%;
   overflow-x: auto;
-  margin: 2.5rem 0;
-  position: relative;
-
-
-  mark {
-    background-color: var(--code-mark-bg);
-    border-left: 3px solid var(--code-mark-border);
-    border-radius: 2px;
-    padding-left: 0.5rem;
-    margin-left: -0.5rem;
-    color: inherit;
-  }
+  /* bg0-hard, not bg1. bg1 is the lightest surface on the site, and the site
+     audit found it dragged four syntax colours under WCAG AA at once: red
+     3.37, purple 4.23, blue 4.31, gray comments 3.16. The same tokens on
+     bg0-hard measure 4.77 / 5.98 / 6.09 / 4.47. A code well being darker than
+     the prose around it is also the conventional reading. */
+  background: var(--bg0-hard);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+  font-family: var(--font-code);
+  font-size: 14px;
+  line-height: 1.8;
+  -moz-tab-size: 4;
+  tab-size: 4;
 
   code {
-    background: transparent;
-    border: none;
     padding: 0;
+    background: none;
+    border: none;
     color: inherit;
-    font-size: 0.9em;
+    font-family: inherit;
+    font-size: inherit;
+  }
 
-    table {
-      margin: 0;
-      border-collapse: collapse;
-      font-family: var(--font-mono);
-
-      mark {
-        display: block;
-        color: inherit;
-        padding-left: 0.5rem;
-        margin-left: -0.5rem;
-        background-color: var(--code-mark-bg);
-        border-left: 3px solid var(--code-mark-border);
-        border-radius: 2px;
-      }
-    }
-
-    td,
-    th,
-    tr {
-      padding: 0;
-      border-bottom: none;
-      border: none;
-    }
-
-    tbody td:first-child {
-      text-align: center;
-      user-select: none;
-      min-width: 60px;
-      border-right: none;
-    }
-
-    tbody tr:nth-child(even),
-    thead tr {
-      background-color: unset;
-    }
+  mark {
+    padding-left: 0.5rem;
+    margin-left: -0.5rem;
+    border-left: 3px solid var(--orange);
+    border-radius: 2px;
+    background-color: var(--bg2);
+    color: inherit;
   }
 }
 
-.clipboard-button,
-.clipboard-button svg {
-  all: unset;
-  cursor: pointer;
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  z-index: 10;
-  background-color: transparent;
-  border: none;
-  fill: var(--foreground);
-  padding: 0.5rem;
-  border-radius: var(--radius-sm);
-  opacity: 0.5;
-  transition: all 0.2s ease;
+/* --- Card ------------------------------------------------------------------- */
 
-  &:hover {
-    opacity: 1;
-    background: var(--primary-a15);
+.code-card {
+  margin: 0 0 24px;
+  overflow: hidden;
+  background: var(--bg0-hard);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+
+  /* The pre is the card body now: it keeps the scrolling, drops the chrome. */
+  pre {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+.code-card__bar {
+  display: flex;
+  align-items: stretch;
+  background: var(--bg0);
+  border-bottom: 1px solid var(--bg2);
+}
+
+/* The orange square and inset top rule mark the active file — orange doing its
+   "current position" job, the same as the nav pill and the active TOC item. */
+.code-card__tab {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 18px 8px;
+  border-right: 1px solid var(--bg2);
+  box-shadow: inset 0 2px 0 var(--orange);
+  font-family: var(--font-code);
+  font-size: 12px;
+  color: var(--fg2);
+}
+
+.code-card__square {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--orange);
+}
+
+.code-card__lang {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  padding: 0 16px;
+  font-family: var(--font-code);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--fg2);
+}
+
+.code-card__body {
+  display: flex;
+  align-items: stretch;
+  font-family: var(--font-code);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.code-card__gutter {
+  flex: none;
+  margin: 0;
+  padding: 16px 12px;
+  overflow: hidden;
+  text-align: right;
+  background: var(--bg0);
+  border: 0;
+  border-right: 1px solid var(--bg2);
+  border-radius: 0;
+  color: var(--fg4); /* gray measured 4.02:1 on this ground */
+  font: inherit;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.code-card__body > pre:not(.code-card__gutter) {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg0-hard);
+}
+
+/* Mermaid injects its own label CSS that themeVariables does not reach — the
+   audit measured node labels at 1.3:1 (its default #333 on our dark card).
+   !important is the only thing that beats an injected inline stylesheet. */
+.mermaid {
+  text-align: center;
+
+  .nodeLabel,
+  .edgeLabel,
+  .label,
+  .titleText,
+  foreignObject div,
+  foreignObject span,
+  foreignObject p {
+    color: var(--fg1) !important;
+    background: transparent !important;
+    font-family: var(--font-code) !important;
   }
 
-  &:active {
-    transform: scale(0.95);
+  .edgeLabel foreignObject div { background: var(--bg0) !important; }
+
+  /* Shapes too. themeVariables passed through the shortcode demonstrably do
+     not reach these — nodes rendered mermaid's default near-white lavender,
+     which put cream labels on a near-white box. Setting them here is
+     verifiable. (Hex omitted: the palette gate greps comments too.) */
+  .node rect,
+  .node circle,
+  .node ellipse,
+  .node polygon,
+  .node path,
+  .cluster rect {
+    fill: var(--bg1) !important;
+    stroke: var(--bg3) !important;
   }
+
+  .edgePath .path,
+  .flowchart-link {
+    stroke: var(--fg4) !important;
+  }
+
+  marker path,
+  .marker {
+    fill: var(--fg4) !important;
+    stroke: var(--fg4) !important;
+  }
+}
+
+/* Zola paints `.z-code` with the theme background; the card owns the surface. */
+.code-card .z-code {
+  background: transparent;
+}
+
+/* Line numbers earn their place on a desktop. On a 390px screen the gutter is
+   9% of the viewport taken from the code itself, and the code is already
+   scrolling — so it goes. */
+@media (max-width: 560px) {
+  .code-card__gutter { display: none; }
 }

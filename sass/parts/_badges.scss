@@ -1,0 +1,205 @@
+/* =============================================================================
+   Badges, pills and maturity dots — the single place maturity colour is decided.
+
+   The palette reference calls this out as the highest-risk bug in the system:
+   "growing and evergreen have previously both rendered as orange, collapsing
+   the distinction the whole system exists to convey." The old pane component
+   did exactly that with seedling and growing. Every surface now renders these
+   through the macros in templates/macros/ui.html, which resolve to the rules
+   below, so the three stages cannot drift apart again.
+   ============================================================================= */
+
+/* --- Maturity ---------------------------------------------------------------
+   seedling = gray, growing = yellow, evergreen = green. Three distinct hues,
+   always. Defaults land on seedling so missing frontmatter degrades quietly.
+   -------------------------------------------------------------------------- */
+
+.dot-growth {
+  display: inline-block;
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gray);
+
+  &[data-growth="growing"]   { background: var(--yellow); }
+  &[data-growth="evergreen"] { background: var(--green); }
+
+  /* Meta rows, filter chips and the note-info card use the larger dot. */
+  &.dot-growth--lg { width: 8px; height: 8px; }
+}
+
+/* Dot + label as one unit. The label carries the stage colour and the dot
+   inherits it, so a stage cannot render with a matching word and a mismatched
+   dot. Yellow at 8px is easy to read as orange; the coloured word removes the
+   ambiguity without adding a hue. */
+.growth-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  /* Seedling is the one stage whose hue cannot carry text: gray measures
+     3.16:1 on bg1, where most of these render. Yellow (6.84) and green (5.62)
+     are fine, so only this case hands the word to fg2 and leaves the hue to
+     the dot — which is decoration, since the word already says the stage. */
+  color: var(--fg2);
+  .dot-growth { background: var(--gray); }
+
+  &[data-growth="growing"] {
+    color: var(--yellow);
+    .dot-growth { background: currentColor; }
+  }
+
+  &[data-growth="evergreen"] {
+    color: var(--green);
+    .dot-growth { background: currentColor; }
+  }
+}
+
+/* --- Content kind -----------------------------------------------------------
+   Three kinds carry a hue drawn from the dimmed --kind-* tier; the rest stay
+   neutral. This reverses the redesign's original "uniform fg2" rule, which
+   produced a badge column that was entirely fg2 and read as undifferentiated
+   grey next to an otherwise orange-heavy page.
+
+   Hues are rationed, not handed out per kind. Yellow is "growing" and green is
+   "evergreen", and a kind badge sits inches from a maturity dot on every
+   listing row — so those two are unavailable, and `blog` / `ref` / `tut` stay
+   neutral rather than borrow a colour that already means something else.
+   -------------------------------------------------------------------------- */
+
+/* The chip is load-bearing, not decoration. The three --kind-* hues measure
+   3.65:1 against a bare bg1 card and only reach AA (4.63-4.67:1) once they sit
+   on bg0. Removing the background silently drops these below WCAG AA. */
+.badge-kind,
+.palette__type {
+  background: var(--bg0);
+  border-radius: var(--radius-badge);
+
+  &[data-kind="proj"] { color: var(--kind-proj); }
+  &[data-kind="log"]  { color: var(--kind-log);  }
+  &[data-kind="snip"] { color: var(--kind-snip); }
+
+  /* Directories keep the aqua they already carry in the tree and the folder
+     header, per decision 1 — this is that same job, not a fourth kind hue. */
+  &[data-kind="dir"]  { color: var(--aqua); }
+
+  /* `blog`, `ref`, `tut` and `note` deliberately share one neutral rather than
+     splitting fg2/fg4. Giving the un-hued kinds a brighter neutral was tried
+     and inverted the hierarchy: at 8.6:1 they out-shouted the three kinds
+     actually carrying meaning, which sit at 4.6:1. One neutral, three hues. */
+}
+
+.badge-kind {
+  padding: 1px 6px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  /* Every un-hued kind falls through to this, `note` most of all at ~70% of
+     pages. Keeping it recessive is what lets the three coloured kinds register
+     at all — fg4 on the bg0 chip still measures 5.3:1. */
+  color: var(--fg4);
+  white-space: nowrap;
+}
+
+/* Outlined variant used by folder/tag child listings and palette results. */
+.badge-kind--boxed {
+  display: inline-block;
+  text-transform: uppercase;
+  width: 46px;
+  padding: 3px 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-badge);
+  /* Deliberately no `opacity` here. It composites the chip and its text
+     together down onto the card beneath, handing back exactly the contrast the
+     chip was added to buy. */
+}
+
+/* --- Tags -------------------------------------------------------------------
+   Every tag on every page looks identical regardless of topic. No per-tag hue.
+   (.tech-tag / .mini-tag, the pre-redesign aliases, are gone — the site audit
+   found no markup left using them.)
+   -------------------------------------------------------------------------- */
+
+/* Metrics deliberately match .chip in parts/_tree.scss — 13px, 4px 12px, both
+   pill-shaped links sitting on the same surfaces. They had drifted to 12px /
+   1px 9px, which rendered 23.19px tall against the chip's 32px: visibly
+   different, and under the 24px WCAG 2.5.8 minimum for a touch target. */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.7; /* 1.6 left it 31px against the chip's 32 */
+  color: var(--fg2);
+  background: transparent;
+  border: 1px solid var(--bg3);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color var(--t-mid), color var(--t-mid);
+
+  &:hover {
+    border-color: var(--fg4);
+    color: var(--fg1);
+    background: transparent;
+  }
+}
+
+/* --- Prompt line ------------------------------------------------------------
+   `visitor@dev:~$ <command>` — the shell prompt that heads most screens.
+   -------------------------------------------------------------------------- */
+
+.prompt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 0.5em; /* the separator — see the macro's note on minify + wrapping */
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--fg2);
+
+  /* A long path is one unbreakable token; let it break inside itself rather
+     than push the viewport. */
+  .prompt__path { overflow-wrap: anywhere; }
+
+  .prompt__user { color: var(--orange); }
+  /* fg4 rather than gray. gray measured 4.02:1 on bg0 where most prompts sit;
+     fg4 is 5.30. The prompt is aria-hidden decoration, but it is still read. */
+  .prompt__punct,
+  .prompt__flag,
+  .prompt__dim   { color: var(--fg4); }
+
+  .prompt__path { color: var(--aqua); }
+
+  /* The verb is the part that says what the screen below is doing, so it reads
+     first. Without this every segment sat at one weight and one colour and the
+     line ran together as a single string. */
+  .prompt__cmd {
+    color: var(--fg1);
+    font-weight: 500;
+  }
+}
+
+.prompt__cursor {
+  display: inline-block;
+  flex: none;
+  width: 8px;
+  height: 15px;
+  background: var(--orange);
+  transform: translateY(2px);
+  animation: bc-blink 1.1s steps(1) infinite;
+}
+
+@keyframes bc-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prompt__cursor { animation: none; }
+}

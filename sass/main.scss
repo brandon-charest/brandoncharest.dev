@@ -1,197 +1,33 @@
-@import "fonts.scss";
-@import "parts/_cards.scss";
-@import "parts/_character.scss";
+/* =============================================================================
+   brandoncharest.dev — Gruvbox TUI
+
+   Load order matters: tokens define the vocabulary, chrome establishes the
+   shell, then components. See docs/design/PALETTE.md and docs/design/TOKENS.md.
+
+   Fonts come from Google Fonts (linked in partials/header.html), not @font-face
+   — the four families the design calls for are all served from one request.
+   ============================================================================= */
+
+@import "tokens";
+@import "parts/_chrome.scss";
+
+/* --- Redesigned components -------------------------------------------------- */
+
+@import "parts/_badges.scss";
+@import "parts/_home.scss";
+@import "parts/_article.scss";
+@import "parts/_palette.scss";
+@import "parts/_tree.scss";
+@import "parts/_listing.scss";
+
+/* --- Components still on the pre-redesign vocabulary -------------------------
+   These compile against the legacy aliases at the bottom of _tokens.scss and
+   are replaced screen by screen. Each phase deletes the partials it retires.
+   -------------------------------------------------------------------------- */
+
 @import "parts/_code.scss";
 @import "parts/_header.scss";
 @import "parts/_image.scss";
-@import "parts/_toc.scss";
 @import "parts/_note.scss";
-@import "parts/_misc.scss";
-@import "parts/_table.scss";
-@import "parts/_tags.scss";
 @import "parts/_mermaid.scss";
-@import "parts/_search.scss";
-@import "parts/_talks.scss";
-@import "parts/_components.scss";
-@import "parts/_terminal.scss";
-@import "parts/_footer.scss";
-@import "parts/_page.scss";
-@import "parts/_filelist.scss";
-@import "parts/_hub-table.scss";
-@import "parts/_flags.scss";
-@import "parts/_panes.scss";
-@import "parts/_neofetch.scss";
-@import "parts/_highlights.scss";
-@import "parts/_growth-indicators.scss";
-@import "parts/_garden-meta.scss";
-@import "parts/_blog.scss";
-@import "parts/_garden.scss";
-
-
-@import "theme/light.scss";
-@import "theme/dark.scss";
-
-:root {
-  /* -------------------------------------------------------------------------- */
-  /* MONOCHROME TERMINAL THEME — One accent (#4ec9b0) + neutral grays          */
-  /* -------------------------------------------------------------------------- */
-
-  // New semantic tokens
-  --accent:        #4ec9b0;
-  --accent-dim:    #2a6b5e;
-  --text-primary:  #d4d4d4;
-  --text-secondary:#8a8a8a;
-  --text-muted:    #555555;
-  --bg-primary:    #0d0d0d;
-  --bg-surface:    #141414;
-  --bg-elevated:   #1a1a1a;
-
-  // Mapped tokens (backward compat)
-  --background: var(--bg-primary);
-  --foreground: var(--text-primary);
-  --grid-color: rgba(255, 255, 255, 0.03);
-  --card: var(--bg-surface);
-  --card-foreground: var(--text-primary);
-  --popover: var(--bg-elevated);
-  --popover-foreground: var(--text-primary);
-  --primary: var(--accent);
-  --primary-foreground: #000000;
-  --highlight: var(--accent);
-  --secondary: var(--bg-surface);
-  --secondary-foreground: var(--text-primary);
-  --muted: var(--bg-surface);
-  --muted-foreground: var(--text-secondary);
-  --destructive: #ff3d00;
-  --destructive-foreground: #ffffff;
-  --border: #222222;
-  --border-subtle: rgba(255, 255, 255, 0.05);
-  --border-muted: rgba(255, 255, 255, 0.1);
-  --input: #0d0d0d;
-  --ring: var(--accent);
-
-  // Typography
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Consolas', monospace;
-
-  // Shape
-  --radius-sm: 4px;
-  --radius: 8px;
-  --radius-lg: 12px;
-  --radius-pill: 9999px;
-
-  /* Primary alpha variants (rebased to #4ec9b0) */
-  --primary-a05: rgba(78, 201, 176, 0.05);
-  --primary-a08: rgba(78, 201, 176, 0.08);
-  --primary-a10: rgba(78, 201, 176, 0.10);
-  --primary-a15: rgba(78, 201, 176, 0.15);
-  --primary-a20: rgba(78, 201, 176, 0.20);
-  --primary-a25: rgba(78, 201, 176, 0.25);
-  --primary-a30: rgba(78, 201, 176, 0.30);
-
-  /* Signal accent — pinned posts, series indicators, "growing now" rows.
-     Used sparingly; do not promote to a general-purpose color. */
-  --accent-amber:    #d4a25a;
-  --accent-amber-a10: rgba(212, 162, 90, 0.10);
-  --accent-amber-a20: rgba(212, 162, 90, 0.20);
-  --accent-amber-a40: rgba(212, 162, 90, 0.40);
-
-  /* -------------------------------------------------------------------------- */
-  /* LEGACY MAPPING (still referenced by components)                            */
-  /* -------------------------------------------------------------------------- */
-
-  --bg-1: var(--bg-surface);
-  --bg-2: var(--bg-elevated);
-  --text-2: var(--text-muted);
-  --icon-filter: invert(1) brightness(2);
-
-  --line-height: 1.6;
-  --page-width: 1400px;
-  --font-size-base: 14px;
-}
-
-html {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-  line-height: var(--line-height);
-
-  /* Refined Dot Grid Pattern */
-  background-image: radial-gradient(circle, var(--grid-color) 0.75px, transparent 0.75px);
-  background-size: 32px 32px;
-  background-attachment: fixed;
-
-  min-height: 100%;
-  position: relative;
-
-  @media (max-width: 992px) {
-    font-size: calc(var(--font-size-base) * 0.97);
-  }
-
-  @media (max-width: 768px) {
-    font-size: calc(var(--font-size-base) * 0.95);
-  }
-
-  @media (max-width: 576px) {
-    font-size: calc(var(--font-size-base) * 0.92);
-  }
-
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  flex-grow: 1;
-  padding: 1rem;
-  margin: 0;
-  background-image: none;
-
-
-
-  .content {
-    width: 100%;
-    max-width: var(--page-width);
-    word-wrap: break-word;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-
-}
-
-.skip-link {
-  position: absolute;
-  top: -100px;
-  left: 1rem;
-  background: var(--primary);
-  color: var(--primary-foreground);
-  padding: 0.5rem 1rem;
-  z-index: 9999;
-  font-weight: bold;
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-  transition: top 0.2s ease-in-out;
-  text-decoration: none;
-
-  &:focus {
-    top: 0;
-    outline: 2px solid var(--accent);
-  }
-}
-
-:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
-
-.layout-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding-bottom: 40px;
-
-  @media (min-width: 992px) {
-    flex-direction: row;
-  }
-}
+@import "parts/_mathjax.scss";

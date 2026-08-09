@@ -1,182 +1,82 @@
 {% extends "base.html" %}
 {% import "macros/ui.html" as ui %}
 
+{# /blog — a stack of lifted post cards, not the folder-listing primitive.
+
+   The primitive is built for density: a garden folder holds a dozen terse
+   notes and the filename is the thing you scan. /blog holds a handful of
+   substantial posts, so the title has to lead. In the dense form the post
+   title sat at 13px underneath a longer 13px filename and lost every time.
+
+   Each card is a small terminal window — bg0-soft bar carrying the path, body
+   carrying the headline — echoing the home page's neofetch card. Deliberately
+   one step quieter than .featured-card (22px title vs 26px) so the home page's
+   FEATURED slot still outranks a routine post here. #}
+
 {% block main_content %}
-<div class="body full-width-layout">
+<div class="body">
 
-    {# Pinned posts surface in their own block above the full log. The full
-       log still includes them so the page works as a complete archive. #}
-    {% set pinned = section.pages | filter(attribute="extra.pinned", value=true) %}
+    <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="{{ config.base_url }}" aria-label="Home">~</a>
+        <span class="crumbs__sep" aria-hidden="true">/</span>
+        <span class="crumbs__current" aria-current="page">blog/</span>
+    </nav>
 
-    <div class="terminal-window">
-        {{ ui::window_bar(resource=section) }}
-
-        <div class="window-content">
-
-            {# 1. git log style intro #}
-            <div class="cmd-line" style="opacity: 0.55;">
-                <span class="cmd-prompt">$</span>
-                <span class="cmd">git</span>
-                <span class="args">log --oneline --all ./blog</span>
-            </div>
-
-            {% if section.content %}
-            <div class="cmd-line" style="opacity: 0.55; margin-top: 1.25rem;">
-                <span class="cmd-prompt">$</span>
-                <span class="cmd">cat</span>
-                <span class="args">README.md</span>
-            </div>
-            <div class="hub-stdout">{{ section.content | safe }}</div>
-            {% endif %}
-
-            {# 2. Tag flag bar — current taxonomy values
-                 (active filter is read from URL by the script below) #}
-            {% set tags_taxonomy = get_taxonomy(kind="tags") %}
-            {% if tags_taxonomy and tags_taxonomy.items %}
-                {% set blog_tag_set = [] %}
-                {% for page in section.pages %}
-                    {% if page.taxonomies.tags %}
-                        {% for t in page.taxonomies.tags %}
-                            {% if t not in blog_tag_set %}
-                                {% set_global blog_tag_set = blog_tag_set | concat(with=t) %}
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-
-                {% if blog_tag_set | length > 0 %}
-                    <div class="flag-bar" style="margin-top: 1rem;">
-                        {{ ui::flag_row_open(flag="--tag") }}
-                            {{ ui::flag_opt(value="all", label="all", count=section.pages | length, href="?", active="all") }}
-                            {% for t in blog_tag_set %}
-                                {# Tera's filter() can't match against list-typed attrs,
-                                   so count tag membership manually. #}
-                                {% set_global tag_count = 0 %}
-                                {% for page in section.pages %}
-                                    {% if page.taxonomies.tags and t in page.taxonomies.tags %}
-                                        {% set_global tag_count = tag_count + 1 %}
-                                    {% endif %}
-                                {% endfor %}
-                                {{ ui::flag_opt(value=t, label=t, count=tag_count, href="?tag=" ~ t, active="all") }}
-                            {% endfor %}
-                        {{ ui::flag_row_close(hint="filters by tag") }}
-                    </div>
-                {% endif %}
-            {% endif %}
-
-            {# 3. Pinned posts (★) #}
-            {% if pinned | length > 0 %}
-            <h2 class="hub-heading">
-                pinned
-                <span class="hub-heading-count">// {{ pinned | length }} {% if pinned | length == 1 %}post{% else %}posts{% endif %}</span>
-            </h2>
-
-            <div class="hub-table-wrap">
-                <table class="hub-table">
-                    <thead>
-                        <tr>
-                            <th class="col-hash">HASH</th>
-                            <th class="col-date">DATE</th>
-                            <th>TITLE</th>
-                            <th class="col-tags">TAGS</th>
-                            <th class="col-time">READ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for page in pinned %}
-                            {% set hash = page.permalink | trim_end_matches(pat="/") | split(pat="/") | last | truncate(length=7, end="") %}
-                        <tr class="hub-row" data-pinned="true"
-                            {% if page.taxonomies.tags %}data-tags="{{ page.taxonomies.tags | join(sep=' ') }}"{% endif %}>
-                            <td class="col-hash">{{ hash }}</td>
-                            <td class="col-date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
-                            <td class="col-name">
-                                <span class="badge-pinned" title="Pinned">★</span>
-                                <a href="{{ page.permalink }}">{{ page.title }}</a>
-                                {% if page.extra.series %}<span class="badge-status" style="color: var(--accent-amber);">[series · pt {{ page.extra.series_index | default(value=1) }}]</span>{% endif %}
-                            </td>
-                            <td class="col-tags">
-                                {% if page.taxonomies.tags %}
-                                    {% for tag in page.taxonomies.tags | slice(end=3) %}<a href="?tag={{ tag }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
-                                {% else %}—{% endif %}
-                            </td>
-                            <td class="col-time">{% if page.reading_time %}~{{ page.reading_time }}m{% else %}—{% endif %}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-
-            {# 4. Full log (all posts) — pinned still appear here for completeness #}
-            <h2 class="hub-heading">
-                log
-                <span class="hub-heading-count">// {{ section.pages | length }} {% if section.pages | length == 1 %}commit{% else %}commits{% endif %}</span>
-            </h2>
-
-            <div class="hub-table-wrap">
-                <table class="hub-table">
-                    <thead>
-                        <tr>
-                            <th class="col-hash">HASH</th>
-                            <th class="col-date">DATE</th>
-                            <th>TITLE</th>
-                            <th class="col-tags">TAGS</th>
-                            <th class="col-time">READ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for page in section.pages %}
-                            {% set hash = page.permalink | trim_end_matches(pat="/") | split(pat="/") | last | truncate(length=7, end="") %}
-                            {% set is_pinned = page.extra.pinned | default(value=false) %}
-                        <tr class="hub-row"
-                            data-pinned="{{ is_pinned }}"
-                            {% if page.taxonomies.tags %}data-tags="{{ page.taxonomies.tags | join(sep=' ') }}"{% endif %}>
-                            <td class="col-hash">{{ hash }}</td>
-                            <td class="col-date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
-                            <td class="col-name">
-                                {% if is_pinned %}<span class="badge-pinned" title="Pinned">★</span>{% endif %}
-                                <a href="{{ page.permalink }}">{{ page.title }}</a>
-                                {% if page.extra.series %}<span class="badge-status" style="color: var(--accent-amber);">[series · pt {{ page.extra.series_index | default(value=1) }}]</span>{% endif %}
-                            </td>
-                            <td class="col-tags">
-                                {% if page.taxonomies.tags %}
-                                    {% for tag in page.taxonomies.tags | slice(end=3) %}<a href="?tag={{ tag }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
-                                {% else %}—{% endif %}
-                            </td>
-                            <td class="col-time">{% if page.reading_time %}~{{ page.reading_time }}m{% else %}—{% endif %}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="2rem", opacity=0.5) }}
-
-        </div>
+    <div class="folder__head">
+        <span class="folder__badge">DIR</span>
+        <span class="folder__count">{{ section.pages | length }} post{% if section.pages | length != 1 %}s{% endif %}</span>
     </div>
+
+    <h1 class="folder__title">{{ section.title }}</h1>
+
+    {% if section.description %}
+    <p class="folder__overview">{{ section.description }}</p>
+    {% endif %}
+
+    {{ ui::prompt(cmd="ls", path="~/blog", dim="--sort=date", class="folder__prompt") }}
+
+    {# Pinned first, then the rest in section order (date, newest first). Two
+       passes over one loop rather than two copies of the card: the previous
+       version duplicated the whole row and the pinned copy had already drifted
+       (it carried the star, the other did not). #}
+    <div class="postlist">
+        {% for want_pinned in [true, false] %}
+        {% for page in section.pages %}
+        {% set is_pinned = page.extra.pinned | default(value=false) %}
+        {% if is_pinned == want_pinned %}
+            <a class="post-card" href="{{ page.permalink }}">
+                <div class="post-card__bar">
+                    <span class="post-card__path"><span class="post-card__dir">~/blog/</span>{{ page.relative_path | split(pat="/") | last }}</span>
+                    {% if is_pinned %}<span class="post-card__pin">&#9733; pinned</span>{% endif %}
+                </div>
+
+                <div class="post-card__body">
+                    {# A real heading: the index gets a document outline, and the
+                       title stops being a 13px span buried under a filename. #}
+                    <h2 class="post-card__title">{{ page.title }}<span class="post-card__arrow" aria-hidden="true">&rarr;</span></h2>
+
+                    {% if page.description %}<p class="post-card__lede">{{ page.description }}</p>{% endif %}
+
+                    <div class="post-card__foot">
+                        {% if page.taxonomies.tags %}
+                        <span class="post-card__tags">
+                            {# Plain spans, not ui::tag_pill — that macro emits an
+                               <a>, and the whole card is already a link. #}
+                            {% for tag in page.taxonomies.tags | slice(end=3) %}<span class="tag-pill">#{{ tag }}</span>{% endfor %}
+                        </span>
+                        {% endif %}
+                        <span class="post-card__meta">{{ page.date | date(format="%b %-d, %Y") }}{% if page.reading_time %} &middot; {{ page.reading_time }} min{% endif %}</span>
+                    </div>
+                </div>
+            </a>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+
+        {% if section.pages | length == 0 %}
+            <div class="listing__empty">no posts yet — the log is silent.</div>
+        {% endif %}
+    </div>
+
 </div>
-
-<script>
-// URL-param tag filter
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const tag = (params.get('tag') || '').toLowerCase();
-
-    if (tag) {
-        document.querySelectorAll('.hub-row[data-tags]').forEach(row => {
-            const tags = row.dataset.tags.toLowerCase().split(' ');
-            if (!tags.includes(tag)) row.style.display = 'none';
-        });
-    }
-
-    document.querySelectorAll('.flag-opt').forEach(a => {
-        const url = new URL(a.href, window.location.origin);
-        const v = (url.searchParams.get('tag') || 'all').toLowerCase();
-        const isActive = (tag === '' && v === 'all') || (v === tag);
-        a.classList.toggle('active', isActive);
-        const bullet = a.querySelector('.flag-bullet');
-        if (bullet) bullet.textContent = isActive ? '●' : '○';
-    });
-})();
-</script>
 {% endblock main_content %}

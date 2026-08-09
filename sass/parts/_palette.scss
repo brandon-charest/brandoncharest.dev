@@ -1,0 +1,176 @@
+/* =============================================================================
+   Command palette
+   Spec: docs/design/TOKENS.md § Command palette
+   ============================================================================= */
+
+.palette {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 14vh 20px 20px;
+}
+
+.palette__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.palette__panel {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  overflow: hidden;
+  background: var(--bg1);
+  border: 1px solid var(--bg3);
+  border-radius: var(--radius-lift);
+  box-shadow: var(--shadow-panel);
+  font-family: var(--font-ui);
+}
+
+.palette__input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--bg2);
+}
+
+.palette__slash {
+  font-size: 16px;
+  color: var(--orange);
+}
+
+.palette__input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--fg1);
+  font-family: var(--font-ui);
+  font-size: 15px;
+
+  &::placeholder { color: var(--fg4); }
+}
+
+.palette__results {
+  max-height: 48vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px;
+}
+
+.palette__row {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 11px;
+  border: none;
+  border-radius: var(--radius-row);
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+
+  /* The selected row is --hover, not bg1: the panel is already bg1, so the
+     prototype's bg1 highlight was invisible against it. */
+  &.is-selected { background: var(--hover); }
+}
+
+/* Same kind colours as the listings — a result should look like the row it
+   points at. The hue and the bg0 chip come from parts/_badges.scss; anything
+   without a data-kind match (notably `tag`) falls through to fg4 here. */
+.palette__type {
+  flex: none;
+  width: 46px;
+  padding: 2px 0;
+  text-align: center;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-badge);
+  color: var(--fg4);
+  font-size: 9.5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.palette__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.palette__label,
+.palette__sub {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.palette__label { color: var(--fg1); }
+
+.palette__sub {
+  font-size: 12px;
+  color: var(--fg2);
+}
+
+.palette__enter {
+  flex: none;
+  color: var(--gray);
+}
+
+.palette__empty {
+  padding: 24px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--fg2);
+}
+
+.palette__foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 14px;
+  border-top: 1px solid var(--bg2);
+  background: var(--bg0-soft);
+  font-size: 12px;
+  color: var(--fg2);
+}
+
+.palette__key { color: var(--fg1); }
+.palette__spacer { flex: 1; }
+
+@media (pointer: coarse) {
+  .palette { padding-top: 8vh; }
+  .palette__row { min-height: 44px; }
+  /* 16px stops iOS Safari zooming the viewport when the field takes focus. */
+  .palette__input { font-size: 16px; }
+}
+
+@media (max-width: 560px) {
+  .palette__foot { display: none; }
+}
+
+/* The `esc` chip is a real button. It looks identical to the static chip it
+   replaced; the difference is that it works on a phone, where there is no Esc
+   key and the footer hint that mentions one is hidden. */
+.palette__close {
+  cursor: pointer;
+  background: none;
+  font-family: var(--font-ui);
+
+  &:hover { color: var(--fg1); border-color: var(--fg4); }
+}
+
+@media (pointer: coarse) {
+  .palette__close { min-height: 32px; padding-inline: 10px; }
+}

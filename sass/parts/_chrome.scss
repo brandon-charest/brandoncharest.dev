@@ -1,0 +1,505 @@
+/* =============================================================================
+   Global chrome — page shell, sticky header, status bar
+   Spec: docs/design/TOKENS.md § Layout, Header, Status bar
+   ============================================================================= */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  background: var(--bg0);
+  color: var(--fg1);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  line-height: var(--leading);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; }
+
+/* Any explicit `display` beats the UA stylesheet's `[hidden] { display: none }`,
+   so a flex or grid component silently ignores the attribute. Enforce it once
+   rather than remembering to guard every component that JS toggles. */
+[hidden] { display: none !important; }
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--fg1);
+}
+
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+/* Terminal-flavoured scrollbars on anything that scrolls sideways. */
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-x::-webkit-scrollbar,
+pre::-webkit-scrollbar { height: 9px; width: 9px; }
+
+.scroll-x::-webkit-scrollbar-track,
+pre::-webkit-scrollbar-track { background: var(--bg1); }
+
+.scroll-x::-webkit-scrollbar-thumb,
+pre::-webkit-scrollbar-thumb {
+  background: var(--bg3);
+  border: 2px solid var(--bg1);
+}
+
+/* -----------------------------------------------------------------------------
+   Content column — ONE width across every screen. Do not vary it: the site
+   previously ran five different widths and content lurched sideways between
+   pages.
+   -------------------------------------------------------------------------- */
+
+.site-main {
+  flex: 1;
+  width: 100%;
+}
+
+.wrap,
+.body {
+  width: 100%;
+  max-width: var(--content);
+  margin: 0 auto;
+  padding: 42px var(--gutter) 84px;
+}
+
+/* Legacy modifier from the old layout — the column is uniform now. */
+.body.full-width-layout { max-width: var(--content); }
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 60;
+  padding: 0.5rem 1rem;
+  background: var(--orange);
+  color: var(--bg0);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-badge) var(--radius-badge);
+  transition: top 0.2s ease-in-out;
+
+  &:focus { top: 0; }
+}
+
+/* -----------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--bg0-hard);
+  border-bottom: 1px solid var(--bg2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.site-header__inner {
+  max-width: var(--content);
+  margin: 0 auto;
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  min-height: 24px; /* WCAG 2.5.8 — was 20px */
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+
+  /* Orange marks the *username* only. `@dev` is the host half of the mark, not
+     a name and not actionable — leaving it orange gave the brand two accent
+     words competing with the active nav pill a few hundred pixels away. */
+  .brand__name { color: var(--orange); }
+  .brand__at,
+  .brand__host { color: var(--fg2); }
+  .brand__cwd  { color: var(--fg4); } /* gray was 4.47:1 on bg0-hard */
+}
+
+.site-header__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+/* Search trigger — the ⌘K palette binds to this in Phase 7. */
+.search-trigger {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 9px 5px 11px;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-row);
+  color: var(--fg2);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color var(--t-mid), color var(--t-mid);
+
+  &:hover {
+    border-color: var(--bg3);
+    color: var(--fg1);
+  }
+
+  /* The prompt glyph stays monospaced — it is a terminal cue, not a word. */
+  .search-trigger__slash {
+    font-family: var(--font-ui);
+    color: var(--fg2);
+  }
+}
+
+.kbd {
+  padding: 0 5px;
+  border: 1px solid var(--bg3);
+  border-radius: var(--radius-badge);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--fg2);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+/* Nav labels are IBM Plex Sans, not the IBM Plex Mono the handoff assigns to
+   terminal chrome. Monospace forces every glyph into the same advance width,
+   which at 13px flattens the shapes that distinguish letters (n/h, a/o) and
+   opens gaps inside words. These are five short words that get read at a
+   glance, so legibility beats terminal texture. Same superfamily, and it is
+   already loaded for prose, so no extra font request.
+
+   The index numbers stay monospaced: they are a terminal affordance tied to
+   the 1-5 keyboard shortcuts, and tabular figures keep the pills aligned. */
+.site-nav__item {
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--fg2);
+  transition: color var(--t-fast);
+
+  .site-nav__num {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg4);
+    font-weight: 600;
+  }
+
+  &:hover { color: var(--fg1); }
+
+  /* Active state is a separate rule, not a swapped custom property — the
+     handoff runtime stranded the pill by mutating a style hole, and a static
+     rule is simply less fragile. */
+  &.is-active {
+    background: var(--orange);
+    color: var(--bg0);
+    font-weight: 600;
+
+    .site-nav__num {
+      color: var(--bg0);
+      font-weight: 700;
+    }
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   Status bar — tmux-style, pinned to the bottom of the document flow
+   -------------------------------------------------------------------------- */
+
+.statusbar {
+  background: var(--bg0-hard);
+  border-top: 1px solid var(--bg2);
+  font-family: var(--font-ui);
+}
+
+.statusbar__inner {
+  max-width: var(--content);
+  margin: 0 auto;
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.statusbar__mode {
+  padding: 6px 14px;
+  background: var(--orange);
+  color: var(--bg0);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.statusbar__path,
+.statusbar__loc {
+  padding: 6px 14px;
+  background: var(--bg1);
+  color: var(--fg2);
+}
+
+.statusbar__spacer { flex: 1; }
+
+.statusbar__meta {
+  display: flex;
+  gap: 16px;
+  padding: 6px 14px;
+  color: var(--fg2);
+
+  .statusbar__label { color: var(--fg4); }
+}
+
+/* Green is the "live" signal — the same meaning it carries on the neofetch
+   card's online dot, which is why the counter matches it rather than reading
+   as an interactive control. */
+.statusbar__uptime { color: var(--green); }
+
+.statusbar__social {
+  color: var(--fg2);
+  text-decoration: none;
+  transition: color var(--t-fast);
+
+  &:hover { color: var(--orange); }
+}
+
+/* -----------------------------------------------------------------------------
+   Touch and small screens
+
+   Two separate concerns, so two separate queries:
+   - `pointer: coarse` is about *fingers*, and applies to a tablet as much as a
+     phone. It governs hit-area size.
+   - width queries are about *space*, and govern layout.
+   -------------------------------------------------------------------------- */
+
+/* WCAG 2.5.8 asks for 24px minimum and everything here already cleared that,
+   but 26px nav items are a miserable thing to hit with a thumb. */
+@media (pointer: coarse) {
+  /* `gap` is required, not cosmetic: the separator between the index number
+     and the label is a whitespace text node, and a flex container does not
+     generate boxes for whitespace-only text — turning these into flex items
+     rendered "2garden". */
+  .site-nav__item,
+  .search-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 44px;
+  }
+
+  .tag-pill {
+    min-height: 32px;
+    padding-inline: 12px;
+  }
+}
+
+/* The header wrapped to three rows on a phone — brand, search, nav — and being
+   sticky it then held ~20% of the viewport permanently. Below 600px the nav
+   becomes a single row that scrolls horizontally instead of wrapping. */
+@media (max-width: 760px) {
+  .site-header__inner {
+    padding: 8px 14px;
+    gap: 8px 12px;
+  }
+
+  /* `nowrap` matters as much as min-width:0 below. Flex wraps an item to the
+     next line *before* it shrinks it, so with wrapping on, the nav jumped to
+     its own row instead of scrolling and the header grew a third row. */
+  .site-header__right {
+    flex: 1 1 100%;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  /* `min-width: 0` is what makes this work: a flex item's default minimum is
+     its content width, so without it the nav refuses to shrink, wraps to its
+     own line, and the header grows instead of the nav scrolling. */
+  .site-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Start-aligned, not end-aligned: when the row overflows, `flex-end` pushes
+       the overflow off the *left* edge, which hid "1 home" behind the scroll
+       origin with no way to reach it. Aligning to the start puts the overflow
+       on the right, where scrolling actually goes. */
+    justify-content: flex-start;
+
+    /* Fade the trailing edge so a cut-off item reads as "there is more here"
+       rather than as the end of the nav. Safe unconditionally: with start
+       alignment, any spare room is on the right, so when everything fits the
+       fade falls over empty space. */
+    mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .brand { font-size: 12px; }
+
+  /* The nav needs 275px. Below 760px the row cannot spare that while the
+     search button carries a keyboard hint, so the hint goes first — it is
+     also the least useful thing on a device with no keyboard. Each step below
+     buys back the exact shortfall measured at that width. */
+  .search-trigger .kbd { display: none; }
+}
+
+/* ⌘ is a Mac key and there is no keyboard at all on touch, so the hint is
+   both wrong and useless here. js/palette.js rewrites it to "Ctrl K" on
+   non-Apple desktops. */
+@media (pointer: coarse) {
+  .search-trigger .kbd { display: none; }
+}
+
+/* Frees ~43px: the prompt glyph alone still reads as "search" in a terminal
+   vocabulary, and the button keeps its accessible name. */
+@media (max-width: 430px) {
+  .search-trigger__label { display: none; }
+
+  .search-trigger {
+    justify-content: center;
+    min-width: 44px;
+    padding: 5px 12px;
+  }
+}
+
+/* Last 30px at the narrowest sizes. */
+@media (max-width: 360px) {
+  .site-nav__item { padding-inline: 6px; }
+  .site-nav { gap: 2px; }
+}
+
+/* The index numbers exist for the 1-5 shortcuts, which a touch device cannot
+   use. On the narrowest screens they are pure cost — dropping them fits more
+   of the nav on screen at once. */
+@media (pointer: coarse) and (max-width: 480px) {
+  .site-nav__num { display: none; }
+}
+
+/* Page titles are set at 40px for a 1120px column; that is oversized on a
+   phone, where it costs several lines of vertical space before any content. */
+@media (max-width: 560px) {
+  .article__title,
+  .garden__title,
+  .folder__title {
+    font-size: clamp(26px, 8vw, 40px);
+    letter-spacing: -0.2px;
+  }
+
+  .featured-card__title { font-size: 22px; }
+
+  .wrap,
+  .body { padding-top: 28px; }
+}
+
+/* -----------------------------------------------------------------------------
+   Motion preferences
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Build-time canary. Loud on purpose: it means generated numbers are wrong. */
+.build-warning {
+  margin: 0 0 20px;
+  padding: 12px 16px;
+  border: 1px solid var(--red);
+  border-radius: var(--radius-card);
+  background: var(--bg1);
+  color: var(--fg1);
+  font-family: var(--font-ui);
+  font-size: 13px;
+}
+
+/* Brand marks in the status bar. Sized to the cap height of the text beside
+   them so the row still reads as one line of terminal output. */
+.statusbar__social .icon {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+
+.statusbar__social {
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (pointer: coarse) {
+  /* Comfortable target without changing the row height. */
+  .statusbar__social {
+    min-width: 32px;
+    min-height: 32px;
+    justify-content: center;
+    margin-block: -10px;
+  }
+}
+
+/* The status bar wrapped to three rows on a phone, with "Boston, MA" stranded
+   alone on the last one — which reads as a layout fault rather than a design.
+   The meta block was 314px of the 390 available.
+   
+   What goes is decoration: `git:main` and `UTF-8` carry no information at any
+   size, and the session uptime is atmosphere. What stays is the things a
+   reader can use — where they are, the profile links, and the location. */
+@media (max-width: 560px) {
+  .statusbar__git,
+  .statusbar__enc { display: none; }
+}
+
+@media (max-width: 430px) {
+  .statusbar__uptime { display: none; }
+
+  .statusbar__meta { gap: 12px; }
+
+  .statusbar__mode,
+  .statusbar__path,
+  .statusbar__loc,
+  .statusbar__meta { padding-inline: 10px; }
+}

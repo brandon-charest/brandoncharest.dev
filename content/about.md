@@ -1,8 +1,8 @@
 +++
 title = "About Me"
+description = "Senior backend engineer, distributed systems, and why this garden exists."
 path = "about"
-template = "page.html"
-status = "evergreen"
+template = "prose.html"
 +++
 
 ## Hey, I'm Brandon

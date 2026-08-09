@@ -1,178 +1,116 @@
 {% extends "base.html" %}
 {% import "macros/ui.html" as ui %}
 
-{# Local TOC macro for sections with subsections #}
-{# Note: Using imported toc_macros doesn't work for section.toc with subsections due to Tera macro scoping #}
-{% macro tree(toc) %}
-<ul class="toc-list">
-    {% for node in toc %}
-    <li>
-        <a href="{{ node.permalink | safe }}">{{ node.title }}</a>
-        {% if node.children %}
-        {{ self::tree(toc=node.children) }}
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
-{% endmacro tree %}
+{# =============================================================================
+   Folder screen — a garden category or project.
+
+   This is the shared index primitive: breadcrumbs, DIR badge, title, overview,
+   `ls` prompt, then a card of child rows. /blog and /tags/<tag> reuse the same
+   vocabulary in Phase 6.
+   ============================================================================= #}
 
 {% block main_content %}
+{% set comps = section.components %}
+{% set joined = comps | join(sep="/") %}
+{% set path = "~/" ~ joined %}
+
 <div class="body">
 
-    {# --- FLOATING TOC WIDGET --- #}
-    {% if section.toc %}
-    <aside class="toc-floating-widget">
-        <div class="toc-header">
-            <span class="toc-icon">Ξ</span>
-            <span class="toc-title">SECTOR_MAP</span>
-        </div>
-        <nav class="toc-tree">
-            {{ self::tree(toc=section.toc) }}
-        </nav>
-    </aside>
+    <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="{{ config.base_url }}" aria-label="Home">~</a>
+        {% for part in comps %}
+            <span class="crumbs__sep" aria-hidden="true">/</span>
+            {% if loop.last %}
+                <span class="crumbs__current" aria-current="page">{{ part }}/</span>
+            {% else %}
+                <a href="{{ get_url(path=comps | slice(end=loop.index) | join(sep='/')) }}">{{ part }}</a>
+            {% endif %}
+        {% endfor %}
+    </nav>
+
+    {# Notes anywhere beneath this folder. Four levels covers the deepest path. #}
+    {% set_global sub_total = section.pages | length %}
+    {% for a_path in section.subsections %}
+        {% set a = get_section(path=a_path) %}
+        {% set an = a.pages | length %}{% set_global sub_total = sub_total + an %}
+        {% for b_path in a.subsections %}
+            {% set b = get_section(path=b_path) %}
+            {% set bn = b.pages | length %}{% set_global sub_total = sub_total + bn %}
+            {% for c_path in b.subsections %}
+                {% set c = get_section(path=c_path) %}
+                {% set cn = c.pages | length %}{% set_global sub_total = sub_total + cn %}
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+
+    <div class="folder__head">
+        <span class="folder__badge">DIR</span>
+        {% if section.extra.growth %}{{ ui::growth_state(growth=section.extra.growth) }}{% endif %}
+        <span class="folder__count">{{ sub_total }} note{% if sub_total != 1 %}s{% endif %} inside</span>
+    </div>
+
+    <h1 class="folder__title">{{ section.title }}</h1>
+
+    {% if section.description %}
+    <p class="folder__overview">{{ section.description }}</p>
     {% endif %}
 
-    <div class="terminal-window">
+    {% if section.content %}
+    <div class="prose folder__readme">{{ section.content | safe }}</div>
+    {% endif %}
 
-        {# 1. UNIFIED WINDOW BAR #}
-        {{ ui::window_bar(path=section.components) }}
+    {{ ui::prompt(cmd="ls", path=path, class="folder__prompt") }}
 
-        <div class="window-content">
+    <div class="listing">
+        {% for sub_path in section.subsections %}
+            {% set sub = get_section(path=sub_path) %}
 
-            {# 2. COMMAND PROMPT #}
-            {{ ui::cmd(cmd="ls", args="-la", margin_top="0", margin_bottom="2rem", opacity=0.3) }}
-
-            {# 3. HUB CONTENT — rendered as `cat README.md` stdout (no nested
-                 chrome inside the terminal window). #}
-            {% if section.content %}
-            <div class="cmd-line" style="opacity: 0.55; margin-top: 0.5rem; margin-bottom: 0;">
-                <span class="cmd-prompt">$</span>
-                <span class="cmd">cat</span>
-                <span class="args">README.md</span>
-            </div>
-            <div class="hub-stdout">{{ section.content | safe }}</div>
-            {% endif %}
-
-            {# 4. Compute growth-stage counts for the flag bar (only meaningful
-                 if pages have growth metadata; render the bar conditionally). #}
-            {% set has_growth = false %}
-            {% for page in section.pages %}
-                {% if page.extra and page.extra.growth %}
-                    {% set_global has_growth = true %}
-                {% endif %}
+            {% set_global child_n = sub.pages | length %}
+            {% for a_path in sub.subsections %}
+                {% set a = get_section(path=a_path) %}
+                {% set an2 = a.pages | length %}{% set_global child_n = child_n + an2 %}
+                {% for b_path in a.subsections %}
+                    {% set b = get_section(path=b_path) %}
+                    {% set bn2 = b.pages | length %}{% set_global child_n = child_n + bn2 %}
+                {% endfor %}
             {% endfor %}
 
-            {% if has_growth and section.pages | length > 3 %}
-                {% set total = section.pages | length %}
-                {% set seed_n  = section.pages | filter(attribute="extra.growth", value="seedling")  | length %}
-                {% set grow_n  = section.pages | filter(attribute="extra.growth", value="growing")   | length %}
-                {% set ever_n  = section.pages | filter(attribute="extra.growth", value="evergreen") | length %}
-                <div class="flag-bar" style="margin-top: 1.25rem; margin-bottom: 0.85rem;">
-                    {{ ui::flag_row_open(flag="--growth") }}
-                        {{ ui::flag_opt(value="all",       label="all",       count=total,  href="?",                 active="all") }}
-                        {{ ui::flag_opt(value="seedling",  label="seedling",  count=seed_n, href="?growth=seedling",  active="all") }}
-                        {{ ui::flag_opt(value="growing",   label="growing",   count=grow_n, href="?growth=growing",   active="all") }}
-                        {{ ui::flag_opt(value="evergreen", label="evergreen", count=ever_n, href="?growth=evergreen", active="all") }}
-                    {{ ui::flag_row_close() }}
-                </div>
-            {% endif %}
+            <a class="listing__row listing__row--dir" href="{{ sub.permalink }}">
+                <span class="listing__badge">{{ ui::kind_badge(type="dir", boxed=true) }}</span>
+                <span class="listing__main">
+                    <span class="listing__line">
+                        <span class="listing__name">{{ sub.components | last }}/</span>
+                        <span class="listing__title">{{ sub.title }}</span>
+                    </span>
+                    {% if sub.description %}<span class="listing__desc">{{ sub.description }}</span>{% endif %}
+                </span>
+                {# Directories carry no maturity, so no dot — only a count. #}
+                <span class="listing__meta">{{ child_n }} note{% if child_n != 1 %}s{% endif %}</span>
+            </a>
+        {% endfor %}
 
-            {# 5. FILE LIST CONTAINER #}
-            <div class="file-list-container">
-                <table class="file-list">
-                    <thead>
-                        <tr>
-                            <th>PERMS</th>
-                            {% if has_growth %}<th class="hide-sm">GROWTH</th>{% endif %}
-                            <th class="hide-sm">TYPE</th>
-                            <th>SIZE</th>
-                            <th>DATE</th>
-                            <th>NAME</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {# PARENT DIRECTORY LINK #}
-                        <tr class="parent-dir">
-                            <td class="perms">drwxr-xr-x</td>
-                            {% if has_growth %}<td class="hide-sm">—</td>{% endif %}
-                            <td class="hide-sm">—</td>
-                            <td class="size">-</td>
-                            <td class="date">-</td>
-                            <td class="name"><a href="../">.. (Parent Directory)</a></td>
-                        </tr>
+        {% for page in section.pages %}
+            {% set growth = page.extra.growth | default(value="seedling") %}
+            {% set kind   = page.extra.type   | default(value="note") %}
+            <a class="listing__row" href="{{ page.permalink }}">
+                <span class="listing__badge">{{ ui::kind_badge(type=kind, boxed=true) }}</span>
+                <span class="listing__main">
+                    <span class="listing__line">
+                        <span class="listing__name">{{ page.relative_path | split(pat="/") | last }}</span>
+                        <span class="listing__title">{{ page.title }}</span>
+                    </span>
+                    {% if page.description %}<span class="listing__desc">{{ page.description }}</span>{% endif %}
+                </span>
+                <span class="listing__meta">{{ ui::growth_state(growth=growth, large=false) }}</span>
+            </a>
+        {% endfor %}
 
-                        {# LOOP THROUGH SUBSECTIONS (FOLDERS) #}
-                        {% for sub_path in section.subsections %}
-                        {% set subsection = get_section(path=sub_path) %}
-                        <tr class="file-row dir-row">
-                            <td class="perms">drwxr-xr-x</td>
-                            {% if has_growth %}<td class="hide-sm">—</td>{% endif %}
-                            <td class="hide-sm">[dir]</td>
-                            <td class="size">{{ subsection.pages | length }}</td>
-                            <td class="date">-</td>
-                            <td class="name">
-                                <a href="{{ subsection.permalink }}" class="dir-link">{{ subsection.title }}/</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-
-                        {# LOOP THROUGH PAGES (FILES) #}
-                        {% for page in section.pages %}
-                        {% set growth_stage = page.extra.growth | default(value="seedling") %}
-                        {% set content_type = page.extra.type | default(value="note") %}
-                        {% set is_pinned = page.extra.pinned | default(value=false) %}
-                        <tr class="file-row" data-growth="{{ growth_stage }}" data-type="{{ content_type }}" data-pinned="{{ is_pinned }}">
-                            <td class="perms">-rw-r--r--</td>
-                            {% if has_growth %}
-                            <td class="hide-sm growth-col">{% if growth_stage == "seedling" %}[seed]{% elif growth_stage == "growing" %}[grow]{% elif growth_stage == "evergreen" %}[ever]{% else %}[seed]{% endif %}</td>
-                            {% endif %}
-                            <td class="hide-sm type-col">{% if content_type == "blog" %}[blog]{% elif content_type == "project" %}[proj]{% elif content_type == "reference" %}[ref]{% elif content_type == "tutorial" %}[tut]{% elif content_type == "snippet" %}[snip]{% elif content_type == "log" %}[log]{% else %}[note]{% endif %}</td>
-                            <td class="size">{{ page.content | length }}b</td>
-                            <td class="date"><time>{{ page.date | date(format="%Y-%m-%d") }}</time></td>
-                            <td class="name">
-                                {% if is_pinned %}<span class="badge-pinned" title="Pinned">★</span>{% endif %}
-                                <a href="{{ page.permalink }}">{{ page.title }}</a>
-
-                                {% if page.extra and page.extra.status %}
-                                <span class="status-badge {{ page.extra.status }}">
-                                    [{{ page.extra.status | upper }}]
-                                </span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            {# 6. CLOSING PROMPT #}
-            {{ ui::cmd(cmd=false, args=false, cursor=true, margin_top="2rem", opacity=0.5) }}
-
-        </div>
+        {% set n_subs = section.subsections | length %}
+        {% set n_pages = section.pages | length %}
+        {% if n_subs + n_pages == 0 %}
+            <div class="listing__empty">this folder is empty.</div>
+        {% endif %}
     </div>
+
 </div>
-
-{% if has_growth %}
-<script>
-// URL-param growth filter for section listings
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const growth = (params.get('growth') || 'all').toLowerCase();
-
-    if (growth !== 'all') {
-        document.querySelectorAll('.file-row[data-growth]').forEach(row => {
-            if (row.dataset.growth !== growth) row.style.display = 'none';
-        });
-    }
-
-    document.querySelectorAll('.flag-opt').forEach(a => {
-        const url = new URL(a.href, window.location.origin);
-        const v = (url.searchParams.get('growth') || 'all').toLowerCase();
-        a.classList.toggle('active', v === growth);
-        const bullet = a.querySelector('.flag-bullet');
-        if (bullet) bullet.textContent = (v === growth) ? '●' : '○';
-    });
-})();
-</script>
-{% endif %}
 {% endblock main_content %}

@@ -4,7 +4,6 @@ description = "Reinventing the wheel to learn how the road works. Building a com
 template = "section.html"
 sort_by = "date"
 weight = 1
-transparent = true
 +++
 
 > **"Imagine not using AI in the Lord's year 2025..."** — ThePrimeagen

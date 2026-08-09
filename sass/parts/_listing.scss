@@ -1,0 +1,396 @@
+/* =============================================================================
+   Folder listing — the shared index primitive
+   Spec: docs/design/TOKENS.md § Folder listing
+
+   Used by garden sections, and in Phase 6 by /blog and /tags/<tag>. One
+   vocabulary for every index screen: breadcrumbs, badge, title, overview,
+   `ls` prompt, then a card of child rows.
+   ============================================================================= */
+
+.folder__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+/* A directory is the heading of a tree — same aqua as the tree's dir rows. */
+.folder__badge {
+  padding: 2px 8px;
+  border: 1px solid var(--bg3);
+  border-radius: var(--radius-badge);
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--aqua);
+}
+
+.folder__count {
+  font-size: 12px;
+  color: var(--fg2);
+}
+
+.folder__title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--fg1);
+  overflow-wrap: break-word;
+}
+
+.folder__overview {
+  margin: 0 0 20px;
+  max-width: 64ch;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--fg1);
+}
+
+.folder__prompt { margin-bottom: 14px; }
+
+/* Section bodies carry real markdown the design has no slot for, so it runs as
+   prose between the overview and the listing. */
+.folder__readme {
+  margin: 0 0 28px;
+  padding-bottom: 4px;
+}
+
+.listing {
+  overflow: hidden;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+}
+
+.listing__row {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--bg2);
+  color: inherit;
+  text-decoration: none;
+  transition: background var(--t-fast);
+
+  &:last-child { border-bottom: none; }
+
+  &:hover { background: var(--hover); }
+}
+
+.listing__badge {
+  flex: none;
+  margin-top: 2px;
+}
+
+.listing__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.listing__line {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.listing__name {
+  font-size: 13px;
+  color: var(--fg2);
+  /* Dated post filenames run to ~36 characters. Let one break rather than
+     push the row wider than the card. */
+  overflow-wrap: anywhere;
+}
+
+.listing__title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--fg1);
+}
+
+.listing__desc {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--fg2);
+}
+
+.listing__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--fg2);
+}
+
+/* Narrow rows: give the meta its own line rather than a column.
+
+   `.listing__row` already wraps, but wrapping never triggered — `.listing__main`
+   carries `min-width: 0` so it can ellipsise, which also means it absorbs the
+   entire squeeze instead of pushing a sibling onto the next line. At 412px the
+   fixed badge (46px) and the meta (~140px) left it roughly 160px, so every post
+   title broke one word per line and a single row ran most of a screen tall.
+
+   Reordering puts badge and meta together on the first line and hands the whole
+   width to the content beneath them.
+
+   760px, not a phone breakpoint: the badge, gaps and meta cost a fixed ~250px,
+   so the three-column form only gives the content a workable column once the
+   viewport clears roughly 760. Measured at 620 the stacked form was still the
+   better of the two by a wide margin (532px of content against 333). */
+@media (max-width: 760px) {
+  .listing__row {
+    gap: 8px 12px;
+    padding: 14px 15px;
+  }
+
+  .listing__badge {
+    order: 1;
+    margin-top: 0;
+  }
+
+  .listing__meta {
+    order: 2;
+    margin-top: 0;
+    margin-left: auto;
+    align-self: center;
+  }
+
+  .listing__main {
+    order: 3;
+    flex: 1 1 100%;
+  }
+}
+
+.listing__empty {
+  padding: 16px 18px;
+  color: var(--fg2);
+  font-size: 13px;
+}
+
+/* --- Blog post cards (/blog) -------------------------------------------------
+   The folder-listing primitive above is built for density — a dozen terse
+   garden notes where the filename is what you scan. /blog holds a handful of
+   substantial posts, so it gets its own component and the title leads.
+
+   Each card is a small terminal window: bg0-soft bar carrying the path, bg1
+   body carrying the headline. That reuses the home neofetch card's anatomy
+   rather than inventing a third card shape, and the two grounds are what stop
+   the stack reading as one flat slab.
+   -------------------------------------------------------------------------- */
+
+.postlist {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.post-card {
+  display: block;
+  overflow: hidden;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color var(--t-slow), transform var(--t-slow),
+              box-shadow var(--t-slow);
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+
+    .post-card__arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+.post-card__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  background: var(--bg0-soft);
+  border-bottom: 1px solid var(--bg2);
+  font-size: 12px;
+  color: var(--fg4);
+}
+
+/* Same aqua a directory carries everywhere else. */
+.post-card__dir { color: var(--aqua); }
+
+.post-card__path {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Purple is the FEATURED signal on the home page; a pinned post is that same
+   idea, so it borrows the label form rather than a second colour. */
+.post-card__pin {
+  flex: none;
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--purple);
+}
+
+.post-card__body { padding: 18px 20px 17px; }
+
+.post-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.15px;
+  color: var(--fg1);
+  overflow-wrap: break-word;
+}
+
+/* The gap is a margin, not a space in the markup: minify_html strips leading
+   whitespace inside an inline element, so `title <span>→</span>` rendered as
+   "hell→". Reserving it here also means the arrow's reveal costs no reflow. */
+.post-card__arrow {
+  display: inline-block;
+  margin-left: 7px;
+  color: var(--orange);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--t-slow), transform var(--t-slow);
+}
+
+.post-card__lede {
+  margin: 10px 0 0;
+  max-width: 64ch;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--fg2);
+}
+
+.post-card__foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 16px;
+}
+
+.post-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+/* fg2, not fg4: the palette assigns fg2 to "small or critical meta —
+   timestamps, read time", and fg4 at 12px on bg1 measures 4.17:1, under AA. */
+.post-card__meta {
+  flex: none;
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--fg2);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 560px) {
+  .post-card__bar  { padding: 8px 13px; }
+  .post-card__body { padding: 15px 15px 14px; }
+  .post-card__title { font-size: 20px; }
+}
+
+/* The arrow is a hover affordance, and touch has no hover — it would never
+   appear on a phone. Show it at rest wherever hover does not exist. */
+@media (hover: none) {
+  .post-card__arrow {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-card {
+    transition: border-color var(--t-slow);
+
+    &:hover,
+    &:focus-visible { transform: none; }
+  }
+
+  .post-card__arrow { transition: none; }
+}
+
+/* --- Tag cloud (/tags/) ------------------------------------------------------
+   Size carries the weight, hue never does — every tag is fg2. Per-tag colours
+   are exactly the problem the palette exists to prevent.
+   -------------------------------------------------------------------------- */
+
+.cloud__prompt { margin-bottom: 22px; }
+
+.cloud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px 18px;
+  padding: 26px 26px 30px;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--radius-card);
+}
+
+.cloud__tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 2px 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--fg2);
+  text-decoration: none;
+  transition: color var(--t-mid), transform var(--t-mid);
+
+  &:hover {
+    color: var(--fg1);
+    transform: translateY(-2px);
+  }
+
+  .cloud__count {
+    font-family: var(--font-ui);
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--fg2);
+  }
+}
+
+@media (pointer: coarse) {
+  .cloud { gap: 16px 20px; }
+  .cloud__tag { min-height: 32px; align-items: center; }
+}
+
+/* --- Standalone prose pages (now, about) ------------------------------------ */
+
+.prose-page__prompt { margin-bottom: 22px; }
+
+.prose-page__title {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--fg1);
+}

@@ -77,11 +77,24 @@
         <meta property="og:url" content="{{ config.base_url }}" />
         <link rel="canonical" href="{{ config.base_url }}" />
     {% endif %}
+    {# Per-page cover, else the site default. Without a fallback most shares
+       render as a bare text card — only one page here sets a cover_image.
+       Set config.extra.default_og_image to a 1200x630 asset to enable it. #}
     {% if page.extra.cover_image %}
-        <meta property="og:image" content="{{ page.extra.cover_image }}" />
-        <meta name="twitter:image" content="{{ page.extra.cover_image }}" />
+        {% set og_image = page.extra.cover_image %}
+    {% elif config.extra.default_og_image %}
+        {% set og_image = config.extra.default_og_image %}
+    {% else %}
+        {% set og_image = false %}
     {% endif %}
-    <meta name="twitter:card" content="summary_large_image" />
+    {% if og_image %}
+        <meta property="og:image" content="{{ get_url(path=og_image) }}" />
+        <meta name="twitter:image" content="{{ get_url(path=og_image) }}" />
+        <meta name="twitter:card" content="summary_large_image" />
+    {% else %}
+        <meta name="twitter:card" content="summary" />
+    {% endif %}
+    <meta property="og:site_name" content="{{ config.title }}" />
 
     {# Favicon #}
     {% if config.extra.favicon %}
@@ -90,27 +103,31 @@
               href="{{ get_url(path=config.extra.favicon) }}" />
     {% endif %}
 
-    {# Font from cdn or disk #}
-    {% if config.extra.use_cdn | default(value=false) %}
-        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-        <link rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css" />
-        <link rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/@fontsource/space-grotesk@4.5.8/index.min.css" />
-    {% else %}
-        <link href={{ get_url(path="fonts.css") }} rel="stylesheet" />
-    {% endif %}
+    {# Fonts — the three families the design calls for, in one request.
+       IBM Plex Mono (display at 700, chrome at 400-600), IBM Plex Sans (prose),
+       JetBrains Mono (code). See docs/design/TOKENS.md § Typography.
 
-    {# Syntax theme #}
-    {% if config.markdown.highlight_code and config.markdown.highlight_theme == "css" %}
+       Only the variants the stylesheet actually references: 11. Italics for
+       Plex Mono and several 600 weights were being downloaded and never used;
+       JetBrains Mono keeps bold and italic because the syntax theme sets them
+       for functions and comments.
+
+       Space Mono used to hold the display voice and is gone as of 2026-08-08 —
+       its uppercase M and W read badly at 40px, and Plex Mono was already on
+       every page for chrome, so promoting it dropped a family rather than
+       adding one. Bold is the only weight this cost. #}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
+
+    {# Syntax theme — Gruvbox, exported to CSS classes from
+       highlight_themes/gruvbox-dark.tmTheme. Loaded unconditionally: the site
+       is dark-only, so there is no light counterpart to switch between. #}
+    {% if config.markdown.highlight_code %}
         <link rel="stylesheet"
               type="text/css"
-              href="/syntax-theme-dark.css"
-              media="(prefers-color-scheme: dark)" />
-        <link rel="stylesheet"
-              type="text/css"
-              href="/syntax-theme-light.css"
-              media="(prefers-color-scheme: light)" />
+              href="{{ get_url(path='syntax-theme-dark.css') }}" />
     {% endif %}
 
     {# Analytics #}
@@ -212,58 +229,33 @@
     {% endif %}
 
 
-    {% set theme = config.extra.theme | default(value="toggle") %}
-    {% if theme == "dark" %}
-        <link rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/dark.css') }}" />
-    {% elif theme == "light" %}
-        <link rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/light.css') }}" />
-    {% elif theme == "auto" %}
-        <link rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/light.css') }}" />
-        <link rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/dark.css') }}"
-              media="(prefers-color-scheme: dark)" />
-    {% elif theme == "toggle" %}
-        <link rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/light.css') }}" />
-        <link id="darkModeStyle"
-              rel="stylesheet"
-              type="text/css"
-              href="{{ get_url(path='theme/dark.css') }}" />
+    {# No theme stylesheets and no toggle script: the site is dark-only and all
+       tokens live on :root in main.css. See docs/design/PALETTE.md decision 4. #}
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#1d2021" />
+
+    {# Structured data. Articles describe themselves; the home page describes
+       the site so search results can show a name and a search action. #}
+    {% if page.title and page.date %}
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"BlogPosting",
+     "headline":{{ page.title | json_encode | safe }},
+     "datePublished":{{ page.date | date(format="%Y-%m-%d") | json_encode | safe }},
+     "dateModified":{{ page.updated | default(value=page.date) | date(format="%Y-%m-%d") | json_encode | safe }},
+     {% if page.description %}"description":{{ page.description | json_encode | safe }},{% endif %}
+     "url":{{ page.permalink | json_encode | safe }},
+     "author":{"@type":"Person","name":"Brandon Charest"},
+     "mainEntityOfPage":{{ page.permalink | json_encode | safe }}}
+    </script>
+    {% elif current_path == "/" %}
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebSite",
+     "name":{{ config.title | json_encode | safe }},
+     "description":{{ config.description | json_encode | safe }},
+     "url":{{ config.base_url | json_encode | safe }},
+     "author":{"@type":"Person","name":"Brandon Charest"}}
+    </script>
     {% endif %}
-
-    <!-- Set the correct theme in the script -->
-
-    {% if theme == "auto" or theme == "toggle" %}
-        <script src={{ get_url(path="js/themetoggle.js") }}></script>
-
-        {% if theme == "auto" %}
-            <script>
-                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    setTheme("dark");
-                } else {
-                    setTheme("light");
-                }
-            </script>
-        {% else %}
-            <script>
-                setTheme(getSavedTheme());
-            </script>
-        {% endif %}
-    {% endif %}
-
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-          rel="stylesheet">
 
     <link rel="stylesheet"
           type="text/css"
@@ -276,25 +268,4 @@
         {% endfor %}
     {% endif %}
 
-    {# Search #}
-    {%- if config.build_search_index -%}
-        {%- if config.search.index_format -%}
-            {%- set search_index_format = config.search.index_format -%}
-        {%- elif config.extra.index_format -%}
-            {# Necessary to support Zola 0.17.X, as it doesn't have access to config.search.index_format #}
-            {# See: https://github.com/getzola/zola/issues/2165 #}
-            {%- set search_index_format = config.extra.index_format -%}
-        {%- else -%}
-            {%- set search_index_format = "elasticlunr_json" -%}
-        {%- endif -%}
-
-        {%- if search_index_format == "elasticlunr_javascript" -%}
-            <script defer
-                    src="{{ get_url(path='search_index.' ~ lang ~ '.js', cachebust=true) | safe }}"></script>
-        {%- endif -%}
-
-        {# Main search script #}
-        <script defer
-                src="{{ get_url(path='js/searchElasticlunr.min.js', cachebust=true) | safe }}"></script>
-    {%- endif -%}
 </head>

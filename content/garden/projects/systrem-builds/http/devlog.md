@@ -6,17 +6,16 @@ description = "A chronological record of my suffering."
 [taxonomies]
 tags = ["devlog"]
 [extra]
-type = "log" 
-growth = "growing" 
+type = "log"
+growth = "growing"
 +++
 
-# 🏗️ Build Log
-
+## Build Log
 *A chronological record of my suffering.*
 
 [Main Branch](https://github.com/brandon-charest/http-rust)
 
-## 📅 2026-01-27
+## 2026-01-27
 
 HTTP 1.1, [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html), [RFC 9112](https://www.rfc-editor.org/rfc/rfc9112.html)
 
@@ -127,7 +126,7 @@ loop {
 }
 ```
 
-## 📅 2026-01-24
+## 2026-01-24
 
 Basic implementation of a reader loop that reads in `8 bytes` at time from socket connection. For this I technically do not need to use `mpsc::channel` but in some of the examples I have seen (which happened to be in Go) it seems like a channel was implemented.
 
