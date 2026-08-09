@@ -191,24 +191,47 @@
         <script defer src={{ get_url(path="js/note.js") }}></script>
     {% endif %}
 
-    {% if config.extra.mathjax | default(value=false) %}
-        {% set page_content = page.content | default(value="") %}
-        {% if page_content is containing("$$") or page_content is containing("\\(") or page_content is containing("\\[") %}
-            {% if config.extra.mathjax_dollar_inline_enable | default(value=false) %}
-                <script>
-                    MathJax = {
-                        tex: {
-                            inlineMath: [
-                                ['$', '$'],
-                                ['\\(', '\\)']
-                            ]
-                        }
-                    };
-                </script>
-            {% endif %}
-            <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-            </script>
-        {% endif %}
+    {# Math — KaTeX, on pages that ask for it with `[extra] math = true`.
+
+       Opt-in per page rather than site-wide because `$` is not a safe global
+       delimiter here: the 6502 notes write hex literals in prose outside
+       backticks ($8000, $C000, $00), and prose.html emits `:~$` in the shell
+       prompt. Enabling $...$ everywhere would eat the text between two hex
+       addresses. Opting in leaves those pages structurally untouchable rather
+       than relying on anyone remembering to escape.
+
+       This replaced the theme's MathJax block, which was doubly disabled —
+       config.extra.mathjax was never set, and it additionally required `$$` in
+       the content, so the five files using inline $...$ only would never have
+       loaded it even with the flag on.
+
+       Pinned with SRI: an unpinned CDN URL is the same floating-dependency
+       mistake as `asdf install zola latest`. See
+       docs/superpowers/specs/2026-08-08-math-notation-design.md #}
+    {% if page.extra.math %}
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+              integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+"
+              crossorigin="anonymous" />
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+                integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg"
+                crossorigin="anonymous"></script>
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+                integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk"
+                crossorigin="anonymous"
+                onload="renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: '$$',  right: '$$',  display: true  },
+                        { left: '\\[', right: '\\]', display: true  },
+                        { left: '$',   right: '$',   display: false },
+                        { left: '\\(', right: '\\)', display: false }
+                    ],
+                    ignoredTags: ['script','noscript','style','textarea','pre','code','option'],
+                    ignoredClasses: ['prompt'],
+                    throwOnError: false
+                });"></script>
     {% endif %}
 
     {# RSS #}

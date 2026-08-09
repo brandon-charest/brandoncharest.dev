@@ -8,6 +8,7 @@ transparent = false
 tags = [ "leetcode", "graph", "medium" ]
 
 [extra]
+math = true
 growth = "evergreen"
 problem_link = "[https://leetcode.com/problems/](https://leetcode.com/problems/course-schedule/description/)"
 problem_number = "207"

@@ -7,6 +7,7 @@ transparent = false
 tags = [ "leetcode", "easy", "hashmap"]
 
 [extra]
+math = true
 growth = "evergreen"
 problem_link = "[https://leetcode.com/problems/](https://leetcode.com/problems/two-sum/description/)"
 problem_number = "001"

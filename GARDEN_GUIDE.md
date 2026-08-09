@@ -32,6 +32,31 @@ type = "snippet"    # 💾 Code snippet
 type = "log"        # 🛠️ Dev log/build journal
 ```
 
+## Math
+
+Notes containing LaTeX must opt in. Without the flag you get literal dollar
+signs:
+
+```toml
+[extra]
+math = true
+```
+
+Then `$O(n \log n)$` renders inline and `$$…$$` renders as a display block.
+`\(…\)` and `\[…\]` also work.
+
+**Why it is opt-in and not just always on.** `$` is not a safe delimiter across
+this whole site. The 6502 emulator notes write hex literals in prose — `$8000`,
+`$C000`, `$00` — and turning on `$…$` globally would treat everything between
+two hex addresses as a formula and mangle the paragraph. Pages that do not
+declare `math` never load the renderer, so that content cannot break no matter
+what anyone writes in it.
+
+Anything inside backticks or a fenced block is skipped regardless, so
+`` `$8000` `` is always safe even on a page with math enabled.
+
+The renderer is KaTeX, loaded from a CDN only on pages that ask for it.
+
 ## Example Frontmatter
 
 ```toml
@@ -46,5 +71,6 @@ tags = ["rust", "systems"]
 [extra]
 growth = "evergreen"  # Well-established content
 type = "reference"    # Reference material
+math = true           # Only if the note contains LaTeX
 +++
 ```

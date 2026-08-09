@@ -7,6 +7,7 @@ description = "Thread-safe Python reference implementations"
 tags = ["system-design", "python"]
 
 [extra]
+math = true
 growth = "evergreen"
 type = "reference"
 +++

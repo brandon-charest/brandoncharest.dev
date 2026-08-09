@@ -8,6 +8,7 @@ transparent = false
 tags = [ "leetcode", "heap", "hard" ]
 
 [extra]
+math = true
 growth = "evergreen"
 problem_link = "[https://leetcode.com/problems/](https://leetcode.com/problems/find-median-from-data-stream/description/)"
 problem_number = "295"
