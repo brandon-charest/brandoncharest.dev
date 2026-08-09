@@ -7,6 +7,7 @@ description = "Notes on dynamic programming patterns, including the knapsack pro
 tags = ["algorithms", "dynamic-programming"]
 
 [extra]
+math = true
 growth = "growing"
 +++
 

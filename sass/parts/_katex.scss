@@ -1,0 +1,20 @@
+/* KaTeX renders its own markup at runtime, so these classes never appear in the
+   built HTML and a dead-CSS sweep will report them as unused. Loaded only on
+   pages carrying `[extra] math = true`.
+
+   Display math is the one thing that can overflow the 620px article measure —
+   a long derivation has no wrap points. Scroll it rather than let it push the
+   page sideways. */
+
+.katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* KaTeX sets 1.21em by default, which reads oversized against 17px article
+   prose. Bring it back to the surrounding text. */
+.katex {
+  font-size: 1.08em;
+}

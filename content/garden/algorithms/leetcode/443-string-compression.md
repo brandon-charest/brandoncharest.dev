@@ -9,6 +9,7 @@ transparent = false
 tags = [ "leetcode", "two-pointers", "medium" ]
 
 [extra]
+math = true
 growth = "evergreen"
 problem_link = "[https://leetcode.com/problems/](https://leetcode.com/problems/string-compression/description/)"
 problem_number = "443"

@@ -71,6 +71,11 @@ Content uses TOML frontmatter (`+++` delimiters). Two main content areas:
 Garden pages use `[extra]` frontmatter fields (see `GARDEN_GUIDE.md` for full reference):
 - **`growth`**: `"seedling"` | `"growing"` | `"evergreen"` — note maturity stage
 - **`type`**: `"note"` | `"blog"` | `"project"` | `"reference"` | `"tutorial"` | `"snippet"` | `"log"`
+- **`math`**: `true` loads KaTeX on that page. **Required** — a note with LaTeX
+  and no flag renders literal dollar signs, and that is the trap to check first
+  when "math isn't rendering". It is opt-in rather than site-wide because `$` is
+  not globally safe here: the 6502 notes write hex literals like `$8000` in
+  prose, and enabling `$...$` everywhere would eat the text between two of them.
 
 ### Templates
 
