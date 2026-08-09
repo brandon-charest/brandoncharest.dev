@@ -46,9 +46,10 @@ next change of display voice is one line rather than seventeen call sites.
 
 | Role | Spec |
 |---|---|
-| Page `h1` | 40px / 700 / `-.6px` / lh 1.12 — display, `fg1`, `overflow-wrap: break-word` |
-| Post `h2` / `h3` | 26px / 700 / `-.2px` — display, aqua, `scroll-margin-top: 78px`, margin `44px 0 14px` (first: `0 0 14px`) |
-| Featured card title | 26px / 700 / `-.4px` / lh 1.15 — display, `fg1` |
+| Page `h1` | 40px / 700 / `-.3px` / lh 1.12 — display, `fg1`, `overflow-wrap: break-word` |
+| Post `h2` / `h3` | 26px / 700 / `-.1px` — display, aqua, `scroll-margin-top: 78px`, margin `44px 0 14px` (first: `0 0 14px`) |
+| Featured card title | 26px / 700 / `-.2px` / lh 1.15 — display, `fg1` |
+| Post-card title | 22px / 700 / `-.15px` — display, `fg1` |
 | Lede / intro blurb | 19px / lh 1.65 — sans, `fg1`, 2px `bg3` left rule, 18px left padding |
 | Article body | 17px / lh 1.75 — sans, `fg2`; paragraph margin `0 0 20px` |
 | Home blurb | 16px / lh 1.7 — sans, `fg1` |
@@ -61,6 +62,16 @@ next change of display voice is one line rather than seventeen call sites.
 | Code | 14px / lh 1.8 — code |
 | Palette type badge | 9.5px / ls .5px |
 | Kind badge (child listing) | 10px / ls .5px — display |
+
+**Negative tracking was halved on 2026-08-08**, when the display face moved from
+Space Mono to IBM Plex Mono. Every value tightening display text came down by
+exactly half: `-.6px` → `-.3px`, `-.4px` → `-.2px`, `-.3px` → `-.15px`,
+`-.2px` → `-.1px`. Tightening a monospace always fights the face — each glyph
+sits on a fixed advance width, so negative tracking pulls letters together
+without narrowing the cells they occupy. Space Mono is wide enough that the old
+values read as correction; Plex Mono is narrower and the same numbers read as
+cramped. The positive values above are untouched: tracking *out* uppercase
+labels is a separate concern and unaffected by the swap.
 
 ### Prose measures
 
