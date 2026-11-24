@@ -127,7 +127,7 @@
     {% if config.markdown.highlight_code %}
         <link rel="stylesheet"
               type="text/css"
-              href="{{ get_url(path='syntax-theme-dark.css') }}" />
+              href="{{ get_url(path='syntax-theme-dark.css', cachebust=true) }}" />
     {% endif %}
 
     {# Analytics #}
@@ -151,7 +151,7 @@
 
             <script data-goatcounter="https://{{ user }}.{{ host }}/count"
                     async
-                    src="{{ get_url(path="js/count.js") }}"></script>
+                    src="{{ get_url(path="js/count.js", cachebust=true) }}"></script>
             <noscript>
                 {# EasyList blocks '.com/count?', so we have to use '.com//count' #}
                 <img src="https://{{ user }}.{{ host }}//count?p={{ current_path }}&t={{ page.title | default(value=config.title) }}" />
@@ -178,17 +178,17 @@
 
     {# Fancy Codeblock #}
     {% if config.extra.fancy_code %}
-        <script defer src={{ get_url(path="js/codeblock.js") }}></script>
+        <script defer src={{ get_url(path="js/codeblock.js", cachebust=true) }}></script>
     {% endif %}
 
     {# Table of contents #}
     {% if config.extra.toc | default(value=false) %}
-        <script defer src={{ get_url(path="js/toc.js") }}></script>
+        <script defer src={{ get_url(path="js/toc.js", cachebust=true) }}></script>
     {% endif %}
 
     {# Dynamic Note #}
     {% if config.extra.dynamic_note | default(value=false) %}
-        <script defer src={{ get_url(path="js/note.js") }}></script>
+        <script defer src={{ get_url(path="js/note.js", cachebust=true) }}></script>
     {% endif %}
 
     {# Math — KaTeX, on pages that ask for it with `[extra] math = true`.
@@ -283,7 +283,7 @@
     <link rel="stylesheet"
           type="text/css"
           media="screen"
-          href="{{ get_url(path='main.css') }}" />
+          href="{{ get_url(path='main.css', cachebust=true) }}" />
 
     {% if config.extra.stylesheets %}
         {% for stylesheet in config.extra.stylesheets %}

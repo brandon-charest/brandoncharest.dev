@@ -129,3 +129,28 @@ you just ran, something is shadowing it.
 ```sh
 zola build && stat -c '%y %n' public/syntax-theme-dark.css
 ```
+
+## Assets are cache-busted — keep it that way
+
+Every local `.js`/`.css` reference goes through
+`get_url(path=..., cachebust=true)`, which appends `?h=<content-hash>`. **A new
+script or stylesheet must use it too.**
+
+This is not cosmetic. Before it existed, assets were served at bare URLs with
+`cache-control: public, max-age=14400`. CSS and JS expire on independent clocks,
+so a deploy could leave a returning visitor running *old JS against new CSS* for
+up to four hours. That produced a real bug on 2026-08-08: the redesign shipped
+its own `static/js/codeblock.js`, but browsers that had visited the previous
+site kept the Apollo theme's copy, which appends an uppercase language label and
+a clipboard button to the end of each `<pre>`. The new stylesheet has no rules
+for `.code-label` or `.clipboard-button`, so they rendered unstyled at the
+bottom of every code block, with no line-number gutter. It looked exactly like a
+CSS regression and was not one.
+
+The tell for that class of bug: the page is internally inconsistent — some
+chrome present, some missing — and a hard reload fixes it. Check whether the
+served asset matches the repo before debugging the stylesheet.
+
+```sh
+zola build && grep -o 'main\.css?h=[a-f0-9]*' public/index.html
+```

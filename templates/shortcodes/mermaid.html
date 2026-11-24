@@ -12,7 +12,7 @@
 
    The guard makes both the init and the run happen once per page no matter how
    many times the shortcode is used. #}
-<script src="{{ get_url(path='js/mermaid.js') }}"></script>
+<script src="{{ get_url(path='js/mermaid.js', cachebust=true) }}"></script>
 
 <pre class="mermaid">
 {{ body | safe }}
